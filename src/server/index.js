@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
@@ -15,8 +16,13 @@ app.use(
 );
 
 app.use(cookieParser());
-app.use(express.static('dist'));
+app.use(express.static(path.join(__dirname, '../../dist')));
 
 app.use('/api', router);
+
+// Serve any other file as dist for index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../dist/index.html'));
+});
 
 app.listen(port, () => console.log(`Listening on port ${port}!`));

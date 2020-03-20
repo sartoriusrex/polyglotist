@@ -2,89 +2,64 @@ const pool = require('../database');
 
 module.exports = {
   getAllUsers: async (req, res) => {
-    pool.query(
-      'SELECT * FROM users ORDER BY id ASC',
-      (error, results) => {
-        if (error) {
-          res.status(400)
-            .send({ message: 'Error getting all users' });
-          throw error;
-        } else {
-          res.status(200)
-            .send({ users: results.rows });
-        }
-      }
-    );
+    try {
+      const response = await pool.query('SELECT * FROM users ORDER BY id ASC');
+      res.status(200).send({ users: response.rows });
+    } catch (err) {
+      res.status(400).send({ message: 'Error getting all users' });
+      throw err;
+    }
   },
   getOneUser: async (req, res) => {
     const id = parseInt(req.params.id, 10);
-
-    pool.query(
-      'SELECT * FROM users WHERE id = $1',
-      [id],
-      (error, results) => {
-        if (error) {
-          res.status(400)
-            .send({ message: 'Error getting user' });
-          throw error;
-        } else {
-          res.status(200)
-            .send({ user: results.rows });
-        }
-      }
-    );
+    try {
+      const response = await pool.query('SELECT * FROM users WHERE id = $1', [
+        id
+      ]);
+      res.status(200).send({ user: response.rows });
+    } catch (err) {
+      res.status(400).send({ message: 'Error getting user' });
+      throw err;
+    }
   },
   addUser: async (req, res) => {
     const { name, email } = req.body;
-
-    pool.query(
-      'INSERT INTO users (name, email) VALUES ($1, $2)',
-      [name, email],
-      (error, results) => {
-        if (error) {
-          res.status(400)
-            .send({ message: 'Error adding user' });
-          throw error;
-        } else {
-          res.status(200)
-            .send({ user: results.rows });
-        }
-      }
-    );
+    try {
+      const mutation = await pool.query(
+        'INSERT INTO users (name, email) VALUES ($1, $2)',
+        [name, email]
+      );
+      res.status(200).send({ user: mutation.rows });
+    } catch (err) {
+      res.status(400).send({ message: 'Error adding user' });
+      throw err;
+    }
   },
   updateUser: async (req, res) => {
     const id = parseInt(req.params.id, 10);
     const { name, email } = req.body;
-
-    pool.query(
-      'UPDATE users SET name = $1, email = $2 WHERE id = $3',
-      [name, email, id],
-      (error, results) => {
-        if (error) {
-          res.status(400)
-            .send({ message: 'Error updating user' });
-        } else {
-          res.status(200)
-            .send({ user: results.rows });
-        }
-      }
-    );
+    try {
+      const mutation = await pool.query(
+        'UPDATE users SET name = $1, email = $2 WHERE id = $3',
+        [name, email, id]
+      );
+      res.status(200).send({ user: mutation.rows });
+    } catch (err) {
+      res.status(400).send({ message: 'Error updating user' });
+      throw err;
+    }
   },
   deleteUser: async (req, res) => {
     const id = parseInt(req.params.id, 10);
-
-    pool.query(
-      'DELETE FROM users WHERE id = $1',
-      [id],
-      (error, results) => {
-        if (error) {
-          res.status(400)
-            .send({ message: 'Error deleting user' });
-        } else {
-          res.status(200)
-            .send({ message: `Successfully deleted user ${results.user}` });
-        }
-      }
-    );
+    try {
+      const mutation = await pool.query('DELETE FROM users WHERE id = $1', [
+        id
+      ]);
+      res
+        .status(200)
+        .send({ message: `Successfully deleted user ${mutation.user}` });
+    } catch (err) {
+      res.status(400).send({ message: 'Error deleting user' });
+    }
   }
 };
