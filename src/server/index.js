@@ -22,7 +22,13 @@ app.use('/api', router);
 
 // Serve any other file as dist for index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../dist/index.html'));
+  res.sendFile(path.join(__dirname, '../../dist/index.html'),
+    (err) => {
+      if (err) {
+        res.status(400).send(err);
+      }
+    });
 });
+
 
 app.listen(port, () => console.log(`Listening on port ${port}!`));
