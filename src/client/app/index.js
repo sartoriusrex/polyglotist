@@ -1,5 +1,7 @@
 import React, { Suspense } from 'react';
 
+import '../styles/index.scss';
+
 const AuthenticatedApp = React.lazy(() => import('../features/AuthenticatedApp'));
 const UnauthenticatedApp = React.lazy(() => import('../features/UnauthenticatedApp'));
 
