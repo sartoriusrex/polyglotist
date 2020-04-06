@@ -17,6 +17,7 @@ module.exports = {
       throw err;
     }
   },
+
   getOneUser: async (req, res) => {
     const id = parseInt(req.params.id, 10);
     try {
@@ -29,6 +30,7 @@ module.exports = {
       throw err;
     }
   },
+
   addUser: async (req, res) => {
     const { username, email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -53,6 +55,7 @@ module.exports = {
       throw err;
     }
   },
+
   updateUser: async (req, res) => {
     const id = parseInt(req.params.id, 10);
     const { name, email } = req.body;
@@ -67,6 +70,7 @@ module.exports = {
       throw err;
     }
   },
+
   deleteUser: async (req, res) => {
     const id = parseInt(req.params.id, 10);
     try {

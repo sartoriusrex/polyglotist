@@ -16,6 +16,7 @@ const AuthPage = ({ signup }) => {
   const [email, setEmail] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [errors, setErrors] = useState({});
+
   const dispatch = useDispatch();
   const { user, loading, hasErrors } = useSelector(userSelector);
 

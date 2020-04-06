@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import history from '../../app/history';
 
 import { fetchUsers, usersSelector } from '../../slices/users';
 
@@ -33,7 +34,7 @@ const UnauthenticatedApp = () => {
 
   return (
     <main>
-      <Router>
+      <Router history={history}>
         <NavBar />
 
         <Switch>
