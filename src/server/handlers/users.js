@@ -1,4 +1,11 @@
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+require('dotenv').config({ path: `${__dirname}/.env` });
+
 const pool = require('../database');
+const thirtyDayCookie = require('../utils/constants');
+
+const salt = 10;
 
 module.exports = {
   getAllUsers: async (req, res) => {
@@ -23,13 +30,24 @@ module.exports = {
     }
   },
   addUser: async (req, res) => {
-    const { name, email } = req.body;
+    const { username, email, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     try {
       const mutation = await pool.query(
-        'INSERT INTO users (name, email) VALUES ($1, $2)',
-        [name, email]
+        'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name',
+        [username, email, hashedPassword]
       );
-      res.status(200).send({ user: mutation.rows });
+
+      const { id, name } = mutation.rows[0];
+
+      const token = jwt.sign(
+        { id, name },
+        process.env.SECRET_KEY
+      );
+
+      res.cookie('accessToken', token, thirtyDayCookie);
+      res.status(200).send({ user: mutation.rows[0] });
     } catch (err) {
       res.status(400).send({ message: 'Error adding user' });
       throw err;

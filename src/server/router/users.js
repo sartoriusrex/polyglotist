@@ -3,15 +3,15 @@ const userHandlers = require('../handlers/users');
 
 // GET
 router.get('/', userHandlers.getAllUsers);
-router.get('/users/:user', userHandlers.getOneUser);
+router.get('/:user', userHandlers.getOneUser);
 
 // POST
-router.post('/users', userHandlers.addUser);
+router.post('/', userHandlers.addUser);
 
 // UPDATE / PATCH
-router.patch('/users/:user', userHandlers.updateUser);
+router.patch('/:user', userHandlers.updateUser);
 
 // DELETE
-router.delete('/users/:user', userHandlers.deleteUser);
+router.delete('/:user', userHandlers.deleteUser);
 
 module.exports = router;

@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { createNewUser, userSelector } from '../../slices/user';
 import { validateEmail, validatePassword, validateUsername } from '../../common/helpers/formValidations';
+
+
+import './AuthPage.scss';
 
 const AuthPage = ({ signup }) => {
   const method = signup ? 'POST' : 'GET';
@@ -11,6 +16,8 @@ const AuthPage = ({ signup }) => {
   const [email, setEmail] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [errors, setErrors] = useState({});
+  const dispatch = useDispatch();
+  const { user, loading, hasErrors } = useSelector(userSelector);
 
   function handleChange(e, func) {
     func(e.target.value);
@@ -20,8 +27,7 @@ const AuthPage = ({ signup }) => {
     setPasswordVisible(!passwordVisible);
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  function validateForm() {
     const errorsObject = {};
 
     const usernameErrors = validateUsername(username);
@@ -38,13 +44,21 @@ const AuthPage = ({ signup }) => {
       errorsObject.password = passwordErrors;
     }
 
-    console.log(errorsObject);
-
     if (Object.keys(errorsObject).length > 0) {
-      console.log('errors');
       setErrors(errorsObject);
+    }
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    setErrors({});
+
+    if (signup) {
+      validateForm();
+      dispatch(createNewUser(email, username, password));
     } else {
-      console.log('no errors');
+      console.log('logging in');
     }
   }
 
@@ -52,9 +66,14 @@ const AuthPage = ({ signup }) => {
     <section>
       <h1>{signup ? <div>Sign up</div> : <div>Log in</div>}</h1>
 
+      {user && console.log(user)}
+
+      {loading && console.log('loading')}
+      {hasErrors && console.log('error')}
+
       {errors && (
         Object.values(errors).map((err) => (
-          <div key={err}>{err}</div>
+          <div key={err} className='form-error'>{err}</div>
         ))
       )}
 
@@ -74,6 +93,7 @@ const AuthPage = ({ signup }) => {
               placeholder='multi-lingual@polyglot.com'
               onChange={(e) => handleChange(e, setEmail)}
               value={email}
+              className={errors.email ? 'form-error' : ''}
             />
           </label>
         )
@@ -88,6 +108,7 @@ const AuthPage = ({ signup }) => {
             placeholder='VerifiedPolyglot'
             onChange={(e) => handleChange(e, setUsername)}
             value={username}
+            className={errors.username ? 'form-error' : ''}
           />
           <p>Must be between 8 and 16 characters long</p>
         </label>
@@ -101,6 +122,7 @@ const AuthPage = ({ signup }) => {
             type={passwordVisible ? 'text' : 'password'}
             onChange={(e) => handleChange(e, setPassword)}
             value={password}
+            className={errors.password ? 'form-error' : ''}
           />
           <p>Must not be the same as your Username, contain between 8 and 30 characters, and contain at least 1 number</p>
         </label>

@@ -45,6 +45,7 @@ export function fetchUsers() {
       const data = await response.json();
 
       dispatch(getUsersSuccess(data.users));
+      
     } catch (err) {
       console.log(err);
       dispatch(getUsersFailure());
