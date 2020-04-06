@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createNewUser, userSelector } from '../../slices/user';
 import { validateEmail, validatePassword, validateUsername } from '../../common/helpers/formValidations';
 
-
 import './AuthPage.scss';
 
 const AuthPage = ({ signup }) => {
