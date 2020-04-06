@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { authSelector } from '../slices/auth';
 import '../styles/index.scss';
 
-
 const AuthenticatedApp = React.lazy(() => import('../features/AuthenticatedApp'));
 const UnauthenticatedApp = React.lazy(() => import('../features/UnauthenticatedApp'));
 
