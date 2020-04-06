@@ -5,9 +5,6 @@ const userHandlers = require('../handlers/users');
 router.get('/', userHandlers.getAllUsers);
 router.get('/:user', userHandlers.getOneUser);
 
-// POST
-router.post('/', userHandlers.addUser);
-
 // UPDATE / PATCH
 router.patch('/:user', userHandlers.updateUser);
 

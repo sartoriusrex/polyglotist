@@ -1,5 +1,9 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import history from '../../app/history';
 
@@ -13,7 +17,9 @@ import AuthPage from './AuthPage';
 
 const UnauthenticatedApp = () => {
   const dispatch = useDispatch();
-  const { users, loading, hasErrors } = useSelector(usersSelector);
+  const {
+    users, loading, hasErrors
+  } = useSelector(usersSelector);
 
   useEffect(() => {
     dispatch(fetchUsers());
@@ -51,7 +57,7 @@ const UnauthenticatedApp = () => {
             <AuthPage />
           </Route>
           <Route exact path='/signup'>
-            <AuthPage signup />
+            <AuthPage newUser />
           </Route>
         </Switch>
       </Router>

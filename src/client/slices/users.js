@@ -12,11 +12,13 @@ const usersSlice = createSlice({
   reducers: {
     getUsers: (state) => {
       const newState = { ...state };
+
       newState.loading = true;
       return newState;
     },
     getUsersSuccess: (state, { payload }) => {
       const newState = { ...state };
+
       newState.users = payload;
       newState.loading = false;
       newState.hasErrors = false;
@@ -24,6 +26,7 @@ const usersSlice = createSlice({
     },
     getUsersFailure: (state) => {
       const newState = { ...state };
+
       newState.loading = false;
       newState.hasErrors = true;
       return newState;
@@ -35,7 +38,9 @@ export const usersSelector = (state) => state.users;
 
 const { actions, reducer } = usersSlice;
 
-export const { getUsers, getUsersSuccess, getUsersFailure } = actions;
+export const {
+  getUsers, getUsersSuccess, getUsersFailure
+} = actions;
 
 export function fetchUsers() {
   return async (dispatch) => {
@@ -45,7 +50,6 @@ export function fetchUsers() {
       const data = await response.json();
 
       dispatch(getUsersSuccess(data.users));
-      
     } catch (err) {
       console.log(err);
       dispatch(getUsersFailure());

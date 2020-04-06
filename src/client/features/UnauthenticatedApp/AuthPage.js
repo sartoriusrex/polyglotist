@@ -2,13 +2,19 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { createNewUser, userSelector } from '../../slices/user';
-import { validateEmail, validatePassword, validateUsername } from '../../common/helpers/formValidations';
+import {
+  login,
+  signup,
+  authSelector
+} from '../../slices/auth';
+import {
+  validateEmail, validatePassword, validateUsername
+} from '../../common/helpers/formValidations';
 
 import './AuthPage.scss';
 
-const AuthPage = ({ signup }) => {
-  const method = signup ? 'POST' : 'GET';
+const AuthPage = ({ newUser }) => {
+  const method = newUser ? 'POST' : 'GET';
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVerified, setPasswordVerified] = useState('');
@@ -17,7 +23,9 @@ const AuthPage = ({ signup }) => {
   const [errors, setErrors] = useState({});
 
   const dispatch = useDispatch();
-  const { user, loading, hasErrors } = useSelector(userSelector);
+  const {
+    user, loading, hasErrors
+  } = useSelector(authSelector);
 
   function handleChange(e, func) {
     func(e.target.value);
@@ -54,17 +62,17 @@ const AuthPage = ({ signup }) => {
 
     setErrors({});
 
-    if (signup) {
+    if (newUser) {
       validateForm();
-      dispatch(createNewUser(email, username, password));
+      dispatch(signup(email, username, password));
     } else {
-      console.log('logging in');
+      dispatch(login(username, password));
     }
   }
 
   return (
     <section>
-      <h1>{signup ? <div>Sign up</div> : <div>Log in</div>}</h1>
+      <h1>{newUser ? <div>Sign up</div> : <div>Log in</div>}</h1>
 
       {user && console.log(user)}
 
@@ -78,11 +86,11 @@ const AuthPage = ({ signup }) => {
       )}
 
       <form
-        action='/api/users'
+        action='/api/auth'
         method={method}
         onSubmit={handleSubmit}
       >
-        {signup ? (
+        {newUser ? (
           <label htmlFor='email'>
             Email
             <input
@@ -126,7 +134,7 @@ const AuthPage = ({ signup }) => {
           />
           <p>Must not be the same as your Username, contain between 8 and 30 characters, and contain at least 1 number</p>
         </label>
-        {signup ? (
+        {newUser ? (
           <label htmlFor='verifyPassword'>
             Verify password
             <input
@@ -155,9 +163,9 @@ const AuthPage = ({ signup }) => {
 export default AuthPage;
 
 AuthPage.defaultProps = {
-  signup: false
+  newUser: false
 };
 
 AuthPage.propTypes = {
-  signup: PropTypes.bool
+  newUser: PropTypes.bool
 };
