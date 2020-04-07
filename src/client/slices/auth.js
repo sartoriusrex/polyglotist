@@ -110,7 +110,6 @@ export function login(username, password) {
       });
       const data = await response.json();
 
-      console.log(response.status);
       if (response.status === 200) {
         dispatch(loginUserSuccess(data.user));
       } else {

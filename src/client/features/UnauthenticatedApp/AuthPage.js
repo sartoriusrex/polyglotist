@@ -56,23 +56,17 @@ const AuthPage = ({ newUser }) => {
     return dispatch(login(username, password));
   }
 
-  if (loading) {
-    return (
-      <section>
-        <h1>Loading User Profile</h1>
-      </section>
-    );
-  }
-
   return (
     <section>
       <h1>{newUser ? <div>Sign up</div> : <div>Log in</div>}</h1>
 
-      {message && <div>{message}</div>}
+      {loading && <h2>Loading User Profile </h2>}
 
       {hasErrors && (
         <h2>There was a Problem Loading your User Information. Please try again.</h2>
       )}
+
+      {message && <div>{message}</div>}
 
       {errors && (
         Object.entries(errors).map((err) => (
