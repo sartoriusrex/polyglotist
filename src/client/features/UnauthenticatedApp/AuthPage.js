@@ -7,9 +7,7 @@ import {
   signup,
   authSelector
 } from '../../slices/auth';
-import {
-  validateEmail, validatePassword, validateUsername
-} from '../../common/helpers/formValidations';
+import { validateForm } from '../../common/helpers/formValidations';
 
 import './AuthPage.scss';
 
@@ -24,7 +22,9 @@ const AuthPage = ({ newUser }) => {
 
   const dispatch = useDispatch();
   const {
-    user, loading, hasErrors
+    user,
+    loading,
+    hasErrors
   } = useSelector(authSelector);
 
   function handleChange(e, func) {
@@ -35,39 +35,17 @@ const AuthPage = ({ newUser }) => {
     setPasswordVisible(!passwordVisible);
   }
 
-  function validateForm() {
-    const errorsObject = {};
-
-    const usernameErrors = validateUsername(username);
-    const emailError = validateEmail(email);
-    const passwordErrors = validatePassword(password, passwordVerified, username);
-
-    if (usernameErrors.length > 0) {
-      errorsObject.username = usernameErrors;
-    }
-    if (emailError.length > 0) {
-      errorsObject.email = emailError;
-    }
-    if (passwordErrors.length > 0) {
-      errorsObject.password = passwordErrors;
-    }
-
-    if (Object.keys(errorsObject).length > 0) {
-      setErrors(errorsObject);
-    }
-  }
-
   function handleSubmit(e) {
     e.preventDefault();
-
     setErrors({});
 
     if (newUser) {
-      validateForm();
-      dispatch(signup(email, username, password));
-    } else {
-      dispatch(login(username, password));
+      const formErrors = validateForm(email, username, password, passwordVerified);
+
+      if (Object.keys(formErrors).length > 0) return setErrors(formErrors);
+      return dispatch(signup(email, username, password));
     }
+    return dispatch(login(username, password));
   }
 
   return (
@@ -80,8 +58,14 @@ const AuthPage = ({ newUser }) => {
       {hasErrors && console.log('error')}
 
       {errors && (
-        Object.values(errors).map((err) => (
-          <div key={err} className='form-error'>{err}</div>
+        Object.entries(errors).map((err) => (
+          <p
+            key={err[1]}
+            className='form-error'
+            id={err[0]}
+          >
+            {err[1]}
+          </p>
         ))
       )}
 
@@ -93,6 +77,8 @@ const AuthPage = ({ newUser }) => {
         {newUser ? (
           <label htmlFor='email'>
             Email
+            <span className='required' aria-hidden='true'>*</span>
+            <span className='sr-only'>Required</span>
             <input
               required
               name='email'
@@ -101,13 +87,16 @@ const AuthPage = ({ newUser }) => {
               placeholder='multi-lingual@polyglot.com'
               onChange={(e) => handleChange(e, setEmail)}
               value={email}
-              className={errors.email ? 'form-error' : ''}
+              className={errors.emailError ? 'form-error' : ''}
+              aria-describedby='emailError'
             />
           </label>
         )
           : <div />}
         <label htmlFor='username'>
           Username
+          <span className='required' aria-hidden='true'>*</span>
+          <span className='sr-only'>Required</span>
           <input
             required
             name='username'
@@ -116,12 +105,15 @@ const AuthPage = ({ newUser }) => {
             placeholder='VerifiedPolyglot'
             onChange={(e) => handleChange(e, setUsername)}
             value={username}
-            className={errors.username ? 'form-error' : ''}
+            className={errors.usernameErrors ? 'form-error' : ''}
+            aria-describedby='desc-un usernameErrors'
           />
-          <p>Must be between 8 and 16 characters long</p>
+          <p id='desc-un'>Must be between 8 and 16 characters long</p>
         </label>
         <label htmlFor='password'>
           Password
+          <span className='required' aria-hidden='true'>*</span>
+          <span className='sr-only'>Required</span>
           <input
             required
             name='password'
@@ -130,13 +122,16 @@ const AuthPage = ({ newUser }) => {
             type={passwordVisible ? 'text' : 'password'}
             onChange={(e) => handleChange(e, setPassword)}
             value={password}
-            className={errors.password ? 'form-error' : ''}
+            className={errors.passwordErrors ? 'form-error' : ''}
+            aria-describedby='desc-pw passwordErrors'
           />
-          <p>Must not be the same as your Username, contain between 8 and 30 characters, and contain at least 1 number</p>
+          <p id='desc-pw'>Must not be the same as your Username, contain between 8 and 30 characters, and contain at least 1 number</p>
         </label>
         {newUser ? (
           <label htmlFor='verifyPassword'>
             Verify password
+            <span className='required' aria-hidden='true'>*</span>
+            <span className='sr-only'>Required</span>
             <input
               required
               name='verifyPassword'

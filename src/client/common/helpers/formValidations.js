@@ -1,46 +1,67 @@
-export function validateEmail(emailString) {
+export function validateEmail(emailString = '') {
   // I trust Tyler Mcginnis's interpretation of email validation here:
   // https://tylermcginnis.com/validate-email-address-javascript/
 
-  const error = [];
+  let error = '';
   const test = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailString);
 
   if (!test) {
-    error.push('Invalid Email.');
+    error = 'Invalid Email.';
   }
 
   return error;
 }
 
-export function validateUsername(usernameString) {
-  const errors = [];
+export function validateUsername(usernameString = '') {
+  let error = '';
   const stringLength = usernameString.length;
 
   if (stringLength < 8 || stringLength > 16) {
-    errors.push('Username must be at least 8 -- but no longer than 16 -- characters long.');
+    error = 'Username must be at least 8 -- but no longer than 16 -- characters long.';
   }
 
-  return errors;
+  return error;
 }
 
-export function validatePassword(passwordString, passwordStringSecond, userNameString) {
-  const errors = [];
+export function validatePassword(passwordString = '', passwordStringSecond = '', userNameString = '') {
+  let error = '';
   const stringLength = passwordString.length;
 
   if (stringLength < 8 || stringLength > 30) {
-    errors.push('Password must be between 8 and 30 characters long.');
+    error = error.concat('Password must be between 8 and 30 characters long.\n');
   }
   if (passwordString === userNameString) {
-    errors.push('Password and Username MUST be different.');
+    error = error.concat('Password and Username MUST be different.\n');
   }
   if (passwordString !== passwordStringSecond) {
-    errors.push('Your passwords are not the same');
+    error = error.concat('Your passwords are not the same.\n');
   }
 
   const numbers = /[0-9]/;
+
   if (!numbers.test(passwordString)) {
-    errors.push('Password must have at least one number in it.');
+    error = error.concat('Password must have at least one number in it.\n');
   }
 
-  return errors;
+  return error;
+}
+
+export function validateForm(email, username, password, passwordVerified) {
+  const errorsObject = {};
+
+  const usernameErrors = validateUsername(username);
+  const emailError = validateEmail(email);
+  const passwordErrors = validatePassword(password, passwordVerified, username);
+
+  if (usernameErrors.length > 0) {
+    errorsObject.usernameErrors = usernameErrors;
+  }
+  if (emailError.length > 0) {
+    errorsObject.emailError = emailError;
+  }
+  if (passwordErrors.length > 0) {
+    errorsObject.passwordErrors = passwordErrors;
+  }
+
+  return errorsObject;
 }
