@@ -18,6 +18,15 @@
       "ExportDeclaration": { "multiline": true, "minProperties": 3 },
       "ObjectPattern": {"multiline": true, "minProperties": 3 }
     }],
-    "newline-after-var": ["error", "always"]
+    "newline-after-var": ["error", "always"],
+    "max-len": ["error", {
+      "ignorePattern": true,
+      "ignoreComments": true,
+      "ignoreTrailingComments": true,
+      "ignoreUrls": true,
+      "ignoreStrings": true,
+      "ignoreTemplateLiterals": true,
+      "ignoreRegExpLiterals": true
+    }]
   }
 }
