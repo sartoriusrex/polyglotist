@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { sendMessage, removeMessage } from './messages';
 
 export const initialState = {
   loading: false,
@@ -97,6 +98,8 @@ export function login(username, password) {
 
   return async (dispatch) => {
     dispatch(loginUser());
+    dispatch(removeMessage());
+
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
@@ -107,9 +110,13 @@ export function login(username, password) {
       });
       const data = await response.json();
 
-      console.log(response, data);
-
-      dispatch(loginUserSuccess(data.user));
+      console.log(response.status);
+      if (response.status === 200) {
+        dispatch(loginUserSuccess(data.user));
+      } else {
+        dispatch(loginUserFailure());
+        dispatch(sendMessage(data.message));
+      }
     } catch (err) {
       console.log(err);
       dispatch(loginUserFailure());

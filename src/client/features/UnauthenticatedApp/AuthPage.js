@@ -7,6 +7,10 @@ import {
   signup,
   authSelector
 } from '../../slices/auth';
+import {
+  removeMessage,
+  messageSelector
+} from '../../slices/messages';
 import { validateForm } from '../../common/helpers/formValidations';
 
 import './AuthPage.scss';
@@ -21,11 +25,8 @@ const AuthPage = ({ newUser }) => {
   const [errors, setErrors] = useState({});
 
   const dispatch = useDispatch();
-  const {
-    user,
-    loading,
-    hasErrors
-  } = useSelector(authSelector);
+  const { loading, hasErrors } = useSelector(authSelector);
+  const { message } = useSelector(messageSelector);
 
   function handleChange(e, func) {
     func(e.target.value);
@@ -38,6 +39,7 @@ const AuthPage = ({ newUser }) => {
   function handleSubmit(e) {
     e.preventDefault();
     setErrors({});
+    dispatch(removeMessage());
 
     if (newUser) {
       const formErrors = validateForm(email, username, password, passwordVerified);
@@ -48,14 +50,23 @@ const AuthPage = ({ newUser }) => {
     return dispatch(login(username, password));
   }
 
+  if (loading) {
+    return (
+      <section>
+        <h1>Loading User Profile</h1>
+      </section>
+    );
+  }
+
   return (
     <section>
       <h1>{newUser ? <div>Sign up</div> : <div>Log in</div>}</h1>
 
-      {user && console.log(user)}
+      {message && <div>{message}</div>}
 
-      {loading && console.log('loading')}
-      {hasErrors && console.log('error')}
+      {hasErrors && (
+        <h2>There was a Problem Loading your User Information. Please try again.</h2>
+      )}
 
       {errors && (
         Object.entries(errors).map((err) => (

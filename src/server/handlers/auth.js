@@ -44,7 +44,6 @@ module.exports = {
   loginUser: async (req, res) => {
     const { username, password: candidatePassword } = req.body;
 
-
     try {
       const query = await pool.query(
         'SELECT id, name, password FROM users WHERE name = $1',
@@ -52,7 +51,9 @@ module.exports = {
       );
 
       const {
-        id, name, password
+        id,
+        name,
+        password
       } = query.rows[0];
 
       const verifiedPassword = await bcrypt.compare(candidatePassword, password);
@@ -71,7 +72,7 @@ module.exports = {
       }
     } catch (err) {
       console.log(err);
-      res.status(400).send({ message: 'Error logging in' });
+      res.status(400).send({ message: 'Error logging in: User not found.' });
       throw err;
     }
   },
