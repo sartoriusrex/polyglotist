@@ -37,7 +37,6 @@ module.exports = {
       res.status(200).send({ user: mutation.rows[0] });
     } catch (err) {
       res.status(400).send({ message: 'Error adding user' });
-      throw err;
     }
   },
 
@@ -68,12 +67,9 @@ module.exports = {
         res.status(200).send({ user: query.rows[0] });
       } else {
         res.status(403).send({ message: 'Incorrect Password' });
-        throw Error('Incorrect Password');
       }
     } catch (err) {
-      console.log(err);
-      res.status(400).send({ message: 'Error logging in: User not found.' });
-      throw err;
+      res.status(400).send({ message: 'User not found.' });
     }
   },
 
