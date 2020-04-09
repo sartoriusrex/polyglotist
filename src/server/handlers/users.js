@@ -1,19 +1,24 @@
-// const bcrypt = require('bcryptjs');
-// const jwt = require('jsonwebtoken');
-
 require('dotenv').config({ path: `${__dirname}/.env` });
 
-const pool = require('../database');
-// const thirtyDayCookie = require('../utils/constants');
-
-// const salt = 10;
+const db = require('../database');
 
 module.exports = {
   getAllUsers: async (req, res) => {
     try {
-      const response = await pool.query('SELECT * FROM users ORDER BY id ASC');
+      const response = await db.query('SELECT * FROM users ORDER BY name ASC');
 
-      res.status(200).send({ users: response.rows });
+      const usersArray = response.rows;
+
+      // Map over usersArray and return the same items, without the passwords
+      const users = usersArray.map( user => {
+        return ({
+          id: user.id,
+          email: user.email,
+          name: user.name
+        });
+      })
+
+      res.status(200).send({ users });
     } catch (err) {
       res.status(400).send({ message: 'Error getting all users' });
       throw err;
@@ -24,7 +29,7 @@ module.exports = {
     const id = parseInt(req.params.id, 10);
 
     try {
-      const response = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+      const response = await db.query('SELECT * FROM users WHERE id = $1', [id]);
 
       res.status(200).send({ user: response.rows });
     } catch (err) {
@@ -38,7 +43,7 @@ module.exports = {
     const { name, email } = req.body;
 
     try {
-      const mutation = await pool.query(
+      const mutation = await db.query(
         'UPDATE users SET name = $1, email = $2 WHERE id = $3',
         [
           name,
@@ -58,7 +63,7 @@ module.exports = {
     const id = parseInt(req.params.id, 10);
 
     try {
-      const mutation = await pool.query('DELETE FROM users WHERE id = $1', [id]);
+      const mutation = await db.query('DELETE FROM users WHERE id = $1', [id]);
 
       res
         .status(200)

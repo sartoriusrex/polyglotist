@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import {
-  BrowserRouter as Router,
+  Router,
   Switch,
   Route
 } from 'react-router-dom';

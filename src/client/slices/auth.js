@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { sendMessage, removeMessage } from './messages';
+import history from '../app/history';
 
 export const initialState = {
   loading: false,
@@ -77,7 +78,7 @@ const authSlice = createSlice({
   }
 });
 
-export const authSelector = (state) => state.user;
+export const authSelector = (state) => state.auth;
 
 const { actions, reducer } = authSlice;
 
@@ -112,6 +113,7 @@ export function login(username, password) {
 
       if (response.status === 200) {
         dispatch(loginUserSuccess(data.user));
+        dispatch(sendMessage(data.message));
       } else {
         dispatch(loginUserFailure());
         dispatch(sendMessage(data.message));
@@ -128,6 +130,8 @@ export function signup(email, username, password) {
 
   return async (dispatch) => {
     dispatch(createUser());
+    dispatch(removeMessage());
+
     try {
       const response = await fetch('/api/auth/signup', {
         method: 'POST',
@@ -140,6 +144,7 @@ export function signup(email, username, password) {
       const data = await response.json();
 
       dispatch(createUserSuccess(data.user));
+      dispatch(sendMessage(data.message));
     } catch (err) {
       console.log(err);
       dispatch(createUserFailure());
@@ -147,8 +152,7 @@ export function signup(email, username, password) {
   };
 }
 
-export function logout(username, password) {
-  const body = { username, password };
+export function logout() {
 
   return async (dispatch) => {
     dispatch(logoutUser());
@@ -159,12 +163,13 @@ export function logout(username, password) {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(body)
       });
 
-      const data = response.json();
+      const data = await response.json();
 
-      dispatch(logoutUserSuccess(data));
+      dispatch(logoutUserSuccess());
+      history.push('/login');
+      dispatch(sendMessage(data.message));
     } catch (err) {
       console.log(err);
       dispatch(logoutUserFailure());

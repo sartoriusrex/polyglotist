@@ -6,7 +6,7 @@ import messageReducer from '../slices/messages';
 
 const rootReducer = combineReducers({
   users: usersReducer,
-  user: authReducer,
+  auth: authReducer,
   message: messageReducer
 });
 
