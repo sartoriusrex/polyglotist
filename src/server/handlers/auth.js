@@ -49,8 +49,8 @@ module.exports = {
       const user = { id, name };
       const payload = { token, id, name };
 
-      res.cookie('accessToken', payload, thirtyDayCookie);
-      return res.status(200)
+      return res.cookie('accessToken', payload, thirtyDayCookie)
+        .status(200)
         .send({ 
           user, 
           message: 'Welcome to Polyglotist!' 
@@ -117,8 +117,8 @@ module.exports = {
           const user = {id, name};
           const payload = { token, id, name };
 
-          res.cookie('accessToken', payload, thirtyDayCookie);
-          return res.status(200)
+          return res.cookie('accessToken', payload, thirtyDayCookie)
+            .status(200)
             .send({ 
               user, 
               message: 'Welcome Back!' 
