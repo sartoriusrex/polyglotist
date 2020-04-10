@@ -10,19 +10,17 @@ module.exports = {
       const usersArray = response.rows;
 
       // Map over usersArray and return the same items, without the passwords
-      const users = usersArray.map( user => {
-        return ({
+      const users = usersArray.map((user) => {
+        return {
           id: user.id,
           email: user.email,
-          name: user.name
-        });
-      })
+          name: user.name,
+        };
+      });
 
-      return res.status(200)
-        .send({ users });
+      return res.status(200).send({ users });
     } catch (err) {
-      return res.status(400)
-        .send({ message: 'Error getting all users' });
+      return res.status(400).send({ message: 'Error getting all users' });
     }
   },
 
@@ -30,16 +28,13 @@ module.exports = {
     const id = parseInt(req.params.id, 10);
 
     try {
-      const response = await db.query(
-        'SELECT * FROM users WHERE id = $1',
-        [id]
-      );
+      const response = await db.query('SELECT * FROM users WHERE id = $1', [
+        id,
+      ]);
 
-      return res.status(200)
-        .send({ user: response.rows });
+      return res.status(200).send({ user: response.rows });
     } catch (err) {
-      return res.status(400)
-        .send({ message: 'Error getting user' });
+      return res.status(400).send({ message: 'Error getting user' });
     }
   },
 
@@ -50,18 +45,12 @@ module.exports = {
     try {
       const mutation = await db.query(
         'UPDATE users SET name = $1, email = $2 WHERE id = $3',
-        [
-          name,
-          email,
-          id
-        ]
+        [name, email, id]
       );
 
-      return res.status(200)
-        .send({ user: mutation.rows });
+      return res.status(200).send({ user: mutation.rows });
     } catch (err) {
-      return res.status(400)
-        .send({ message: 'Error updating user' });
+      return res.status(400).send({ message: 'Error updating user' });
     }
   },
 
@@ -69,16 +58,13 @@ module.exports = {
     const id = parseInt(req.params.id, 10);
 
     try {
-      const mutation = await db.query(
-        'DELETE FROM users WHERE id = $1',
-        [id]
-      );
+      const mutation = await db.query('DELETE FROM users WHERE id = $1', [id]);
 
-      return res.status(200)
+      return res
+        .status(200)
         .send({ message: `Successfully deleted user ${mutation.user}` });
     } catch (err) {
-      return res.status(400)
-        .send({ message: 'Error deleting user' });
+      return res.status(400).send({ message: 'Error deleting user' });
     }
-  }
+  },
 };

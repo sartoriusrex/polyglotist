@@ -1,5 +1,6 @@
 require('dotenv').config({ path: `${__dirname}/.env` });
 
+const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const db = require('../database');
@@ -9,23 +10,23 @@ const salt = 10;
 
 module.exports = {
   addUser: async (req, res) => {
-    const {
-      username,
-      email,
-      password
-    } = req.body;
+    const { username, email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, salt);
+    const errors = validationResult(req);
+
+    if (errors.length > 0)
+      return res.status(422).send({
+        message:
+          'Please correct either your email, username, or password to match the rules provided.',
+      });
 
     try {
-      const query = await db.query(
-        'SELECT id FROM users WHERE name = $1',
-        [username]
-      );
+      const query = await db.query('SELECT id FROM users WHERE name = $1', [
+        username,
+      ]);
 
-      if (query.rows[0]) 
-        return res.status(401)
-          .send({ message: 'User already exists.' });
-
+      if (query.rows[0])
+        return res.status(401).send({ message: 'User already exists.' });
     } catch (err) {
       console.log('No user found. we can continue creating user.');
     }
@@ -33,31 +34,24 @@ module.exports = {
     try {
       const query = await db.query(
         'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name',
-        [
-          username,
-          email,
-          hashedPassword
-        ]
+        [username, email, hashedPassword]
       );
 
       const { id, name } = query.rows[0];
 
-      const token = jwt.sign(
-        { id, name },
-        process.env.SECRET_KEY
-      );
+      const token = jwt.sign({ id, name }, process.env.SECRET_KEY);
       const user = { id, name };
       const payload = { token, id, name };
 
-      return res.cookie('accessToken', payload, thirtyDayCookie)
+      return res
+        .cookie('accessToken', payload, thirtyDayCookie)
         .status(200)
-        .send({ 
-          user, 
-          message: 'Welcome to Polyglotist!' 
+        .send({
+          user,
+          message: 'Welcome to Polyglotist!',
         });
     } catch (err) {
-      return res.status(400)
-        .send({ message: 'Error adding user' });
+      return res.status(400).send({ message: 'Error adding user' });
     }
   },
 
@@ -67,31 +61,35 @@ module.exports = {
     if (accessToken) {
       try {
         const { name: nameInToken, token } = accessToken;
-        const query = await db.query('SELECT id, name, password FROM users WHERE name = $1', [nameInToken]);
+        const query = await db.query(
+          'SELECT id, name, password FROM users WHERE name = $1',
+          [nameInToken]
+        );
         const { id, name } = query.rows[0];
         const user = { id, name };
-        const verified = jwt.verify( token, process.env.SECRET_KEY, function( err, decoded ) {
-          if( decoded ) return true;
+        const verified = jwt.verify(token, process.env.SECRET_KEY, function (
+          err,
+          decoded
+        ) {
+          if (decoded) return true;
           return false;
         });
 
-        if (verified) return res.status(200).send({ 
-          user, 
-          message: 'Welcome Back!' 
-        });
-        return res.status(401)
-          .send({ message: 'Please log in.'})
+        if (verified)
+          return res.status(200).send({
+            user,
+            message: 'Welcome Back!',
+          });
+        return res.status(401).send({ message: 'Please log in.' });
       } catch (err) {
         console.log(err);
-        return res.status(400)
-          .send({ message: 'Could not find the user.'});
+        return res.status(400).send({ message: 'Could not find the user.' });
       }
-
     } else {
       const { username, password: candidatePassword } = req.body;
 
-      if (!username || !candidatePassword ) {
-        const user = null
+      if (!username || !candidatePassword) {
+        const user = null;
         return res.status(200).send({ user });
       }
 
@@ -101,42 +99,36 @@ module.exports = {
           [username]
         );
 
-        const {
-          id,
-          name,
-          password
-        } = query.rows[0];
+        const { id, name, password } = query.rows[0];
 
-        const verifiedPassword = await bcrypt.compare(candidatePassword, password);
+        const verifiedPassword = await bcrypt.compare(
+          candidatePassword,
+          password
+        );
 
         if (verifiedPassword) {
-          const token = jwt.sign(
-            { id, name },
-            process.env.SECRET_KEY
-          );
-          const user = {id, name};
+          const token = jwt.sign({ id, name }, process.env.SECRET_KEY);
+          const user = { id, name };
           const payload = { token, id, name };
 
-          return res.cookie('accessToken', payload, thirtyDayCookie)
+          return res
+            .cookie('accessToken', payload, thirtyDayCookie)
             .status(200)
-            .send({ 
-              user, 
-              message: 'Welcome Back!' 
+            .send({
+              user,
+              message: 'Welcome Back!',
             });
         } else {
-          return res.status(403)
-            .send({ message: 'Incorrect Password' });
+          return res.status(403).send({ message: 'Incorrect Password' });
         }
       } catch (err) {
-        return res.status(400)
-          .send({ message: 'User not found.' });
+        return res.status(400).send({ message: 'User not found.' });
       }
     }
   },
 
   logoutUser: async (req, res) => {
     res.clearCookie('accessToken');
-    return res.status(200)
-      .send({ message: 'Logged Out.' });
-  }
+    return res.status(200).send({ message: 'Logged Out.' });
+  },
 };
