@@ -15,6 +15,7 @@ import LandingPage from './LandingPage';
 import AboutPage from './AboutPage';
 import FeaturesPage from './FeaturesPage';
 import AuthPage from './AuthPage';
+import NoMatchPage from '../../common/components/NoMatchPage';
 
 const UnauthenticatedApp = () => {
   const dispatch = useDispatch();
@@ -65,6 +66,7 @@ const UnauthenticatedApp = () => {
           <Route exact path='/signup'>
             <AuthPage newUser />
           </Route>
+          <Route component={ NoMatchPage } />
         </Switch>
       </Router>
 

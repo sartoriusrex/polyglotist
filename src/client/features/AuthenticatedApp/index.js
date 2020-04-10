@@ -13,6 +13,7 @@ import ArticlesPage from '../AuthPages/ArticlesPage';
 import WordsPage from '../AuthPages/WordsPage';
 import SettingsPage from '../AuthPages/SettingsPage';
 import PracticePage from '../AuthPages/PracticePage';
+import NoMatchPage from '../../common/components/NoMatchPage';
 
 const AuthenticatedApp = () => {
   return(
@@ -38,6 +39,7 @@ const AuthenticatedApp = () => {
           <Route exact path='/settings'>
             <SettingsPage />
           </Route>
+          <Route component={ NoMatchPage } />
         </Switch>
       </Router>
     </main>
