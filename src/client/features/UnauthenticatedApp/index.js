@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import {
   Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import history from '../../app/history';
@@ -44,6 +45,11 @@ const UnauthenticatedApp = () => {
         <NavBar />
 
         <Switch>
+          <Redirect from='/dashboard' to='/login' />
+          <Redirect from='/articles' to='/login' />
+          <Redirect from='/words' to='/login' />
+          <Redirect from='/practice' to='/login' />
+          <Redirect from='/settings' to='/login' />
           <Route exact path='/'>
             <LandingPage />
           </Route>

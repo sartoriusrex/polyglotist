@@ -14,31 +14,34 @@ import WordsPage from '../AuthPages/WordsPage';
 import SettingsPage from '../AuthPages/SettingsPage';
 import PracticePage from '../AuthPages/PracticePage';
 
-const AuthenticatedApp = () => (
-  <main>
-    <Router history={history}>
-      <Navbar />
-      <Switch>
-        <Redirect from='/login' to='/dashboard' />
-        <Redirect from='/signup' to='/dashboard' />
-        <Route exact path='/dashboard'>
-          <Dashboard />
-        </Route>
-        <Route exact path='/articles'>
-          <ArticlesPage />
-        </Route>
-        <Route exact path='/words'>
-          <WordsPage />
-        </Route>
-        <Route exact path='/practice'>
-          <PracticePage />
-        </Route>
-        <Route exact path='/settings'>
-          <SettingsPage />
-        </Route>
-      </Switch>
-    </Router>
-  </main>
-);
+const AuthenticatedApp = () => {
+  return(
+    <main>
+      <Router history={history}>
+        <Navbar />
+
+        <Switch>
+          <Redirect from='/login' to='/dashboard' />
+          <Redirect from='/signup' to='/dashboard' />
+          <Route exact path='/dashboard'>
+            <Dashboard />
+          </Route>
+          <Route exact path='/articles'>
+            <ArticlesPage />
+          </Route>
+          <Route exact path='/words'>
+            <WordsPage />
+          </Route>
+          <Route exact path='/practice'>
+            <PracticePage />
+          </Route>
+          <Route exact path='/settings'>
+            <SettingsPage />
+          </Route>
+        </Switch>
+      </Router>
+    </main>
+  );
+}
 
 export default AuthenticatedApp;

@@ -17,17 +17,21 @@ module.exports = {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     try {
-      const mutation = await db.query('SELECT id FROM users WHERE name = $1',
-        [username]);
+      const query = await db.query(
+        'SELECT id FROM users WHERE name = $1',
+        [username]
+      );
 
-      if (mutation.rows[0]) return res.status(401).send({ message: 'User already exists.' });
+      if (query.rows[0]) 
+        return res.status(401)
+          .send({ message: 'User already exists.' });
 
     } catch (err) {
       console.log('No user found. we can continue creating user.');
     }
 
     try {
-      const mutation = await db.query(
+      const query = await db.query(
         'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name',
         [
           username,
@@ -36,57 +40,103 @@ module.exports = {
         ]
       );
 
-      const { id, name } = mutation.rows[0];
+      const { id, name } = query.rows[0];
 
       const token = jwt.sign(
         { id, name },
         process.env.SECRET_KEY
       );
+      const user = { id, name };
+      const payload = { token, id, name };
 
-      res.cookie('accessToken', token, thirtyDayCookie);
-      res.status(200).send({ user: mutation.rows[0], message: 'Welcome to Polyglotist!' });
+      res.cookie('accessToken', payload, thirtyDayCookie);
+      return res.status(200)
+        .send({ 
+          user, 
+          message: 'Welcome to Polyglotist!' 
+        });
     } catch (err) {
-      res.status(400).send({ message: 'Error adding user' });
+      return res.status(400)
+        .send({ message: 'Error adding user' });
     }
   },
 
   loginUser: async (req, res) => {
-    const { username, password: candidatePassword } = req.body;
+    const { accessToken } = req.cookies;
 
-    try {
-      const query = await db.query(
-        'SELECT id, name, password FROM users WHERE name = $1',
-        [username]
-      );
+    if (accessToken) {
+      try {
+        const { name: nameInToken, token } = accessToken;
+        const query = await db.query('SELECT id, name, password FROM users WHERE name = $1', [nameInToken]);
+        const { id, name } = query.rows[0];
+        const user = { id, name };
+        const verified = jwt.verify( token, process.env.SECRET_KEY, function( err, decoded ) {
+          if( decoded ) return true;
+          return false;
+        });
 
-      const {
-        id,
-        name,
-        password
-      } = query.rows[0];
+        if (verified) return res.status(200).send({ 
+          user, 
+          message: 'Welcome Back!' 
+        });
+        return res.status(401)
+          .send({ message: 'Please log in.'})
+      } catch (err) {
+        console.log(err);
+        return res.status(400)
+          .send({ message: 'Could not find the user.'});
+      }
 
-      const verifiedPassword = await bcrypt.compare(candidatePassword, password);
+    } else {
+      const { username, password: candidatePassword } = req.body;
 
-      if (verifiedPassword) {
-        const token = jwt.sign(
-          { id, name },
-          process.env.SECRET_KEY
+      if (!username || !candidatePassword ) {
+        const user = null
+        return res.status(200).send({ user });
+      }
+
+      try {
+        const query = await db.query(
+          'SELECT id, name, password FROM users WHERE name = $1',
+          [username]
         );
 
-        const user = {id, name};
+        const {
+          id,
+          name,
+          password
+        } = query.rows[0];
 
-        res.cookie('accessToken', token, thirtyDayCookie);
-        res.status(200).send({ user, message: 'Welcome Back!' });
-      } else {
-        res.status(403).send({ message: 'Incorrect Password' });
+        const verifiedPassword = await bcrypt.compare(candidatePassword, password);
+
+        if (verifiedPassword) {
+          const token = jwt.sign(
+            { id, name },
+            process.env.SECRET_KEY
+          );
+          const user = {id, name};
+          const payload = { token, id, name };
+
+          res.cookie('accessToken', payload, thirtyDayCookie);
+          return res.status(200)
+            .send({ 
+              user, 
+              message: 'Welcome Back!' 
+            });
+        } else {
+          return res.status(403)
+            .send({ message: 'Incorrect Password' });
+        }
+      } catch (err) {
+        return res.status(400)
+          .send({ message: 'User not found.' });
       }
-    } catch (err) {
-      res.status(400).send({ message: 'User not found.' });
     }
   },
 
   logoutUser: async (req, res) => {
     res.clearCookie('accessToken');
-    res.status(200).send({ message: 'Logged Out.' });
+    return res.status(200)
+      .send({ message: 'Logged Out.' });
   }
 };

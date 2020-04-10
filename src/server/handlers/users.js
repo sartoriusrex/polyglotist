@@ -18,10 +18,11 @@ module.exports = {
         });
       })
 
-      res.status(200).send({ users });
+      return res.status(200)
+        .send({ users });
     } catch (err) {
-      res.status(400).send({ message: 'Error getting all users' });
-      throw err;
+      return res.status(400)
+        .send({ message: 'Error getting all users' });
     }
   },
 
@@ -29,12 +30,16 @@ module.exports = {
     const id = parseInt(req.params.id, 10);
 
     try {
-      const response = await db.query('SELECT * FROM users WHERE id = $1', [id]);
+      const response = await db.query(
+        'SELECT * FROM users WHERE id = $1',
+        [id]
+      );
 
-      res.status(200).send({ user: response.rows });
+      return res.status(200)
+        .send({ user: response.rows });
     } catch (err) {
-      res.status(400).send({ message: 'Error getting user' });
-      throw err;
+      return res.status(400)
+        .send({ message: 'Error getting user' });
     }
   },
 
@@ -52,10 +57,11 @@ module.exports = {
         ]
       );
 
-      res.status(200).send({ user: mutation.rows });
+      return res.status(200)
+        .send({ user: mutation.rows });
     } catch (err) {
-      res.status(400).send({ message: 'Error updating user' });
-      throw err;
+      return res.status(400)
+        .send({ message: 'Error updating user' });
     }
   },
 
@@ -63,13 +69,16 @@ module.exports = {
     const id = parseInt(req.params.id, 10);
 
     try {
-      const mutation = await db.query('DELETE FROM users WHERE id = $1', [id]);
+      const mutation = await db.query(
+        'DELETE FROM users WHERE id = $1',
+        [id]
+      );
 
-      res
-        .status(200)
+      return res.status(200)
         .send({ message: `Successfully deleted user ${mutation.user}` });
     } catch (err) {
-      res.status(400).send({ message: 'Error deleting user' });
+      return res.status(400)
+        .send({ message: 'Error deleting user' });
     }
   }
 };
