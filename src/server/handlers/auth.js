@@ -21,12 +21,20 @@ module.exports = {
       });
 
     try {
-      const query = await db.query('SELECT id FROM users WHERE name = $1', [
+      const usernameQuery = await db.query('SELECT id FROM users WHERE name = $1', [
         username,
       ]);
 
-      if (query.rows[0])
+      const emailQuery = await db.query('SELECT email FROM users WHERE email = $1', [
+        email
+      ]);
+
+      if (usernameQuery.rows[0])
         return res.status(401).send({ message: 'User already exists.' });
+
+      if (emailQuery.rows[0])
+        return res.status(401).send({ message: 'Email already in use.' });
+
     } catch (err) {
       console.log('No user found. we can continue creating user.');
     }

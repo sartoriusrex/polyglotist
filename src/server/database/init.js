@@ -11,12 +11,14 @@ const clean_database = `
 const create_users = `
   CREATE TABLE users (
     ID SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
+    name TEXT NOT NULL UNIQUE,
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     theme_preference TEXT DEFAULT 'light',
     reading_speed TEXT DEFAULT 'normal',
-    notifications BOOLEAN DEFAULT TRUE
+    practice_mode BOOLEAN DEFAULT TRUE,
+    notifications BOOLEAN DEFAULT TRUE,
+    notification_method TEXT DEFAULT 'none'
   );
 `;
 
