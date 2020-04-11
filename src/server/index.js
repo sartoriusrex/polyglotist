@@ -9,6 +9,9 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 
 const router = require('./router');
+const initializeDatabase = require('./database/init');
+
+initializeDatabase();
 
 const app = express();
 const port = process.env.PORT || 8080;

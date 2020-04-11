@@ -10,9 +10,9 @@ router.get('/logout', authHandlers.logoutUser);
 router.post(
   '/signup',
   [
-    check('email').isEmail(),
-    check('username').isLength({ min: 8, max: 16 }),
-    check('password').isLength({ min: 8, max: 30 }),
+    check('email').isEmail().not().isEmpty().trim(),
+    check('username').isLength({ min: 8, max: 16 }).not().isEmpty().trim(),
+    check('password').isLength({ min: 8, max: 30 }).not().isEmpty().trim(),
   ],
   authHandlers.addUser
 );
