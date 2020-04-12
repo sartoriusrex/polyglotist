@@ -37,8 +37,6 @@ const AuthenticatedApp = () => {
           <Route exact path='/:username/settings'>
             <SettingsPage />
           </Route>
-          <Redirect from='/login' to='/:username/dashboard' />
-          <Redirect from='/signup' to='/:username/dashboard' />
           <Route component={ NoMatchPage } />
         </Switch>
       </Router>

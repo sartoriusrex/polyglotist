@@ -6,8 +6,9 @@ import { logout, authSelector } from '../../../slices/auth';
 
 const Navbar = () => {
   const { user } = useSelector(authSelector);
-  const dispatch = useDispatch();
   const { username } = user;
+
+  const dispatch = useDispatch();
 
   function onLogoutClick() {
     dispatch(logout());
