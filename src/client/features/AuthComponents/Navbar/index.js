@@ -15,7 +15,7 @@ const Navbar = () => {
   return (
     <nav>
       <ul>
-        <li>{user.name}</li>
+        <li>{user.username}</li>
         <li>
           <button onClick={onLogoutClick}>
             Logout

@@ -116,7 +116,7 @@ export function login(username, password) {
       if (response.status === 200 && data.user !== null) {
         const {
           id,
-          name,
+          username,
           email,
           readingSpeed,
           themePreference,
@@ -125,7 +125,7 @@ export function login(username, password) {
           notificationMethod
         } = data.user;
 
-        user = { id, name, email };
+        user = { id, username, email };
 
         const settings = {
           readingSpeed,

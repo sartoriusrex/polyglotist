@@ -24,7 +24,7 @@ module.exports = {
 
     // Check that username and email are not already in use
     try {
-      const usernameQuery = await db.query('SELECT id FROM users WHERE name = $1', [
+      const usernameQuery = await db.query('SELECT id FROM users WHERE username = $1', [
         username,
       ]);
 
@@ -45,14 +45,14 @@ module.exports = {
     // Create new user and return it
     try {
       const query = await db.query(
-        'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email, reading_speed, theme_preference, practice_mode, notifications, notification_method',
+        'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id, username, email, reading_speed, theme_preference, practice_mode, notifications, notification_method',
         [username, email, hashedPassword]
       );
 
       const { 
         id,
-        name,
-        email: eMail,
+        username: usernameDB,
+        email: emailDB,
         reading_speed,
         theme_preference,
         practice_mode,
@@ -60,18 +60,18 @@ module.exports = {
         notification_method
       } = query.rows[0];
 
-      const token = jwt.sign({ id, name }, process.env.SECRET_KEY);
+      const token = jwt.sign({ id, usernameDB }, process.env.SECRET_KEY);
       const user = { 
         id,
-        name,
-        email: eMail,
+        username: usernameDB,
+        email: emailDB,
         readingSpeed: reading_speed,
         themePreference: theme_preference,
         practiceMode: practice_mode,
         notifications,
         notificationMethod: notification_method
       };
-      const payload = { token, id, name };
+      const payload = { token, id, username };
 
       return res
         .cookie('accessToken', payload, thirtyDayCookie)
@@ -98,17 +98,17 @@ module.exports = {
 
     if (accessToken) {
       try {
-        const { name: nameInToken, token } = accessToken;
+        const { username: usernameToken, token } = accessToken;
 
         const query = await db.query(
-          'SELECT id, name, email, theme_preference, reading_speed, practice_mode, notifications, notification_method FROM users WHERE name = $1',
-          [nameInToken]
+          'SELECT id, username, email, theme_preference, reading_speed, practice_mode, notifications, notification_method FROM users WHERE username = $1',
+          [usernameToken]
         );
 
         const {
           id,
-          name,
-          email,
+          username: usernameDB,
+          email: emailDB,
           reading_speed,
           theme_preference,
           practice_mode,
@@ -118,8 +118,8 @@ module.exports = {
 
         const user = {
           id,
-          name,
-          email,
+          username: usernameDB,
+          email: emailDB,
           readingSpeed: reading_speed,
           themePreference: theme_preference,
           practiceMode: practice_mode,
@@ -145,6 +145,7 @@ module.exports = {
         return res.status(400).send({ message: 'Could not find the user.' });
       }
     } else {
+
       const { username, password: candidatePassword } = req.body;
 
     // Scenaria B - no cookie, or it has expired and login is called on Mount with no input
@@ -156,14 +157,14 @@ module.exports = {
     // Scenario C - user calls login with inputs.
       try {
         const query = await db.query(
-          'SELECT id, name, email, password, theme_preference, reading_speed, practice_mode, notifications, notification_method FROM users WHERE name = $1',
+          'SELECT id, username, email, password, theme_preference, reading_speed, practice_mode, notifications, notification_method FROM users WHERE username = $1',
           [username]
         );
 
         const {
           id,
-          name,
-          email,
+          username: usernameDB,
+          email: emailDB,
           password,
           reading_speed,
           theme_preference,
@@ -174,8 +175,8 @@ module.exports = {
 
         const user = {
           id,
-          name,
-          email,
+          username: usernameDB,
+          email: emailDB,
           readingSpeed: reading_speed,
           themePreference: theme_preference,
           practiceMode: practice_mode,
@@ -189,9 +190,9 @@ module.exports = {
         );
 
         if (verifiedPassword) {
-          const token = jwt.sign({ id, name }, process.env.SECRET_KEY);
+          const token = jwt.sign({ id, username }, process.env.SECRET_KEY);
 
-          const payload = { token, id, name };
+          const payload = { token, id, username };
 
           return res
             .cookie('accessToken', payload, thirtyDayCookie)

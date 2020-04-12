@@ -11,7 +11,7 @@ const clean_database = `
 const create_users = `
   CREATE TABLE users (
     ID SERIAL PRIMARY KEY,
-    name TEXT NOT NULL UNIQUE,
+    username TEXT NOT NULL UNIQUE,
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     theme_preference TEXT DEFAULT 'light',
@@ -23,14 +23,14 @@ const create_users = `
 `;
 
 const populate_users = `
-  INSERT INTO users (name, email, password) VALUES
+  INSERT INTO users (username, email, password) VALUES
   ('username1', 'test1@test.com', $1),
   ('username2', 'test2@test.com', $2),
   ('username3', 'test3@test.com', $3);
 `;
 
 const create_user_five = `
-  INSERT INTO users (name, email, password, theme_preference, reading_speed, practice_mode, notifications, notification_method) VALUES ('username5', 'test5@test.com', $1, 'dark', 'fast', FALSE, FALSE, 'push');
+  INSERT INTO users (username, email, password, theme_preference, reading_speed, practice_mode, notifications, notification_method) VALUES ('username5', 'test5@test.com', $1, 'dark', 'fast', FALSE, FALSE, 'push');
 `
 
 async function init() {
