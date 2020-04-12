@@ -22,23 +22,23 @@ const AuthenticatedApp = () => {
         <Navbar />
 
         <Switch>
-          <Redirect from='/login' to='/dashboard' />
-          <Redirect from='/signup' to='/dashboard' />
-          <Route exact path='/dashboard'>
+          <Route exact path='/:username/dashboard'>
             <Dashboard />
           </Route>
-          <Route exact path='/articles'>
+          <Route exact path='/:username/articles'>
             <ArticlesPage />
           </Route>
-          <Route exact path='/words'>
+          <Route exact path='/:username/words'>
             <WordsPage />
           </Route>
-          <Route exact path='/practice'>
+          <Route exact path='/:username/practice'>
             <PracticePage />
           </Route>
-          <Route exact path='/settings'>
+          <Route exact path='/:username/settings'>
             <SettingsPage />
           </Route>
+          <Redirect from='/login' to='/:username/dashboard' />
+          <Redirect from='/signup' to='/:username/dashboard' />
           <Route component={ NoMatchPage } />
         </Switch>
       </Router>

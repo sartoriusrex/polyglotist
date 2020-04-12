@@ -46,11 +46,6 @@ const UnauthenticatedApp = () => {
         <NavBar />
 
         <Switch>
-          <Redirect from='/dashboard' to='/login' />
-          <Redirect from='/articles' to='/login' />
-          <Redirect from='/words' to='/login' />
-          <Redirect from='/practice' to='/login' />
-          <Redirect from='/settings' to='/login' />
           <Route exact path='/'>
             <LandingPage />
           </Route>
@@ -66,6 +61,11 @@ const UnauthenticatedApp = () => {
           <Route exact path='/signup'>
             <AuthPage newUser />
           </Route>
+          <Redirect from='/:username/dashboard' to='/login' />
+          <Redirect from='/:username/articles' to='/login' />
+          <Redirect from='/:username/words' to='/login' />
+          <Redirect from='/:username/practice' to='/login' />
+          <Redirect from='/:username/settings' to='/login' />
           <Route component={ NoMatchPage } />
         </Switch>
       </Router>

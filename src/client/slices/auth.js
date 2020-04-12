@@ -111,8 +111,8 @@ export function login(username, password) {
         body: JSON.stringify(body)
       });
       const data = await response.json();
-      let user;
 
+      // API will return user of null when App mounts and there is no cookie with credentials or if the cookie has expired
       if (response.status === 200 && data.user !== null) {
         const {
           id,
@@ -125,7 +125,11 @@ export function login(username, password) {
           notificationMethod
         } = data.user;
 
-        user = { id, username, email };
+        const user = {
+          id,
+          username,
+          email 
+        };
 
         const settings = {
           readingSpeed,
@@ -136,10 +140,12 @@ export function login(username, password) {
         }
 
         dispatch(loadSettings(settings));
+        dispatch(loginUserSuccess(user));
+        history.push(`/${user.username}/dashboard`);
+        dispatch(sendMessage(data.message));
+      } else {
+        dispatch(loginUserSuccess(null));
       }
-
-      dispatch(loginUserSuccess(user));
-      dispatch(sendMessage(data.message));
 
     } catch (err) {
       console.log(err);
@@ -166,7 +172,34 @@ export function signup(email, username, password) {
 
       const data = await response.json();
 
-      dispatch(createUserSuccess(data.user));
+      const {
+        id,
+        username,
+        email,
+        readingSpeed,
+        themePreference,
+        practiceMode,
+        notifications,
+        notificationMethod
+      } = data.user;
+
+      const user = {
+        id,
+        username,
+        email 
+      };
+
+      const settings = {
+        readingSpeed,
+        themePreference,
+        practiceMode,
+        notificationMethod,
+        notifications
+      }
+
+      dispatch(createUserSuccess(user));
+      dispatch(loadSettings(settings));
+      history.push(`/${user.username}/dashboard`);
       dispatch(sendMessage(data.message));
     } catch (err) {
       console.log(err);

@@ -7,6 +7,7 @@ import { logout, authSelector } from '../../../slices/auth';
 const Navbar = () => {
   const { user } = useSelector(authSelector);
   const dispatch = useDispatch();
+  const { username } = user;
 
   function onLogoutClick() {
     dispatch(logout());
@@ -15,34 +16,34 @@ const Navbar = () => {
   return (
     <nav>
       <ul>
-        <li>{user.username}</li>
+        <li>{username}</li>
         <li>
           <button onClick={onLogoutClick}>
             Logout
           </button>
         </li>
         <li>
-          <Link to='/dashboard'>
+          <Link to={`/${username}/dashboard`}>
             Dashboard
           </Link>
         </li>
         <li>
-          <Link to='/words'>
+          <Link to={`/${username}/words`}>
             Word Bank
           </Link>
         </li>
         <li>
-          <Link to='/articles'>
+          <Link to={`/${username}/articles`}>
             Articles
           </Link>
         </li>
         <li>
-          <Link to='/practice'>
+          <Link to={`/${username}/practice`}>
             Practice
           </Link>
         </li>
         <li>
-          <Link to='/settings'>
+          <Link to={`/${username}/settings`}>
             Settings & Preferences
           </Link>
         </li>
