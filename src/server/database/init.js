@@ -29,15 +29,21 @@ const populate_users = `
   ('username3', 'test3@test.com', $3);
 `;
 
+const create_user_five = `
+  INSERT INTO users (name, email, password, theme_preference, reading_speed, practice_mode, notifications, notification_method) VALUES ('username5', 'test5@test.com', $1, 'dark', 'fast', FALSE, FALSE, 'push');
+`
+
 async function init() {
   const pw1 = await bcrypt.hash('password1', salt);
   const pw2 = await bcrypt.hash('password2', salt);
   const pw3 = await bcrypt.hash('password3', salt);
+  const pw5 = await bcrypt.hash('password5', salt);
   
   try {
     await db.query(clean_database);
     await db.query(create_users);
     await db.query(populate_users, [pw1,pw2,pw3]);
+    await db.query(create_user_five, [pw5]);
     console.log('\n=======\nSuccessfully initialized db.\n=======\n');
   } catch (err) {
     console.log(err)

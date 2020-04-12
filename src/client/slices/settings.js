@@ -44,13 +44,26 @@ const settingsSlice = createSlice({
 
 export const settingsSelector = (state) => state.settings;
 
-const { actions, reducer } = settingsSelector;
+const { actions, reducer } = settingsSlice;
 
 export const {
   setSettings,
   setSettingsSuccess,
   setSettingsFailure
 } = actions;
+
+export function loadSettings(settings) {
+  return async (dispatch) => {
+    dispatch(setSettings());
+
+    try {
+      dispatch(setSettingsSuccess(settings))
+    } catch (err) {
+      console.log(err);
+      dispatch(setSettingsFailure());
+    }
+  }
+}
 
 export function updateSettings(settings) {
   

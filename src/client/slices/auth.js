@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { sendMessage, removeMessage } from './messages';
+import { loadSettings } from './settings';
 import history from '../app/history';
 
 export const initialState = {
@@ -112,8 +113,32 @@ export function login(username, password) {
       const data = await response.json();
 
       if (response.status === 200) {
-        dispatch(loginUserSuccess(data.user));
-        dispatch(sendMessage(data.message));
+        if (data.user !== null) {
+          const {
+            id,
+            name,
+            email,
+            readingSpeed,
+            themePreference,
+            practiceMode,
+            notifications,
+            notificationMethod
+          } = data.user;
+
+          const user = { id, name, email };
+
+          const settings = {
+            readingSpeed,
+            themePreference,
+            practiceMode,
+            notificationMethod,
+            notifications
+          }
+
+          dispatch(loginUserSuccess(user));
+          dispatch(loadSettings(settings));
+          dispatch(sendMessage(data.message));
+        }
       } else {
         dispatch(loginUserFailure());
         dispatch(sendMessage(data.message));
@@ -142,6 +167,7 @@ export function signup(email, username, password) {
       });
 
       const data = await response.json();
+      console.log(data);
 
       dispatch(createUserSuccess(data.user));
       dispatch(sendMessage(data.message));

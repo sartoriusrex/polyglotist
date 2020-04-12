@@ -21,7 +21,7 @@ const origin = {
 };
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000,
-  max: 5,
+  max: 50,
 });
 
 app.use(bodyParser.json());
