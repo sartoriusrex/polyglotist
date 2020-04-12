@@ -111,38 +111,36 @@ export function login(username, password) {
         body: JSON.stringify(body)
       });
       const data = await response.json();
+      let user;
 
-      if (response.status === 200) {
-        if (data.user !== null) {
-          const {
-            id,
-            name,
-            email,
-            readingSpeed,
-            themePreference,
-            practiceMode,
-            notifications,
-            notificationMethod
-          } = data.user;
+      if (response.status === 200 && data.user !== null) {
+        const {
+          id,
+          name,
+          email,
+          readingSpeed,
+          themePreference,
+          practiceMode,
+          notifications,
+          notificationMethod
+        } = data.user;
 
-          const user = { id, name, email };
+        user = { id, name, email };
 
-          const settings = {
-            readingSpeed,
-            themePreference,
-            practiceMode,
-            notificationMethod,
-            notifications
-          }
-
-          dispatch(loginUserSuccess(user));
-          dispatch(loadSettings(settings));
-          dispatch(sendMessage(data.message));
+        const settings = {
+          readingSpeed,
+          themePreference,
+          practiceMode,
+          notificationMethod,
+          notifications
         }
-      } else {
-        dispatch(loginUserFailure());
-        dispatch(sendMessage(data.message));
+
+        dispatch(loadSettings(settings));
       }
+
+      dispatch(loginUserSuccess(user));
+      dispatch(sendMessage(data.message));
+
     } catch (err) {
       console.log(err);
       dispatch(loginUserFailure());
@@ -167,7 +165,6 @@ export function signup(email, username, password) {
       });
 
       const data = await response.json();
-      console.log(data);
 
       dispatch(createUserSuccess(data.user));
       dispatch(sendMessage(data.message));

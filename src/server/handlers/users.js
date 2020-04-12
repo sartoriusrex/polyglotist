@@ -14,7 +14,7 @@ module.exports = {
         return {
           id: user.id,
           email: user.email,
-          name: user.name,
+          username: user.name,
         };
       });
 
@@ -25,11 +25,11 @@ module.exports = {
   },
 
   getOneUser: async (req, res) => {
-    const id = parseInt(req.params.id, 10);
+    const name = parseInt(req.params.name, 10);
 
     try {
-      const response = await db.query('SELECT * FROM users WHERE id = $1', [
-        id,
+      const response = await db.query('SELECT * FROM users WHERE name = $1', [
+        name,
       ]);
 
       return res.status(200).send({ user: response.rows });
@@ -39,13 +39,13 @@ module.exports = {
   },
 
   updateUser: async (req, res) => {
-    const id = parseInt(req.params.id, 10);
-    const { name, email } = req.body;
+    const name = parseInt(req.params.name, 10);
+    const { username, email } = req.body;
 
     try {
       const mutation = await db.query(
         'UPDATE users SET name = $1, email = $2 WHERE id = $3',
-        [name, email, id]
+        [username, email, id]
       );
 
       return res.status(200).send({ user: mutation.rows });
@@ -55,10 +55,10 @@ module.exports = {
   },
 
   deleteUser: async (req, res) => {
-    const id = parseInt(req.params.id, 10);
+    const name = parseInt(req.params.name, 10);
 
     try {
-      const mutation = await db.query('DELETE FROM users WHERE id = $1', [id]);
+      const mutation = await db.query('DELETE FROM users WHERE id = $1', [name]);
 
       return res
         .status(200)

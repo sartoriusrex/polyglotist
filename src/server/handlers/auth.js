@@ -204,6 +204,7 @@ module.exports = {
           return res.status(403).send({ message: 'Incorrect Password' });
         }
       } catch (err) {
+        console.log(err);
         return res.status(400).send({ message: 'User not found.' });
       }
     }

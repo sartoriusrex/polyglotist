@@ -65,13 +65,16 @@ export function loadSettings(settings) {
   }
 }
 
-export function updateSettings(settings) {
+export function updateSettings(name, settings) {
   
 
   return async (dispatch) => {
     dispatch(setSettings());
 
     try {
+      const response = await fetch(`/api/users/:${name}`, {
+
+      })
       dispatch(setSettingsSuccess());
     } catch (err) {
       console.log(err);
