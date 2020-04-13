@@ -48,6 +48,11 @@ const Navbar = () => {
             Settings & Preferences
           </Link>
         </li>
+        {/* <li>
+          <Link to={`/${username}/create_settings`}>
+            Create Settings & Preferences
+          </Link>
+        </li> */}
       </ul>
     </nav>
   );

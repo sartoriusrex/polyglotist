@@ -2,8 +2,7 @@ import React from 'react';
 import {
   Router,
   Switch,
-  Route,
-  Redirect
+  Route
 } from 'react-router-dom';
 import history from '../../app/history';
 
@@ -13,6 +12,7 @@ import ArticlesPage from '../AuthPages/ArticlesPage';
 import WordsPage from '../AuthPages/WordsPage';
 import SettingsPage from '../AuthPages/SettingsPage';
 import PracticePage from '../AuthPages/PracticePage';
+import CreateSettingsPage from '../AuthPages/CreateSettingsPage';
 import NoMatchPage from '../../common/components/NoMatchPage';
 
 const AuthenticatedApp = () => {
@@ -36,6 +36,9 @@ const AuthenticatedApp = () => {
           </Route>
           <Route exact path='/:username/settings'>
             <SettingsPage />
+          </Route>
+          <Route exact path='/:username/create_settings'>
+            <CreateSettingsPage />
           </Route>
           <Route component={ NoMatchPage } />
         </Switch>

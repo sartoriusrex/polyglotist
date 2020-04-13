@@ -10,11 +10,11 @@ import history from '../../app/history';
 
 import { fetchUsers, usersSelector } from '../../slices/users';
 
-import NavBar from './NavBar';
-import LandingPage from './LandingPage';
-import AboutPage from './AboutPage';
-import FeaturesPage from './FeaturesPage';
-import AuthPage from './AuthPage';
+import NavBar from '../UnauthComponents/Navbar';
+import LandingPage from '../UnauthPages/LandingPage';
+import AboutPage from '../UnauthPages/AboutPage';
+import FeaturesPage from '../UnauthPages/FeaturesPage';
+import AuthPage from '../UnauthPages/AuthPage';
 import NoMatchPage from '../../common/components/NoMatchPage';
 
 const UnauthenticatedApp = () => {
@@ -66,6 +66,7 @@ const UnauthenticatedApp = () => {
           <Redirect from='/:username/words' to='/login' />
           <Redirect from='/:username/practice' to='/login' />
           <Redirect from='/:username/settings' to='/login' />
+          <Redirect from='/:username/create_settings' to='/login' />
           <Route component={ NoMatchPage } />
         </Switch>
       </Router>

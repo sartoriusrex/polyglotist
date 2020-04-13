@@ -6,12 +6,14 @@ import {
   login,
   signup,
   authSelector
-} from '../../slices/auth';
-import {
-  removeMessage,
-  messageSelector
-} from '../../slices/messages';
-import { validateForm } from '../../common/helpers/formValidations';
+} from '../../../slices/auth';
+import { removeMessage, messageSelector } from '../../../slices/messages';
+import { 
+  validateEmail,
+  validatePassword,
+  validateUsername,
+  verifyPassword
+} from '../../../common/helpers/formValidations';
 
 import './AuthPage.scss';
 
@@ -22,7 +24,7 @@ const AuthPage = ({ newUser }) => {
   const [passwordVerified, setPasswordVerified] = useState('');
   const [email, setEmail] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState([]);
 
   const dispatch = useDispatch();
   const { loading, hasErrors } = useSelector(authSelector);
@@ -32,25 +34,25 @@ const AuthPage = ({ newUser }) => {
     func(e.target.value);
   }
 
+  function validateInput(e, func, ...args) {
+    const { value } = e.target;
+    const error = func(value, errors, ...args);
+    const newErrors = Array.from(new Set(error));
+
+    setErrors(newErrors);
+  }
+
   function togglePasswordVisible() {
     setPasswordVisible(!passwordVisible);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    setErrors({});
     // Not sure if I need this because also calling remove message inside of login action in slice. might leave it here or move all this logic to actions and reducers
     dispatch(removeMessage());
 
     if (newUser) {
-      const formErrors = validateForm(
-        email,
-        username,
-        password,
-        passwordVerified
-      );
-
-      if (Object.keys(formErrors).length > 0) return setErrors(formErrors);
+      if (Object.keys(errors).length > 0) return;
       return dispatch(signup(email, username, password));
     }
     return dispatch(login(username, password));
@@ -68,16 +70,13 @@ const AuthPage = ({ newUser }) => {
 
       <h1>{newUser ? <div>Sign up</div> : <div>Log in</div>}</h1>
 
-      {errors && (
-        Object.entries(errors).map((err) => (
-          <p
-            key={err[1]}
-            className='form-error'
-            id={err[0]}
-          >
-            {err[1]}
+      {errors && errors.map( err => {
+        return (
+          <p key={err}>
+            {err}
           </p>
-        ))
+        )
+      }
       )}
 
       <form
@@ -97,6 +96,7 @@ const AuthPage = ({ newUser }) => {
               type='email'
               placeholder='multi-lingual@polyglot.com'
               onChange={(e) => handleChange(e, setEmail)}
+              onBlur={(e) => validateInput(e, validateEmail)}
               value={email}
               className={errors.emailError ? 'form-error' : ''}
               aria-describedby='emailError'
@@ -115,6 +115,7 @@ const AuthPage = ({ newUser }) => {
             type='text'
             placeholder='VerifiedPolyglot'
             onChange={(e) => handleChange(e, setUsername)}
+            onBlur={(e) => validateInput(e, validateUsername)}
             value={username}
             className={errors.usernameErrors ? 'form-error' : ''}
             aria-describedby='desc-un usernameErrors'
@@ -132,6 +133,12 @@ const AuthPage = ({ newUser }) => {
             placeholder='secret_password'
             type={passwordVisible ? 'text' : 'password'}
             onChange={(e) => handleChange(e, setPassword)}
+            onBlur={
+              (e) => validateInput(
+                e,
+                validatePassword,
+                username
+              )}
             value={password}
             className={errors.passwordErrors ? 'form-error' : ''}
             aria-describedby='desc-pw passwordErrors'
@@ -150,6 +157,12 @@ const AuthPage = ({ newUser }) => {
               type='password'
               placeholder='secret_password_again'
               onChange={(e) => handleChange(e, setPasswordVerified)}
+              onBlur={
+                (e) => validateInput(
+                  e,
+                  verifyPassword,
+                  password
+                )}
               value={passwordVerified}
             />
           </label>

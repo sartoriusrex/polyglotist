@@ -122,7 +122,9 @@ export function login(username, password) {
           themePreference,
           practiceMode,
           notifications,
-          notificationMethod
+          notificationMethod,
+          languagePreference,
+          languagesLearning
         } = data.user;
 
         const user = {
@@ -137,7 +139,9 @@ export function login(username, password) {
           themePreference,
           practiceMode,
           notificationMethod,
-          notifications
+          notifications,
+          languagePreference,
+          languagesLearning
         }
         dispatch(loadSettings(settings));
 
@@ -180,7 +184,9 @@ export function signup(email, username, password) {
         themePreference,
         practiceMode,
         notifications,
-        notificationMethod
+        notificationMethod,
+        languagePreference,
+        languagesLearning
       } = data.user;
 
       const user = {
@@ -195,7 +201,9 @@ export function signup(email, username, password) {
         themePreference,
         practiceMode,
         notificationMethod,
-        notifications
+        notifications,
+        languagePreference,
+        languagesLearning
       }
       dispatch(loadSettings(settings));
 

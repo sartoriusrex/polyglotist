@@ -45,7 +45,7 @@ module.exports = {
     // Create new user and return it
     try {
       const query = await db.query(
-        'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id, username, email, reading_speed, theme_preference, practice_mode, notifications, notification_method',
+        'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id, username, email, reading_speed, theme_preference, practice_mode, notifications, notification_method, language_preference, languages_learning',
         [username, email, hashedPassword]
       );
 
@@ -57,7 +57,9 @@ module.exports = {
         theme_preference,
         practice_mode,
         notifications,
-        notification_method
+        notification_method,
+        language_preference, 
+        languages_learning
       } = query.rows[0];
 
       const token = jwt.sign({ id, usernameDB }, process.env.SECRET_KEY);
@@ -69,7 +71,9 @@ module.exports = {
         themePreference: theme_preference,
         practiceMode: practice_mode,
         notifications,
-        notificationMethod: notification_method
+        notificationMethod: notification_method,
+        languagePreference: language_preference,
+        languagesLearning: languages_learning
       };
       const payload = { token, id, username };
 
@@ -101,7 +105,7 @@ module.exports = {
         const { username: usernameToken, token } = accessToken;
 
         const query = await db.query(
-          'SELECT id, username, email, theme_preference, reading_speed, practice_mode, notifications, notification_method FROM users WHERE username = $1',
+          'SELECT id, username, email, theme_preference, reading_speed, practice_mode, notifications, notification_method, language_preference, languages_learning FROM users WHERE username = $1',
           [usernameToken]
         );
 
@@ -113,7 +117,9 @@ module.exports = {
           theme_preference,
           practice_mode,
           notifications,
-          notification_method
+          notification_method,
+          language_preference,
+          languages_learning
         } = query.rows[0];
 
         const user = {
@@ -124,7 +130,9 @@ module.exports = {
           themePreference: theme_preference,
           practiceMode: practice_mode,
           notifications,
-          notificationMethod: notification_method
+          notificationMethod: notification_method,
+          languagePreference: language_preference,
+          languagesLearning: languages_learning
         };
 
         const verified = jwt.verify(token, process.env.SECRET_KEY, function ( err, decoded
@@ -157,7 +165,7 @@ module.exports = {
     // Scenario C - user calls login with inputs.
       try {
         const query = await db.query(
-          'SELECT id, username, email, password, theme_preference, reading_speed, practice_mode, notifications, notification_method FROM users WHERE username = $1',
+          'SELECT id, username, email, password, theme_preference, reading_speed, practice_mode, notifications, notification_method, language_preference, languages_learning FROM users WHERE username = $1',
           [username]
         );
 
@@ -170,7 +178,9 @@ module.exports = {
           theme_preference,
           practice_mode,
           notifications,
-          notification_method
+          notification_method,
+          language_preference,
+          languages_learning
         } = query.rows[0];
 
         const user = {
@@ -181,7 +191,9 @@ module.exports = {
           themePreference: theme_preference,
           practiceMode: practice_mode,
           notifications,
-          notificationMethod: notification_method
+          notificationMethod: notification_method,
+          languagePreference: language_preference,
+          languagesLearning: languages_learning
         };
 
         const verifiedPassword = await bcrypt.compare(

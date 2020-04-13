@@ -7,7 +7,9 @@ export const initialState = {
   readingSpeed: 'normal',
   practiceMode: true,
   notifications: true,
-  notificationMethod: 'none'
+  notificationMethod: 'none',
+  languagePreference: 'english',
+  languagesLearning: null
 };
 
 const settingsSlice = createSlice({
@@ -28,6 +30,8 @@ const settingsSlice = createSlice({
       newState.practiceMode = payload.practiceMode;
       newState.notifications = payload.notifications;
       newState.notificationMethod = payload.notificationMethod;
+      newState.languagePreference = payload.languagePreference;
+      newState.languagesLearning = payload.languagesLearning;
       newState.loading = false;
       newState.hasErrors = false;
       return newState;
