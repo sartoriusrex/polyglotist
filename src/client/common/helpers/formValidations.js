@@ -1,25 +1,29 @@
 export function validateEmail(emailString = '', errors) {
   // I trust Tyler Mcginnis's interpretation of email validation here:
   // https://tylermcginnis.com/validate-email-address-javascript/
-
   const test = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailString);
+  const emailErrors = errors.emailError;
 
   if (!test) {
-    errors.push('Invalid Email.');
+    emailErrors.push('Invalid Email.');
+    errors.emailError = Array.from(new Set(emailErrors));
   } else {
-    errors = errors.filter( err => err !== 'Invalid Email.')
+    errors.emailError = [];
   }
+
 
   return errors;
 }
 
 export function validateUsername(usernameString = '', errors) {
   const stringLength = usernameString.length;
+  const usernameErrors = errors.usernameError;
 
   if (stringLength < 8 || stringLength > 16) {
-    errors.push('Username must be at least 8 -- but no longer than 16 -- characters long.');
+    usernameErrors.push('Username must be at least 8 -- but no longer than 16 -- characters long.');
+    errors.usernameError = Array.from(new Set(usernameErrors));
   } else {
-    errors = errors.filter( err => err !== 'Username must be at least 8 -- but no longer than 16 -- characters long.' );
+    errors.usernameError = []
   }
 
   return errors;
@@ -27,35 +31,41 @@ export function validateUsername(usernameString = '', errors) {
 
 export function validatePassword(passwordString = '', errors, userNameString = '') {
   const stringLength = passwordString.length;
+  let passwordErrors = errors.passwordError;
 
   if (stringLength < 8 || stringLength > 30) {
-    errors.push('Password must be between 8 and 30 characters long.');
+    passwordErrors.push('Password must be between 8 and 30 characters long.');
   } else {
-    errors = errors.filter( err => err !== 'Password must be between 8 and 30 characters long.');
+    passwordErrors = passwordErrors.filter( err => err !== 'Password must be between 8 and 30 characters long.');
   }
 
   if (passwordString === userNameString) {
-    errors.push('Password and Username MUST be different.');
+    passwordErrors.push('Password and Username MUST be different.');
   } else {
-    errors = errors.filter( err => err !== 'Password and Username MUST be different.');
+    passwordErrors = passwordErrors.filter( err => err !== 'Password and Username MUST be different.');
   }
 
   const numbers = /[0-9]/;
 
   if (!numbers.test(passwordString)) {
-    errors.push('Password must have at least one number in it.');
+    passwordErrors.push('Password must have at least one number in it.');
   } else {
-    errors = errors.filter( err => err !== 'Password must have at least one number in it.');
+    passwordErrors = passwordErrors.filter( err => err !== 'Password must have at least one number in it.');
   }
+
+  errors.passwordError = Array.from(new Set(passwordErrors));
 
   return errors;
 }
 
 export function verifyPassword(passwordString = '', errors, secondPasswordString = '') {
+  const verifyPasswordErrors = errors.verifyPassword;
+
   if (passwordString !== secondPasswordString) {
-    errors.push('Your passwords are not the same.');
+    verifyPasswordErrors.push('Your passwords are not the same.');
+    errors.verifyPassword = Array.from(new Set(verifyPasswordErrors));
   } else {
-    errors = errors.filter( err => err !== 'Your passwords are not the same.');
+    errors.verifyPassword = [];
   }
 
   return errors;

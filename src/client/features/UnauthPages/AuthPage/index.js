@@ -24,7 +24,12 @@ const AuthPage = ({ newUser }) => {
   const [passwordVerified, setPasswordVerified] = useState('');
   const [email, setEmail] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({
+    emailError: [],
+    usernameError: [],
+    passwordError: [],
+    verifyPassword: []
+  });
 
   const dispatch = useDispatch();
   const { loading, hasErrors } = useSelector(authSelector);
@@ -35,11 +40,12 @@ const AuthPage = ({ newUser }) => {
   }
 
   function validateInput(e, func, ...args) {
-    const { value } = e.target;
-    const error = func(value, errors, ...args);
-    const newErrors = Array.from(new Set(error));
+    if (newUser) {
+      const { value } = e.target;
+      const error = func(value, errors, ...args);
 
-    setErrors(newErrors);
+      setErrors({ ...errors, ...error });
+    }
   }
 
   function togglePasswordVisible() {
@@ -52,7 +58,8 @@ const AuthPage = ({ newUser }) => {
     dispatch(removeMessage());
 
     if (newUser) {
-      if (Object.keys(errors).length > 0) return;
+      if (Object.values(errors).flat().length > 0) return;
+
       return dispatch(signup(email, username, password));
     }
     return dispatch(login(username, password));
@@ -70,14 +77,19 @@ const AuthPage = ({ newUser }) => {
 
       <h1>{newUser ? <div>Sign up</div> : <div>Log in</div>}</h1>
 
-      {errors && errors.map( err => {
+      {errors && Object.entries(errors).map( errorArray => {
         return (
-          <p key={err}>
-            {err}
-          </p>
+          <div
+            key={errorArray[0]}
+            className='form-error'
+            id={errorArray[0]}
+          >
+            {errorArray[1].map( value => <p key={value}> {value} </p>)}
+          </div>
         )
+      })
+        
       }
-      )}
 
       <form
         action='/api/auth'
@@ -98,7 +110,7 @@ const AuthPage = ({ newUser }) => {
               onChange={(e) => handleChange(e, setEmail)}
               onBlur={(e) => validateInput(e, validateEmail)}
               value={email}
-              className={errors.emailError ? 'form-error' : ''}
+              className={errors.emailError.length > 0 ? 'form-error' : ''}
               aria-describedby='emailError'
             />
           </label>
@@ -117,8 +129,8 @@ const AuthPage = ({ newUser }) => {
             onChange={(e) => handleChange(e, setUsername)}
             onBlur={(e) => validateInput(e, validateUsername)}
             value={username}
-            className={errors.usernameErrors ? 'form-error' : ''}
-            aria-describedby='desc-un usernameErrors'
+            className={errors.usernameError.length > 0 ? 'form-error' : ''}
+            aria-describedby='desc-un usernameError'
           />
           <p id='desc-un'>Must be between 8 and 16 characters long</p>
         </label>
@@ -140,8 +152,8 @@ const AuthPage = ({ newUser }) => {
                 username
               )}
             value={password}
-            className={errors.passwordErrors ? 'form-error' : ''}
-            aria-describedby='desc-pw passwordErrors'
+            className={errors.passwordError.length > 0 ? 'form-error' : ''}
+            aria-describedby='desc-pw passwordError'
           />
           <p id='desc-pw'>Must not be the same as your Username, contain between 8 and 30 characters, and contain at least 1 number</p>
         </label>
@@ -157,6 +169,7 @@ const AuthPage = ({ newUser }) => {
               type='password'
               placeholder='secret_password_again'
               onChange={(e) => handleChange(e, setPasswordVerified)}
+              className={errors.verifyPassword.length > 0 ? 'form-error' : ''}
               onBlur={
                 (e) => validateInput(
                   e,
@@ -164,6 +177,7 @@ const AuthPage = ({ newUser }) => {
                   password
                 )}
               value={passwordVerified}
+              aria-describedby='verifyPasswordError'
             />
           </label>
         )
