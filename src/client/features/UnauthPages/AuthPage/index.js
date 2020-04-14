@@ -7,7 +7,7 @@ import {
   signup,
   authSelector
 } from '../../../slices/auth';
-import { removeMessage, messageSelector } from '../../../slices/messages';
+import { messageSelector } from '../../../slices/messages';
 import { 
   validateEmail,
   validatePassword,
@@ -54,8 +54,6 @@ const AuthPage = ({ newUser }) => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    // Not sure if I need this because also calling remove message inside of login action in slice. might leave it here or move all this logic to actions and reducers
-    dispatch(removeMessage());
 
     if (newUser) {
       if (Object.values(errors).flat().length > 0) return;

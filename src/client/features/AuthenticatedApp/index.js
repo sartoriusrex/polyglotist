@@ -1,10 +1,15 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import {
   Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from 'react-router-dom';
 import history from '../../app/history';
+
+import { settingsSelector } from '../../slices/settings';
+import { authSelector } from '../../slices/auth';
 
 import Navbar from '../AuthComponents/Navbar';
 import Dashboard from '../AuthPages/Dashboard';
@@ -16,6 +21,10 @@ import CreateSettingsPage from '../AuthPages/CreateSettingsPage';
 import NoMatchPage from '../../common/components/NoMatchPage';
 
 const AuthenticatedApp = () => {
+  const settings = useSelector(settingsSelector);
+  const { user } = useSelector(authSelector);
+  const { username } = user;
+
   return(
     <main>
       <Router history={history}>
@@ -23,7 +32,11 @@ const AuthenticatedApp = () => {
 
         <Switch>
           <Route exact path='/:username/dashboard'>
-            <Dashboard />
+            { 
+              settings.languagesLearning ?
+              <Dashboard /> :
+              <Redirect to={`/${username}/create_settings`} />
+            }
           </Route>
           <Route exact path='/:username/articles'>
             <ArticlesPage />
