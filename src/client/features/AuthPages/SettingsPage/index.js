@@ -11,8 +11,8 @@ const SettingsPage = () => {
   return(
     <section>
       <h1>Settings Page</h1>
-      <Link to={`/${username}/create_settings`}>
-        Create Settings
+      <Link to={`/${username}/update_settings`}>
+        Update Settings
       </Link >
     </section>
   )

@@ -17,7 +17,7 @@ import ArticlesPage from '../AuthPages/ArticlesPage';
 import WordsPage from '../AuthPages/WordsPage';
 import SettingsPage from '../AuthPages/SettingsPage';
 import PracticePage from '../AuthPages/PracticePage';
-import CreateSettingsPage from '../AuthPages/CreateSettingsPage';
+import UpdateSettingsPage from '../AuthPages/UpdateSettingsPage';
 import NoMatchPage from '../../common/components/NoMatchPage';
 
 const AuthenticatedApp = () => {
@@ -35,7 +35,7 @@ const AuthenticatedApp = () => {
             { 
               settings.languagesLearning ?
               <Dashboard /> :
-              <Redirect to={`/${username}/create_settings`} />
+              <Redirect to={`/${username}/update_settings`} />
             }
           </Route>
           <Route exact path='/:username/articles'>
@@ -50,8 +50,8 @@ const AuthenticatedApp = () => {
           <Route exact path='/:username/settings'>
             <SettingsPage />
           </Route>
-          <Route exact path='/:username/create_settings'>
-            <CreateSettingsPage />
+          <Route exact path='/:username/update_settings'>
+            <UpdateSettingsPage />
           </Route>
           <Route component={ NoMatchPage } />
         </Switch>

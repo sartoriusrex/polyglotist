@@ -18,6 +18,10 @@ import {
 import './AuthPage.scss';
 
 const AuthPage = ({ newUser }) => {
+  const dispatch = useDispatch();
+  const { loading, hasErrors } = useSelector(authSelector);
+  const { message } = useSelector(messageSelector);
+
   const method = newUser ? 'POST' : 'GET';
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -30,10 +34,6 @@ const AuthPage = ({ newUser }) => {
     passwordError: [],
     verifyPassword: []
   });
-
-  const dispatch = useDispatch();
-  const { loading, hasErrors } = useSelector(authSelector);
-  const { message } = useSelector(messageSelector);
 
   function handleChange(e, func) {
     func(e.target.value);
