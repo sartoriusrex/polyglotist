@@ -43,7 +43,7 @@ module.exports = {
 
   updateUser: async (req, res) => {
     const username = req.params.username;
-    const { 
+    const {
       updatedName,
       email,
       password,

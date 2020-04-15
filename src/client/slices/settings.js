@@ -68,13 +68,13 @@ export function loadSettings(settings) {
   }
 }
 
-export function updateSettings(username, settings) {
+export function updateSettings(user, settings) {
   return async (dispatch) => {
     dispatch(setSettings());
     dispatch(removeMessage());
 
     try {
-      const response = await fetch(`/api/users/:${username}`, {
+      const response = await fetch(`/api/users/${user}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
