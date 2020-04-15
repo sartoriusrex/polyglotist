@@ -5,6 +5,8 @@ import { settingsSelector, updateSettings } from '../../../slices/settings';
 import { addMessage, removeMessage, messageSelector } from '../../../slices/messages';
 import { authSelector } from '../../../slices/auth';
 
+import './createAccountPage.scss';
+
 const CreateAccountPage = () => {
   const dispatch = useDispatch();
   const settings = useSelector(settingsSelector);
@@ -39,8 +41,21 @@ const CreateAccountPage = () => {
     setLearning(learningArray);
   }
 
+  function renderFrenchSources() {
+    console.log('french sources');
+  }
+
+  function renderSpanishSources() {
+    console.log('spanish sources');
+  }
+
+  function renderGermanSources() {
+    console.log('german sources');
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
+    console.log('submitted');
 
     if ( !learning || learning.length <= 0 ) return null;
     const settings = {
@@ -56,11 +71,29 @@ const CreateAccountPage = () => {
   }
 
   const nextButton = () => {
-    return <button onClick={ () => setStep( step + 1 ) }>Next</button>
+    return (
+      <button
+        type='button'
+        onClick={ () => setStep( step + 1 ) }
+        className='next-button'
+        disabled={ !learning || learning.length <= 0 }
+      >
+        Next
+      </button>
+    );
   }
 
-  const backButton = () => 
-    <button onClick={ () => setStep( step - 1 ) }>Previous</button>
+  const backButton = () => {
+    return (
+      <button
+        type='button'
+        onClick={ () => setStep( step - 1 ) }
+        className='back-button'
+      >
+        Previous
+      </button>
+    );
+  }
 
   return (
     <section>
@@ -103,7 +136,6 @@ const CreateAccountPage = () => {
               name='spanish'
               onChange={() => handleLanguageChange('spanish')}
               defaultChecked={ languagesLearning && languagesLearning.includes('spanish') }
-              aria-describedby='desc-targetLangs'
             />
           </label>
           <label htmlFor="german">
@@ -114,7 +146,6 @@ const CreateAccountPage = () => {
               name='german'
               onChange={() => handleLanguageChange('german')}
               defaultChecked={ languagesLearning && languagesLearning.includes('german') }
-              aria-describedby='desc-targetLangs'
             />
           </label>
 
@@ -123,14 +154,14 @@ const CreateAccountPage = () => {
 
         <div className={ step === 1 ? 'current-step' : 'hidden-step' } >
           <label htmlFor="practiceMode">
-            Practice Mode
-            <p id='desc-practice'>Do you want to enable Practice Mode to better retain vocabulary you've learned?</p>
+            <h3>
+              Do you want to enable Practice Mode to better retain vocabulary you've learned?
+            </h3>
             <select
               name="practiceMode"
               id="practiceMode"
               defaultValue={ practice }
               onChange={ e => setPractice(e.target.value) }
-              aria-describedby='desc-practice'
             >
               <option value="true">
                 Enabled
@@ -142,17 +173,17 @@ const CreateAccountPage = () => {
           </label>
 
           <label htmlFor="notifyMethod">
-            Notification Method
-            <p id='desc-method'>How do you want to be notified?</p>
+            <h3>
+              Do you want reminders to practice?
+            </h3>
             <select
               name="notifyMethod"
               id="notifyMethod"
               value={ noticeMethod }
               onChange={ e => setNoticeMethod(e.target.value) }
-              aria-describedby='desc-method'
             >
               <option value="none">
-                None
+                No, Thank You
               </option>
               <option value="push">
                 Push Notifications
@@ -166,14 +197,34 @@ const CreateAccountPage = () => {
             </select>
           </label>
 
+          {nextButton()}
           {backButton()}
         </div>
-        <button
-          type='submit'
-          className={ step === 2 ? 'show-button' : 'hide-button' }
+
+        <div
+          className={ step === 2 ? 'current-step' : 'hidden-step' }
         >
-          Create Account
-        </button>
+          <h3>
+            From which sources would you like to read and improve your vocabulary?
+          </h3>
+          { (step === 2) && learning && learning.includes('french') && renderFrenchSources() }
+          { (step === 2) && learning && learning.includes('spanish') && renderSpanishSources() }
+          { (step === 2) && learning && learning.includes('german') && renderGermanSources() }
+
+          {nextButton()}
+          {backButton()}
+        </div>
+
+        <div 
+          className={ step === 3 ? 'current-step' : 'hidden-step' }
+        >
+          <h3>You're all set! Let's continue</h3>
+          <button
+            type='submit'
+          >
+            Create Account
+          </button>
+        </div>
       </form>
     </section>
   )
