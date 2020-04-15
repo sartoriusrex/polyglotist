@@ -45,7 +45,7 @@ module.exports = {
     // Create new user and return it
     try {
       const query = await db.query(
-        'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id, username, email, reading_speed, theme_preference, practice_mode, notifications, notification_method, language_preference, languages_learning',
+        'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id, username, email, reading_speed, theme_preference, practice_mode, notification_method, language_preference, languages_learning',
         [username, email, hashedPassword]
       );
 
@@ -56,7 +56,6 @@ module.exports = {
         reading_speed,
         theme_preference,
         practice_mode,
-        notifications,
         notification_method,
         language_preference, 
         languages_learning
@@ -70,7 +69,6 @@ module.exports = {
         readingSpeed: reading_speed,
         themePreference: theme_preference,
         practiceMode: practice_mode,
-        notifications,
         notificationMethod: notification_method,
         languagePreference: language_preference,
         languagesLearning: languages_learning
@@ -105,7 +103,7 @@ module.exports = {
         const { username: usernameToken, token } = accessToken;
 
         const query = await db.query(
-          'SELECT id, username, email, theme_preference, reading_speed, practice_mode, notifications, notification_method, language_preference, languages_learning FROM users WHERE username = $1',
+          'SELECT id, username, email, theme_preference, reading_speed, practice_mode, notification_method, language_preference, languages_learning FROM users WHERE username = $1',
           [usernameToken]
         );
 
@@ -116,7 +114,6 @@ module.exports = {
           reading_speed,
           theme_preference,
           practice_mode,
-          notifications,
           notification_method,
           language_preference,
           languages_learning
@@ -129,7 +126,6 @@ module.exports = {
           readingSpeed: reading_speed,
           themePreference: theme_preference,
           practiceMode: practice_mode,
-          notifications,
           notificationMethod: notification_method,
           languagePreference: language_preference,
           languagesLearning: languages_learning
@@ -165,7 +161,7 @@ module.exports = {
     // Scenario C - user calls login with inputs.
       try {
         const query = await db.query(
-          'SELECT id, username, email, password, theme_preference, reading_speed, practice_mode, notifications, notification_method, language_preference, languages_learning FROM users WHERE username = $1',
+          'SELECT id, username, email, password, theme_preference, reading_speed, practice_mode, notification_method, language_preference, languages_learning FROM users WHERE username = $1',
           [username]
         );
 
@@ -177,7 +173,6 @@ module.exports = {
           reading_speed,
           theme_preference,
           practice_mode,
-          notifications,
           notification_method,
           language_preference,
           languages_learning
@@ -190,7 +185,6 @@ module.exports = {
           readingSpeed: reading_speed,
           themePreference: theme_preference,
           practiceMode: practice_mode,
-          notifications,
           notificationMethod: notification_method,
           languagePreference: language_preference,
           languagesLearning: languages_learning

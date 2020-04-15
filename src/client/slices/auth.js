@@ -121,7 +121,6 @@ export function login(username, password) {
           readingSpeed,
           themePreference,
           practiceMode,
-          notifications,
           notificationMethod,
           languagePreference,
           languagesLearning
@@ -139,7 +138,6 @@ export function login(username, password) {
           themePreference,
           practiceMode,
           notificationMethod,
-          notifications,
           languagePreference,
           languagesLearning
         }
@@ -183,7 +181,6 @@ export function signup(email, username, password) {
         readingSpeed,
         themePreference,
         practiceMode,
-        notifications,
         notificationMethod,
         languagePreference,
         languagesLearning
@@ -201,7 +198,6 @@ export function signup(email, username, password) {
         themePreference,
         practiceMode,
         notificationMethod,
-        notifications,
         languagePreference,
         languagesLearning
       }

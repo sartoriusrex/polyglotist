@@ -4,7 +4,6 @@ import {
   Router,
   Switch,
   Route,
-  Redirect
 } from 'react-router-dom';
 import history from '../../app/history';
 
@@ -13,6 +12,7 @@ import { authSelector } from '../../slices/auth';
 
 import Navbar from '../AuthComponents/Navbar';
 import Dashboard from '../AuthPages/Dashboard';
+import CreateAccountPage from '../AuthPages/CreateAccountPage';
 import ArticlesPage from '../AuthPages/ArticlesPage';
 import WordsPage from '../AuthPages/WordsPage';
 import SettingsPage from '../AuthPages/SettingsPage';
@@ -35,7 +35,7 @@ const AuthenticatedApp = () => {
             { 
               settings.languagesLearning ?
               <Dashboard /> :
-              <Redirect to={`/${username}/update_settings`} />
+              <CreateAccountPage />
             }
           </Route>
           <Route exact path='/:username/articles'>

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { sendMessage, removeMessage } from './messages';
 
 export const initialState = {
   loading: false,
@@ -6,7 +7,6 @@ export const initialState = {
   themePreference: 'light',
   readingSpeed: 'normal',
   practiceMode: true,
-  notifications: true,
   notificationMethod: 'none',
   languagePreference: 'english',
   languagesLearning: null
@@ -28,7 +28,6 @@ const settingsSlice = createSlice({
       newState.themePreference = payload.themePreference;
       newState.readingSpeed = payload.readingSpeed;
       newState.practiceMode = payload.practiceMode;
-      newState.notifications = payload.notifications;
       newState.notificationMethod = payload.notificationMethod;
       newState.languagePreference = payload.languagePreference;
       newState.languagesLearning = payload.languagesLearning;
@@ -69,17 +68,47 @@ export function loadSettings(settings) {
   }
 }
 
-export function updateSettings(name, settings) {
-  
-
+export function updateSettings(username, settings) {
   return async (dispatch) => {
     dispatch(setSettings());
+    dispatch(removeMessage());
 
     try {
-      const response = await fetch(`/api/users/:${name}`, {
+      const response = await fetch(`/api/users/:${username}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(settings)
+      });
 
-      })
-      dispatch(setSettingsSuccess());
+      const data = await response.json();
+
+      const {
+        username,
+        email,
+        readingSpeed,
+        themePreference,
+        practiceMode,
+        notificationMethod,
+        languagePreference,
+        languagesLearning
+      } = data.user;
+
+      let newSettings = {
+        readingSpeed,
+        themePreference,
+        practiceMode,
+        notificationMethod,
+        languagePreference,
+        languagesLearning
+      }
+
+      if (username) newSettings.username = username;
+      if (email) newSettings.email = email;
+
+      dispatch(setSettingsSuccess(newSettings));
+      dispatch(sendMessage(data.message));
     } catch (err) {
       console.log(err);
       dispatch(setSettingsFailure());

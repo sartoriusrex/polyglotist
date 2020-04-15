@@ -5,7 +5,7 @@ import { settingsSelector, updateSettings } from '../../../slices/settings';
 import { addMessage, removeMessage, messageSelector } from '../../../slices/messages';
 import { authSelector } from '../../../slices/auth';
 
-const UpdateSettingsPage = () => {
+const CreateAccountPage = () => {
   const dispatch = useDispatch();
   const settings = useSelector(settingsSelector);
   const {
@@ -73,7 +73,7 @@ const UpdateSettingsPage = () => {
         <h2>There was a Problem Loading your User Settings. Please try again.</h2>
       )}
 
-      <h1>Create Settings</h1>
+      <h1>Create Account</h1>
 
       <form
         action={`/api/user/${username}`}
@@ -223,4 +223,4 @@ const UpdateSettingsPage = () => {
   )
 }
 
-export default UpdateSettingsPage;
+export default CreateAccountPage;

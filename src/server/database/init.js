@@ -17,7 +17,6 @@ const create_users = `
     theme_preference TEXT DEFAULT 'light',
     reading_speed TEXT DEFAULT 'normal',
     practice_mode BOOLEAN DEFAULT TRUE,
-    notifications BOOLEAN DEFAULT TRUE,
     notification_method TEXT DEFAULT 'none',
     language_preference TEXT DEFAULT 'english',
     languages_learning TEXT[]
@@ -32,7 +31,7 @@ const populate_users = `
 `;
 
 const create_user_five = `
-  INSERT INTO users (username, email, password, theme_preference, reading_speed, practice_mode, notifications, notification_method, languages_learning) VALUES ('username5', 'test5@test.com', $1, 'dark', 'fast', FALSE, FALSE, 'push', ARRAY['spanish','french']);
+  INSERT INTO users (username, email, password, theme_preference, reading_speed, practice_mode, notification_method, languages_learning) VALUES ('username5', 'test5@test.com', $1, 'dark', 'fast', FALSE, 'push', ARRAY['spanish','french']);
 `
 
 async function init() {
