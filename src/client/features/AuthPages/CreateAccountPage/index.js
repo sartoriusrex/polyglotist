@@ -23,17 +23,14 @@ const CreateAccountPage = () => {
   const { username } = user;
 
   const [ learning, setLearning ] = useState(languagesLearning);
-  const [ speed, setSpeed ] = useState(readingSpeed);
-  const [ theme, setTheme ] = useState(themePreference);
   const [ noticeMethod, setNoticeMethod ] = useState(notificationMethod);
-  const [ langPreference, setLangPreference ] = useState(languagePreference);
   const [ practice, setPractice ] = useState(practiceMode);
   const [ step, setStep ] = useState(0);
 
   function handleLanguageChange(value) {
     let learningArray = learning ? [...learning] : [];
 
-    if (learningArray.indexOf(value) > 0) {
+    if (learningArray.indexOf(value) >= 0) {
       learningArray = learningArray.filter( lang => lang !== value )
     } else {
       learningArray.push(value);
@@ -45,18 +42,25 @@ const CreateAccountPage = () => {
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (!learning) return null;
+    if ( !learning || learning.length <= 0 ) return null;
     const settings = {
-      readingSpeed: speed,
-      themePreference: theme,
+      readingSpeed,
+      themePreference,
       practiceMode: practice,
       notificationMethod: noticeMethod,
-      languagePreference: langPreference,
+      languagePreference,
       languagesLearning: learning
     }
 
     dispatch(updateSettings(username, settings));
   }
+
+  const nextButton = () => {
+    return <button onClick={ () => setStep( step + 1 ) }>Next</button>
+  }
+
+  const backButton = () => 
+    <button onClick={ () => setStep( step - 1 ) }>Previous</button>
 
   return (
     <section>
@@ -75,13 +79,12 @@ const CreateAccountPage = () => {
         method='PATCH'
         onSubmit={handleSubmit}
       >
-        <div>
+        <div 
+          className={ step === 0 ? 'current-step' : 'hidden-step' }
+        >
           <h3>
-            Target Languages
-            <span className='required' aria-hidden='true'>*</span>
-            <span className='sr-only'> * Required</span>
+            Step 1: What Languages Are you Working On?
           </h3>
-          <p id='desc-targetLangs'>Choose at least one language to improve.</p>
           <label htmlFor="french">
             French
             <input
@@ -90,7 +93,6 @@ const CreateAccountPage = () => {
               name='french'
               onChange={() => handleLanguageChange('french')}
               defaultChecked={ languagesLearning && languagesLearning.includes('french') }
-              aria-describedby='desc-targetLangs'
             />
           </label>
           <label htmlFor="spanish">
@@ -116,110 +118,62 @@ const CreateAccountPage = () => {
             />
           </label>
 
-          <button onClick={() => setStep(1)}>Next</button>
+          {nextButton()}
         </div>
-        <div>
-          <label htmlFor="themePreference">
-            Theme
-            <p id='desc-theme'>Select a Theme. Nightowls often prefer the Dark Theme</p>
+
+        <div className={ step === 1 ? 'current-step' : 'hidden-step' } >
+          <label htmlFor="practiceMode">
+            Practice Mode
+            <p id='desc-practice'>Do you want to enable Practice Mode to better retain vocabulary you've learned?</p>
             <select
-              name="themePreference"
-              id="themePreference"
-              defaultValue={ theme }
-              onChange={ e => setTheme(e.target.value) }
-              aria-describedby='desc-theme'
+              name="practiceMode"
+              id="practiceMode"
+              defaultValue={ practice }
+              onChange={ e => setPractice(e.target.value) }
+              aria-describedby='desc-practice'
             >
-              <option value="light">
-                Light
+              <option value="true">
+                Enabled
               </option>
-              <option value="dark" >
-                Dark
+              <option value="false" >
+                Disabled
               </option>
             </select>
           </label>
 
-          <button onClick={() => setStep(-1)}>Next</button>
-          <button onClick={() => setStep(2)}>Next</button>
+          <label htmlFor="notifyMethod">
+            Notification Method
+            <p id='desc-method'>How do you want to be notified?</p>
+            <select
+              name="notifyMethod"
+              id="notifyMethod"
+              value={ noticeMethod }
+              onChange={ e => setNoticeMethod(e.target.value) }
+              aria-describedby='desc-method'
+            >
+              <option value="none">
+                None
+              </option>
+              <option value="push">
+                Push Notifications
+              </option>
+              <option value="text" >
+                Text Alerts
+              </option>
+              <option value="email" >
+                Email Alerts
+              </option>
+            </select>
+          </label>
+
+          {backButton()}
         </div>
-        <label htmlFor="readingSpeed">
-          Reading Speed
-          <p id='desc-speed'>How quickly do you typically read a news article?</p>
-          <select
-            name="readingSpeed"
-            id="readingSpeed"
-            defaultValue={ speed }
-            onChange={ e => setSpeed(e.target.value) }
-            aria-describedby='desc-speed'
-          >
-            <option value="slow">
-              Slow
-            </option>
-            <option value="normal" >
-              Normal
-            </option>
-            <option value="fast" >
-              fast
-            </option>
-          </select>
-        </label>
-        <label htmlFor="practiceMode">
-          Practice Mode
-          <p id='desc-practice'>Do you want to enable Practice Mode to better retain vocabulary you've learned?</p>
-          <select
-            name="practiceMode"
-            id="practiceMode"
-            defaultValue={ practice }
-            onChange={ e => setPractice(e.target.value) }
-            aria-describedby='desc-practice'
-          >
-            <option value="true">
-              Enabled
-            </option>
-            <option value="false" >
-              Disabled
-            </option>
-          </select>
-        </label>
-        <label htmlFor="notifyMethod">
-          Notification Method
-          <p id='desc-method'>How do you want to be notified?</p>
-          <select
-            name="notifyMethod"
-            id="notifyMethod"
-            value={ noticeMethod }
-            onChange={ e => setNoticeMethod(e.target.value) }
-            aria-describedby='desc-method'
-          >
-            <option value="none">
-              None
-            </option>
-            <option value="push">
-              Push Notifications
-            </option>
-            <option value="text" >
-              Text Alerts
-            </option>
-            <option value="email" >
-              Email Alerts
-            </option>
-          </select>
-        </label>
-        <label htmlFor="langPref">
-          Language Preference
-          <p id='desc-langPref'>Set the language of the application</p>
-          <select
-            name="langPref"
-            id="langPref"
-            defaultValue={ langPreference }
-            onChange={ e => setLangPreference(e.target.value) }
-            aria-describedby='desc-langPref'
-          >
-            <option value="english">
-              English
-            </option>
-          </select>
-        </label>
-        <button type='submit'>Update Settings</button>
+        <button
+          type='submit'
+          className={ step === 2 ? 'show-button' : 'hide-button' }
+        >
+          Create Account
+        </button>
       </form>
     </section>
   )
