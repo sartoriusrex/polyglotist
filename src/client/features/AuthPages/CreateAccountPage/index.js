@@ -28,12 +28,7 @@ const CreateAccountPage = () => {
   const [ noticeMethod, setNoticeMethod ] = useState(notificationMethod);
   const [ langPreference, setLangPreference ] = useState(languagePreference);
   const [ practice, setPractice ] = useState(practiceMode);
-
-  function handleChange(e, func) {
-    const { value } = e.target;
-
-    func(value);
-  }
+  const [ step, setStep ] = useState(0);
 
   function handleLanguageChange(value) {
     let learningArray = learning ? [...learning] : [];
@@ -81,11 +76,11 @@ const CreateAccountPage = () => {
         onSubmit={handleSubmit}
       >
         <div>
-          <h4>
+          <h3>
             Target Languages
             <span className='required' aria-hidden='true'>*</span>
             <span className='sr-only'> * Required</span>
-          </h4>
+          </h3>
           <p id='desc-targetLangs'>Choose at least one language to improve.</p>
           <label htmlFor="french">
             French
@@ -93,7 +88,7 @@ const CreateAccountPage = () => {
               type="checkbox"
               id='french'
               name='french'
-              onChange={(e) => handleLanguageChange('french')}
+              onChange={() => handleLanguageChange('french')}
               defaultChecked={ languagesLearning && languagesLearning.includes('french') }
               aria-describedby='desc-targetLangs'
             />
@@ -104,7 +99,7 @@ const CreateAccountPage = () => {
               type="checkbox"
               id='spanish'
               name='spanish'
-              onChange={(e) => handleLanguageChange('spanish')}
+              onChange={() => handleLanguageChange('spanish')}
               defaultChecked={ languagesLearning && languagesLearning.includes('spanish') }
               aria-describedby='desc-targetLangs'
             />
@@ -115,30 +110,37 @@ const CreateAccountPage = () => {
               type="checkbox"
               id='german'
               name='german'
-              onChange={(e) => handleLanguageChange('german')}
+              onChange={() => handleLanguageChange('german')}
               defaultChecked={ languagesLearning && languagesLearning.includes('german') }
               aria-describedby='desc-targetLangs'
             />
           </label>
+
+          <button onClick={() => setStep(1)}>Next</button>
         </div>
-        <label htmlFor="themePreference">
-          Theme
-          <p id='desc-theme'>Select a Theme. Nightowls often prefer the Dark Theme</p>
-          <select
-            name="themePreference"
-            id="themePreference"
-            defaultValue={ theme }
-            onChange={ e => handleChange(e, setTheme) }
-            aria-describedby='desc-theme'
-          >
-            <option value="light">
-              Light
-            </option>
-            <option value="dark" >
-              Dark
-            </option>
-          </select>
-        </label>
+        <div>
+          <label htmlFor="themePreference">
+            Theme
+            <p id='desc-theme'>Select a Theme. Nightowls often prefer the Dark Theme</p>
+            <select
+              name="themePreference"
+              id="themePreference"
+              defaultValue={ theme }
+              onChange={ e => setTheme(e.target.value) }
+              aria-describedby='desc-theme'
+            >
+              <option value="light">
+                Light
+              </option>
+              <option value="dark" >
+                Dark
+              </option>
+            </select>
+          </label>
+
+          <button onClick={() => setStep(-1)}>Next</button>
+          <button onClick={() => setStep(2)}>Next</button>
+        </div>
         <label htmlFor="readingSpeed">
           Reading Speed
           <p id='desc-speed'>How quickly do you typically read a news article?</p>
@@ -146,7 +148,7 @@ const CreateAccountPage = () => {
             name="readingSpeed"
             id="readingSpeed"
             defaultValue={ speed }
-            onChange={ e => handleChange(e, setSpeed) }
+            onChange={ e => setSpeed(e.target.value) }
             aria-describedby='desc-speed'
           >
             <option value="slow">
@@ -167,7 +169,7 @@ const CreateAccountPage = () => {
             name="practiceMode"
             id="practiceMode"
             defaultValue={ practice }
-            onChange={ e => handleChange(e, setPractice) }
+            onChange={ e => setPractice(e.target.value) }
             aria-describedby='desc-practice'
           >
             <option value="true">
@@ -185,7 +187,7 @@ const CreateAccountPage = () => {
             name="notifyMethod"
             id="notifyMethod"
             value={ noticeMethod }
-            onChange={ e => handleChange(e, setNoticeMethod) }
+            onChange={ e => setNoticeMethod(e.target.value) }
             aria-describedby='desc-method'
           >
             <option value="none">
@@ -209,7 +211,7 @@ const CreateAccountPage = () => {
             name="langPref"
             id="langPref"
             defaultValue={ langPreference }
-            onChange={ e => handleChange(e, setLangPreference) }
+            onChange={ e => setLangPreference(e.target.value) }
             aria-describedby='desc-langPref'
           >
             <option value="english">
