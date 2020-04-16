@@ -67,6 +67,16 @@ const create_users_words = `
   );
 `
 
+const create_users_articles = `
+  CREATE TABLE users_articles (
+    ID SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    article_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (article_id) REFERENCES articles(id)
+  )
+`
+
 async function init() {
   const pw1 = await bcrypt.hash('password1', salt);
   const pw2 = await bcrypt.hash('password2', salt);
