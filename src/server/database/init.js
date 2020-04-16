@@ -9,6 +9,8 @@ const clean_database = `
   DROP TABLE IF EXISTS articles CASCADE;
   DROP TABLE IF EXISTS words CASCADE;
   DROP TABLE IF EXISTS users_words;
+  DROP TABLE IF EXISTS newspapers CASCADE;
+  DROP TABLE IF EXISTS users_newspapers;
 `;
 
 const create_users = `
@@ -74,7 +76,25 @@ const create_users_articles = `
     article_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (article_id) REFERENCES articles(id)
-  )
+  );
+`
+
+const create_newspapers = `
+  CREATE TABLE newspapers (
+    ID SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    language TEXT NOT NULL
+  );
+`
+
+const create_users_newspapers = `
+  CREATE TABLE users_newspapers (
+    ID SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    newspaper_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (newspaper_id) REFERENCES newspapers(id)
+  );
 `
 
 async function init() {
@@ -98,6 +118,10 @@ async function init() {
     console.log('=======\nCreated words.\n=======\n');
     await db.query(create_users_words);
     console.log('=======\nCreated users_words.\n=======\n');
+    await db.query(create_newspapers);
+    console.log('=======\nCreated newspapers.\n=======\n');
+    await db.query(create_users_newspapers);
+    console.log('=======\nCreated users_newspapers.\n=======\n');
     console.log('=======\nSuccessfully initialized db.\n=======\n');
   } catch (err) {
     console.log(err)
