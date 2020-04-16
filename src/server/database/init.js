@@ -28,6 +28,15 @@ const create_users = `
   );
 `;
 
+const create_newspapers = `
+  CREATE TABLE newspapers (
+    ID SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    url TEXT NOT NULL,
+    language TEXT NOT NULL
+  );
+`
+
 const populate_users = `
   INSERT INTO users (username, email, password) VALUES
   ('username1', 'test1@test.com', $1),
@@ -44,7 +53,9 @@ const create_articles = `
     ID SERIAL PRIMARY KEY,
     created TIMESTAMP DEFAULT NOW(),
     title TEXT NOT NULL,
-    link TEXT NOT NULL
+    newspaper_id INT NOT NULL,
+    url TEXT NOT NULL,
+    FOREIGN KEY (newspaper_id) REFERENCES newspapers(id)
   );
 `
 
@@ -79,14 +90,6 @@ const create_users_articles = `
   );
 `
 
-const create_newspapers = `
-  CREATE TABLE newspapers (
-    ID SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    language TEXT NOT NULL
-  );
-`
-
 const create_users_newspapers = `
   CREATE TABLE users_newspapers (
     ID SERIAL PRIMARY KEY,
@@ -108,6 +111,8 @@ async function init() {
     console.log('=======\nCleaned Database.\n=======\n');
     await db.query(create_users);
     console.log('=======\nCreated Users.\n=======\n');
+    await db.query(create_newspapers);
+    console.log('=======\nCreated newspapers.\n=======\n');
     await db.query(populate_users, [pw1,pw2,pw3]);
     console.log('=======\nPopulated Users.\n=======\n');
     await db.query(create_user_five, [pw5]);
@@ -118,8 +123,6 @@ async function init() {
     console.log('=======\nCreated words.\n=======\n');
     await db.query(create_users_words);
     console.log('=======\nCreated users_words.\n=======\n');
-    await db.query(create_newspapers);
-    console.log('=======\nCreated newspapers.\n=======\n');
     await db.query(create_users_newspapers);
     console.log('=======\nCreated users_newspapers.\n=======\n');
     console.log('=======\nSuccessfully initialized db.\n=======\n');

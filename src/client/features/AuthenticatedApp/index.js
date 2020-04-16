@@ -4,6 +4,7 @@ import {
   Router,
   Switch,
   Route,
+  Redirect
 } from 'react-router-dom';
 import history from '../../app/history';
 
@@ -32,11 +33,14 @@ const AuthenticatedApp = () => {
 
         <Switch>
           <Route exact path='/:username/dashboard'>
-            { 
+            {
               settings.languagesLearning ?
               <Dashboard /> :
-              <CreateAccountPage />
+              <Redirect to={`/${username}/create_account`} />
             }
+          </Route>
+          <Route exact path='/:username/create_account'>
+            <CreateAccountPage />
           </Route>
           <Route exact path='/:username/articles'>
             <ArticlesPage />
@@ -48,7 +52,11 @@ const AuthenticatedApp = () => {
             <PracticePage />
           </Route>
           <Route exact path='/:username/settings'>
-            <SettingsPage />
+            {
+              settings.languagesLearning ?
+              <SettingsPage /> :
+              <Redirect to={`/${username}/create_account`} />
+            }
           </Route>
           <Route exact path='/:username/update_settings'>
             <UpdateSettingsPage />
