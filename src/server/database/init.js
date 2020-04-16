@@ -5,7 +5,10 @@ const db = require('./index');
 const salt = 10;
 
 const clean_database = `
-  DROP TABLE IF EXISTS users;
+  DROP TABLE IF EXISTS users CASCADE;
+  DROP TABLE IF EXISTS articles CASCADE;
+  DROP TABLE IF EXISTS words CASCADE;
+  DROP TABLE IF EXISTS users_words;
 `;
 
 const create_users = `
@@ -34,6 +37,36 @@ const create_user_five = `
   INSERT INTO users (username, email, password, theme_preference, reading_speed, practice_mode, notification_method, languages_learning) VALUES ('username5', 'test5@test.com', $1, 'dark', 'fast', FALSE, 'push', ARRAY['spanish','french']);
 `
 
+const create_articles = `
+  CREATE TABLE articles (
+    ID SERIAL PRIMARY KEY,
+    created TIMESTAMP DEFAULT NOW(),
+    title TEXT NOT NULL,
+    link TEXT NOT NULL
+  );
+`
+
+const create_words = `
+  CREATE TABLE words (
+    ID SERIAL PRIMARY KEY,
+    created TIMESTAMP DEFAULT NOW(),
+    word TEXT NOT NULL,
+    definition TEXT not null,
+    article_id INT NOT NULL,
+    FOREIGN KEY (article_id) REFERENCES articles(id)
+  );
+`
+
+const create_users_words = `
+  CREATE TABLE users_words (
+    ID SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    word_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (word_id) REFERENCES words(id)
+  );
+`
+
 async function init() {
   const pw1 = await bcrypt.hash('password1', salt);
   const pw2 = await bcrypt.hash('password2', salt);
@@ -42,10 +75,20 @@ async function init() {
   
   try {
     await db.query(clean_database);
+    console.log('=======\nCleaned Database.\n=======\n');
     await db.query(create_users);
+    console.log('=======\nCreated Users.\n=======\n');
     await db.query(populate_users, [pw1,pw2,pw3]);
+    console.log('=======\nPopulated Users.\n=======\n');
     await db.query(create_user_five, [pw5]);
-    console.log('\n=======\nSuccessfully initialized db.\n=======\n');
+    console.log('=======\nCreated User 5.\n=======\n');
+    await db.query(create_articles);
+    console.log('=======\nCreated articles.\n=======\n');
+    await db.query(create_words);
+    console.log('=======\nCreated words.\n=======\n');
+    await db.query(create_users_words);
+    console.log('=======\nCreated users_words.\n=======\n');
+    console.log('=======\nSuccessfully initialized db.\n=======\n');
   } catch (err) {
     console.log(err)
   }
