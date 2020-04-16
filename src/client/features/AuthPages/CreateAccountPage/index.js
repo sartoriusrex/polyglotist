@@ -6,6 +6,7 @@ import { addMessage, removeMessage, messageSelector } from '../../../slices/mess
 import { authSelector } from '../../../slices/auth';
 
 import './createAccountPage.scss';
+import LanguageList from './LanguageList';
 
 const CreateAccountPage = () => {
   const dispatch = useDispatch();
@@ -39,18 +40,6 @@ const CreateAccountPage = () => {
     }
 
     setLearning(learningArray);
-  }
-
-  function renderFrenchSources() {
-    console.log('french sources');
-  }
-
-  function renderSpanishSources() {
-    console.log('spanish sources');
-  }
-
-  function renderGermanSources() {
-    console.log('german sources');
   }
 
   function handleSubmit(e) {
@@ -207,9 +196,9 @@ const CreateAccountPage = () => {
           <h3>
             From which sources would you like to read and improve your vocabulary?
           </h3>
-          { (step === 2) && learning && learning.includes('french') && renderFrenchSources() }
-          { (step === 2) && learning && learning.includes('spanish') && renderSpanishSources() }
-          { (step === 2) && learning && learning.includes('german') && renderGermanSources() }
+          { (step === 2) && learning && learning.includes('french') && <LanguageList lang='french' /> }
+          { (step === 2) && learning && learning.includes('spanish') && <LanguageList lang='spanish' /> }
+          { (step === 2) && learning && learning.includes('german') && <LanguageList lang='german' /> }
 
           {nextButton()}
           {backButton()}
