@@ -44,6 +44,22 @@ const populate_users = `
   ('username3', 'test3@test.com', $3);
 `;
 
+const populate_newspapers = `
+  INSERT INTO newspapers (name, url, language) VALUES
+  ('twenty', 'https://www.20minutes.fr/', 'french'),
+  ('monde', 'https://www.lemonde.fr/', 'french'),
+  ('figaro', 'https://www.lefigaro.fr/', 'french'),
+  ('parisien', 'http://www.leparisien.fr/', 'french'),
+  ('abc', 'https://www.abc.es/', 'spanish'),
+  ('bbc', 'https://www.bbc.com/mundo', 'spanish'),
+  ('mundo', 'https://www.elmundo.es/', 'spanish'),
+  ('pais', 'https://elpais.com/', 'spanish'),
+  ('welt', 'https://www.welt.de/', 'german'),
+  ('faz', 'https://www.faz.net/aktuell/', 'german'),
+  ('sz', 'https://www.sueddeutsche.de/', 'german'),
+  ('spiegel', 'https://www.spiegel.de/', 'german');
+`
+
 const create_user_five = `
   INSERT INTO users (username, email, password, theme_preference, reading_speed, practice_mode, notification_method, languages_learning) VALUES ('username5', 'test5@test.com', $1, 'dark', 'fast', FALSE, 'push', ARRAY['spanish','french']);
 `
@@ -114,6 +130,8 @@ async function init() {
     await db.query(create_newspapers);
     console.log('=======\nCreated newspapers.\n=======\n');
     await db.query(populate_users, [pw1,pw2,pw3]);
+    console.log('=======\nPopulated Users.\n=======\n');
+    await db.query(populate_newspapers);
     console.log('=======\nPopulated Users.\n=======\n');
     await db.query(create_user_five, [pw5]);
     console.log('=======\nCreated User 5.\n=======\n');

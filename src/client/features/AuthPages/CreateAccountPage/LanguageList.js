@@ -52,9 +52,9 @@ const sources = {
       desc: 'Large German weekly newspaper, with conservative, right bias.'
     },
     {
-      name: 'Die Zeit',
-      id: 'zeit',
-      desc: 'Largest and most widely-read weekly newspaper, with center and liberal bias.'
+      name: 'Frankfurter Allgemeine Zeitung',
+      id: 'faz',
+      desc: 'One of the most widely-read German newspapers read both domestically and abroad, with center-right and liberal-conservative bias.'
     },
     {
       name: 'Suddeutsche Zeitung',

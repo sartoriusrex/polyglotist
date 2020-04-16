@@ -143,7 +143,11 @@ export function login(username, password) {
         }
         dispatch(loadSettings(settings));
 
-        history.push(`/${username}/dashboard`);
+        if (!languagesLearning) {
+          history.push(`/${username}/create_account`);
+        } else {
+          history.push(`/${username}/dashboard`);
+        }
         dispatch(sendMessage(data.message));
       } else {
         dispatch(loginUserSuccess(null));
@@ -203,7 +207,7 @@ export function signup(email, username, password) {
       }
       dispatch(loadSettings(settings));
 
-      history.push(`/${username}/dashboard`);
+      history.push(`/${username}/create_account`);
       dispatch(sendMessage(data.message));
     } catch (err) {
       console.log(err);
