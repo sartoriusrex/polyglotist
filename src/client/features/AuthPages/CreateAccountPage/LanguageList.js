@@ -86,6 +86,7 @@ const LanguageList = (props) => {
                     type="checkbox"
                     id={`${id}`}
                     name={`${id}`}
+                    defaultChecked={ arr.includes(id) }
                     onChange={() => handleChange(id, arr, func)}
                     aria-describedby={`desc-${id}`}
                   />

@@ -118,7 +118,7 @@ module.exports = {
         user.languagesLearning = languages_learning;
       }
 
-      if (sources) {
+      if (sources && sources.length > 0) {
         const userIdQuery = await db.query(
           `SELECT id FROM users WHERE username = $1`,
           [username]

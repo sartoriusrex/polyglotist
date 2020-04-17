@@ -222,19 +222,19 @@ const CreateAccountPage = () => {
             />
           }
 
-          {nextButton()}
           {backButton()}
+          <button
+            type='submit'
+            disabled={ !learning || sources.length <= 0 || step !== 2 }
+          >
+            Create Account
+          </button>
         </div>
 
         <div 
           className={ step === 3 ? 'current-step' : 'hidden-step' }
         >
           <h3>You're all set! Let's continue</h3>
-          <button
-            type='submit'
-          >
-            Create Account
-          </button>
         </div>
       </form>
     </section>
