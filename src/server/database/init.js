@@ -64,6 +64,14 @@ const create_user_five = `
   INSERT INTO users (username, email, password, theme_preference, reading_speed, practice_mode, notification_method, languages_learning) VALUES ('username5', 'test5@test.com', $1, 'dark', 'fast', FALSE, 'push', ARRAY['spanish','french']);
 `
 
+const update_user_five_settings = `
+  INSERT INTO users_sources (user_id, source_id) VALUES
+  (4, 1),
+  (4, 3),
+  (4, 5),
+  (4, 6)
+`
+
 const create_articles = `
   CREATE TABLE articles (
     ID SERIAL PRIMARY KEY,
@@ -143,6 +151,8 @@ async function init() {
     console.log('=======\nCreated users_words.\n=======\n');
     await db.query(create_users_sources);
     console.log('=======\nCreated users_sources.\n=======\n');
+    await db.query(update_user_five_settings);
+    console.log('=======\Updated username5"s settings to include sources.\n=======\n');
     console.log('=======\nSuccessfully initialized db.\n=======\n');
   } catch (err) {
     console.log(err)

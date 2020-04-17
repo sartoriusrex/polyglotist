@@ -123,7 +123,8 @@ export function login(username, password) {
           practiceMode,
           notificationMethod,
           languagePreference,
-          languagesLearning
+          languagesLearning,
+          sources
         } = data.user;
 
         const user = {
@@ -139,7 +140,8 @@ export function login(username, password) {
           practiceMode,
           notificationMethod,
           languagePreference,
-          languagesLearning
+          languagesLearning,
+          sources
         }
         dispatch(loadSettings(settings));
 

@@ -102,7 +102,7 @@ module.exports = {
       try {
         const { username: usernameToken, token } = accessToken;
 
-        const query = await db.query(
+        const userQuery = await db.query(
           'SELECT id, username, email, theme_preference, reading_speed, practice_mode, notification_method, language_preference, languages_learning FROM users WHERE username = $1',
           [usernameToken]
         );
@@ -117,7 +117,29 @@ module.exports = {
           notification_method,
           language_preference,
           languages_learning
-        } = query.rows[0];
+        } = userQuery.rows[0];
+
+        const sourcesQuery = await db.query(
+          `SELECT source_id FROM users_sources WHERE user_id = $1`,
+          [id]
+        );
+
+        const sourceIds = sourcesQuery.rows;
+
+        const sourceList = sourceIds ?
+          await Promise.all(
+            sourceIds.map( async id => {
+              let srcId = id.source_id;
+
+              let name =  await db.query(
+                `SELECT name FROM sources WHERE id = $1`,
+                [srcId]
+              );
+
+              return name.rows[0].name;
+            })
+          )
+        : [];
 
         const user = {
           id,
@@ -128,7 +150,8 @@ module.exports = {
           practiceMode: practice_mode,
           notificationMethod: notification_method,
           languagePreference: language_preference,
-          languagesLearning: languages_learning
+          languagesLearning: languages_learning,
+          sources: sourceList
         };
 
         const verified = jwt.verify(token, process.env.SECRET_KEY, function ( err, decoded

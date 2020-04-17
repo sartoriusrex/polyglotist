@@ -19,7 +19,7 @@ const CreateAccountPage = () => {
     practiceMode,
     notificationMethod,
     languagePreference,
-    languagesLearning
+    languagesLearning,
   } = settings;
   const { message } = useSelector(messageSelector);
   const { user } = useSelector(authSelector);
@@ -28,7 +28,7 @@ const CreateAccountPage = () => {
   const [ learning, setLearning ] = useState(languagesLearning);
   const [ noticeMethod, setNoticeMethod ] = useState(notificationMethod);
   const [ practice, setPractice ] = useState(practiceMode);
-  const [ sources, setSources ] = useState([]);
+  const [ resources, setResources ] = useState([]);
   const [ step, setStep ] = useState(0);
 
   function handleArrayChange(value, arr, func) {
@@ -54,7 +54,7 @@ const CreateAccountPage = () => {
       notificationMethod: noticeMethod,
       languagePreference,
       languagesLearning: learning,
-      sources
+      sources: resources
     }
 
     dispatch(updateSettings(username, settings));
@@ -200,24 +200,24 @@ const CreateAccountPage = () => {
           {(step === 2) && learning && learning.includes('french') && 
             <LanguageList
               lang='french'
-              func={setSources}
-              arr={sources}
+              func={setResources}
+              arr={resources}
               handleChange={handleArrayChange}
             />
           }
           {(step === 2) && learning && learning.includes('spanish') &&
             <LanguageList
               lang='spanish'
-              func={setSources}
-              arr={sources}
+              func={setResources}
+              arr={resources}
               handleChange={handleArrayChange}
             />
           }
           {(step === 2) && learning && learning.includes('german') &&
             <LanguageList
               lang='german'
-              func={setSources}
-              arr={sources}
+              func={setResources}
+              arr={resources}
               handleChange={handleArrayChange}
             />
           }
@@ -225,7 +225,7 @@ const CreateAccountPage = () => {
           {backButton()}
           <button
             type='submit'
-            disabled={ !learning || sources.length <= 0 || step !== 2 }
+            disabled={ !learning || resources.length <= 0 || step !== 2 }
           >
             Create Account
           </button>
