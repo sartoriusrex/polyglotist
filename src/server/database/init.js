@@ -9,8 +9,8 @@ const clean_database = `
   DROP TABLE IF EXISTS articles CASCADE;
   DROP TABLE IF EXISTS words CASCADE;
   DROP TABLE IF EXISTS users_words;
-  DROP TABLE IF EXISTS newspapers CASCADE;
-  DROP TABLE IF EXISTS users_newspapers;
+  DROP TABLE IF EXISTS sources CASCADE;
+  DROP TABLE IF EXISTS users_sources;
 `;
 
 const create_users = `
@@ -28,8 +28,8 @@ const create_users = `
   );
 `;
 
-const create_newspapers = `
-  CREATE TABLE newspapers (
+const create_sources = `
+  CREATE TABLE sources (
     ID SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     url TEXT NOT NULL,
@@ -44,8 +44,8 @@ const populate_users = `
   ('username3', 'test3@test.com', $3);
 `;
 
-const populate_newspapers = `
-  INSERT INTO newspapers (name, url, language) VALUES
+const populate_sources = `
+  INSERT INTO sources (name, url, language) VALUES
   ('twenty', 'https://www.20minutes.fr/', 'french'),
   ('monde', 'https://www.lemonde.fr/', 'french'),
   ('figaro', 'https://www.lefigaro.fr/', 'french'),
@@ -69,9 +69,9 @@ const create_articles = `
     ID SERIAL PRIMARY KEY,
     created TIMESTAMP DEFAULT NOW(),
     title TEXT NOT NULL,
-    newspaper_id INT NOT NULL,
+    source_id INT NOT NULL,
     url TEXT NOT NULL,
-    FOREIGN KEY (newspaper_id) REFERENCES newspapers(id)
+    FOREIGN KEY (source_id) REFERENCES sources(id)
   );
 `
 
@@ -106,13 +106,13 @@ const create_users_articles = `
   );
 `
 
-const create_users_newspapers = `
-  CREATE TABLE users_newspapers (
+const create_users_sources = `
+  CREATE TABLE users_sources (
     ID SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
-    newspaper_id INT NOT NULL,
+    source_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (newspaper_id) REFERENCES newspapers(id)
+    FOREIGN KEY (source_id) REFERENCES sources(id)
   );
 `
 
@@ -127,11 +127,11 @@ async function init() {
     console.log('=======\nCleaned Database.\n=======\n');
     await db.query(create_users);
     console.log('=======\nCreated Users.\n=======\n');
-    await db.query(create_newspapers);
-    console.log('=======\nCreated newspapers.\n=======\n');
+    await db.query(create_sources);
+    console.log('=======\nCreated sources.\n=======\n');
     await db.query(populate_users, [pw1,pw2,pw3]);
     console.log('=======\nPopulated Users.\n=======\n');
-    await db.query(populate_newspapers);
+    await db.query(populate_sources);
     console.log('=======\nPopulated Users.\n=======\n');
     await db.query(create_user_five, [pw5]);
     console.log('=======\nCreated User 5.\n=======\n');
@@ -141,8 +141,8 @@ async function init() {
     console.log('=======\nCreated words.\n=======\n');
     await db.query(create_users_words);
     console.log('=======\nCreated users_words.\n=======\n');
-    await db.query(create_users_newspapers);
-    console.log('=======\nCreated users_newspapers.\n=======\n');
+    await db.query(create_users_sources);
+    console.log('=======\nCreated users_sources.\n=======\n');
     console.log('=======\nSuccessfully initialized db.\n=======\n');
   } catch (err) {
     console.log(err)

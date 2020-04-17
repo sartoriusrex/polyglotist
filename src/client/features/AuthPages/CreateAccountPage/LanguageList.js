@@ -59,7 +59,7 @@ const sources = {
     {
       name: 'Suddeutsche Zeitung',
       id: 'sz',
-      desc: 'Most popular daily newspaper throughout Germany, with center-left and libaral bias.'
+      desc: 'Most popular daily newspaper throughout Germany, with center-left and liberal bias.'
     },
     {
       name: 'Der Spiegel',
@@ -70,7 +70,7 @@ const sources = {
 }
 
 const LanguageList = (props) => {
-  const { lang } = props;
+  const { lang, handleChange, arr, func } = props;
   return (
     <div>
       <h4>{`${lang.charAt(0).toUpperCase() + lang.slice(1)} Sources`}</h4>
@@ -86,6 +86,7 @@ const LanguageList = (props) => {
                     type="checkbox"
                     id={`${id}`}
                     name={`${id}`}
+                    onChange={() => handleChange(id, arr, func)}
                     aria-describedby={`desc-${id}`}
                   />
                   <p id={`desc-${id}`}>{desc}</p>

@@ -9,7 +9,8 @@ export const initialState = {
   practiceMode: true,
   notificationMethod: 'none',
   languagePreference: 'english',
-  languagesLearning: null
+  languagesLearning: null,
+  sources: []
 };
 
 const settingsSlice = createSlice({
@@ -31,6 +32,7 @@ const settingsSlice = createSlice({
       newState.notificationMethod = payload.notificationMethod;
       newState.languagePreference = payload.languagePreference;
       newState.languagesLearning = payload.languagesLearning;
+      newState.sources = payload.sources;
       newState.loading = false;
       newState.hasErrors = false;
       return newState;
@@ -82,7 +84,7 @@ export function updateSettings(user, settings) {
         body: JSON.stringify(settings)
       });
 
-      const data = await response.json();
+      const userData = await response.json();
 
       const {
         username,
@@ -92,8 +94,9 @@ export function updateSettings(user, settings) {
         practiceMode,
         notificationMethod,
         languagePreference,
-        languagesLearning
-      } = data.user;
+        languagesLearning,
+        sources
+      } = userData.user;
 
       let newSettings = {
         readingSpeed,
@@ -101,14 +104,15 @@ export function updateSettings(user, settings) {
         practiceMode,
         notificationMethod,
         languagePreference,
-        languagesLearning
+        languagesLearning,
+        sources
       }
 
       if (username) newSettings.username = username;
       if (email) newSettings.email = email;
 
       dispatch(setSettingsSuccess(newSettings));
-      dispatch(sendMessage(data.message));
+      dispatch(sendMessage(userData.message));
     } catch (err) {
       console.log(err);
       dispatch(setSettingsFailure());

@@ -28,23 +28,23 @@ const CreateAccountPage = () => {
   const [ learning, setLearning ] = useState(languagesLearning);
   const [ noticeMethod, setNoticeMethod ] = useState(notificationMethod);
   const [ practice, setPractice ] = useState(practiceMode);
+  const [ sources, setSources ] = useState([]);
   const [ step, setStep ] = useState(0);
 
-  function handleLanguageChange(value) {
-    let learningArray = learning ? [...learning] : [];
+  function handleArrayChange(value, arr, func) {
+    let newArray = arr ? [...arr] : [];
 
-    if (learningArray.indexOf(value) >= 0) {
-      learningArray = learningArray.filter( lang => lang !== value )
+    if (newArray.indexOf(value) >= 0) {
+      newArray = newArray.filter( lang => lang !== value )
     } else {
-      learningArray.push(value);
+      newArray.push(value);
     }
 
-    setLearning(learningArray);
+    func(newArray);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log('submitted');
 
     if ( !learning || learning.length <= 0 ) return null;
     const settings = {
@@ -53,7 +53,8 @@ const CreateAccountPage = () => {
       practiceMode: practice,
       notificationMethod: noticeMethod,
       languagePreference,
-      languagesLearning: learning
+      languagesLearning: learning,
+      sources
     }
 
     dispatch(updateSettings(username, settings));
@@ -113,7 +114,7 @@ const CreateAccountPage = () => {
               type="checkbox"
               id='french'
               name='french'
-              onChange={() => handleLanguageChange('french')}
+              onChange={() => handleArrayChange('french', learning, setLearning)}
               defaultChecked={ languagesLearning && languagesLearning.includes('french') }
             />
           </label>
@@ -123,7 +124,7 @@ const CreateAccountPage = () => {
               type="checkbox"
               id='spanish'
               name='spanish'
-              onChange={() => handleLanguageChange('spanish')}
+              onChange={() => handleArrayChange('spanish', learning, setLearning)}
               defaultChecked={ languagesLearning && languagesLearning.includes('spanish') }
             />
           </label>
@@ -133,7 +134,7 @@ const CreateAccountPage = () => {
               type="checkbox"
               id='german'
               name='german'
-              onChange={() => handleLanguageChange('german')}
+              onChange={() => handleArrayChange('german', learning, setLearning)}
               defaultChecked={ languagesLearning && languagesLearning.includes('german') }
             />
           </label>
@@ -196,9 +197,30 @@ const CreateAccountPage = () => {
           <h3>
             From which sources would you like to read and improve your vocabulary?
           </h3>
-          { (step === 2) && learning && learning.includes('french') && <LanguageList lang='french' /> }
-          { (step === 2) && learning && learning.includes('spanish') && <LanguageList lang='spanish' /> }
-          { (step === 2) && learning && learning.includes('german') && <LanguageList lang='german' /> }
+          {(step === 2) && learning && learning.includes('french') && 
+            <LanguageList
+              lang='french'
+              func={setSources}
+              arr={sources}
+              handleChange={handleArrayChange}
+            />
+          }
+          {(step === 2) && learning && learning.includes('spanish') &&
+            <LanguageList
+              lang='spanish'
+              func={setSources}
+              arr={sources}
+              handleChange={handleArrayChange}
+            />
+          }
+          {(step === 2) && learning && learning.includes('german') &&
+            <LanguageList
+              lang='german'
+              func={setSources}
+              arr={sources}
+              handleChange={handleArrayChange}
+            />
+          }
 
           {nextButton()}
           {backButton()}
