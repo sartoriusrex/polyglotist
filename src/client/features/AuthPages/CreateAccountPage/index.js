@@ -65,6 +65,7 @@ const CreateAccountPage = () => {
 
   const nextButton = () => {
     function handleNextClick() {
+      // if the User has added sources and gone back to choose languages, we check that they haven't added sources that are no longer available in the languages they've selected. i.e. if they selected German and German sources, but go back and remove German and add French, we filter out all German sources.
       if (step === 1 && resources.length > 0) {
         const filteredResources = resources.filter( resource => {
           const availableSources = learning.map( lang => {
