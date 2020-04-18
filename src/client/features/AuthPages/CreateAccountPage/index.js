@@ -65,7 +65,7 @@ const CreateAccountPage = () => {
 
   const nextButton = () => {
     function handleNextClick() {
-      if (step === 1) {
+      if (step === 1 && resources.length > 0) {
         const filteredResources = resources.filter( resource => {
           const availableSources = learning.map( lang => {
             const ids = sources[lang].map( source => source.id );
