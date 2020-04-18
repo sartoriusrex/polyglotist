@@ -6,7 +6,7 @@ import { addMessage, removeMessage, messageSelector } from '../../../slices/mess
 import { authSelector } from '../../../slices/auth';
 
 import './createAccountPage.scss';
-import LanguageList from './LanguageList';
+import SourceList, { sources } from './SourceList';
 
 const CreateAccountPage = () => {
   const dispatch = useDispatch();
@@ -31,6 +31,8 @@ const CreateAccountPage = () => {
   const [ resources, setResources ] = useState([]);
   const [ step, setStep ] = useState(0);
 
+  const languageList = Object.keys(sources);
+
   function handleArrayChange(value, arr, func) {
     let newArray = arr ? [...arr] : [];
 
@@ -47,6 +49,7 @@ const CreateAccountPage = () => {
     e.preventDefault();
 
     if ( !learning || learning.length <= 0 ) return null;
+
     const settings = {
       readingSpeed,
       themePreference,
@@ -61,10 +64,26 @@ const CreateAccountPage = () => {
   }
 
   const nextButton = () => {
+    function handleNextClick() {
+      if (step === 1) {
+        const filteredResources = resources.filter( resource => {
+          const availableSources = learning.map( lang => {
+            const ids = sources[lang].map( source => source.id );
+            return ids;
+          }).flat(Infinity);
+
+          return availableSources.includes(resource);
+        });
+
+        setResources(filteredResources);
+      }
+      setStep(step + 1);
+    }
+
     return (
       <button
         type='button'
-        onClick={ () => setStep( step + 1 ) }
+        onClick={handleNextClick}
         className='next-button'
         disabled={ !learning || learning.length <= 0 }
       >
@@ -197,29 +216,21 @@ const CreateAccountPage = () => {
           <h3>
             From which sources would you like to read and improve your vocabulary?
           </h3>
-          {(step === 2) && learning && learning.includes('french') && 
-            <LanguageList
-              lang='french'
-              func={setResources}
-              arr={resources}
-              handleChange={handleArrayChange}
-            />
-          }
-          {(step === 2) && learning && learning.includes('spanish') &&
-            <LanguageList
-              lang='spanish'
-              func={setResources}
-              arr={resources}
-              handleChange={handleArrayChange}
-            />
-          }
-          {(step === 2) && learning && learning.includes('german') &&
-            <LanguageList
-              lang='german'
-              func={setResources}
-              arr={resources}
-              handleChange={handleArrayChange}
-            />
+
+          {
+            languageList.map( lang => {
+              if (learning && learning.includes(lang)) {
+                return (
+                  <SourceList
+                    key={lang}
+                    lang={lang}
+                    setResources={setResources}
+                    resources={resources}
+                    handleChange={handleArrayChange}
+                  />
+                )
+              }
+            })
           }
 
           {backButton()}

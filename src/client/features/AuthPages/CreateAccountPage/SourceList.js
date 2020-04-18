@@ -1,6 +1,6 @@
 import React from 'react';
 
-const sources = {
+export const sources = {
   french: [
     {
       name: 'Le Figaro',
@@ -69,8 +69,9 @@ const sources = {
   ]
 }
 
-const LanguageList = (props) => {
-  const { lang, handleChange, arr, func } = props;
+const SourceList = (props) => {
+  const { lang, handleChange, resources, setResources } = props;
+
   return (
     <div>
       <h4>{`${lang.charAt(0).toUpperCase() + lang.slice(1)} Sources`}</h4>
@@ -86,8 +87,8 @@ const LanguageList = (props) => {
                     type="checkbox"
                     id={`${id}`}
                     name={`${id}`}
-                    defaultChecked={ arr.includes(id) }
-                    onChange={() => handleChange(id, arr, func)}
+                    defaultChecked={ resources.includes(id) }
+                    onChange={() => handleChange(id, resources, setResources)}
                     aria-describedby={`desc-${id}`}
                   />
                   <p id={`desc-${id}`}>{desc}</p>
@@ -101,5 +102,5 @@ const LanguageList = (props) => {
   );
 }
 
-export default LanguageList;
+export default SourceList;
 
