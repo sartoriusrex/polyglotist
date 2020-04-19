@@ -40,7 +40,11 @@ const AuthenticatedApp = () => {
             }
           </Route>
           <Route exact path='/:username/create_account'>
-            <CreateAccountPage />
+            {
+              settings.languagesLearning ?
+              <Redirect to={`/${username}/settings`} /> :
+              <CreateAccountPage />
+            }
           </Route>
           <Route exact path='/:username/articles'>
             <ArticlesPage />

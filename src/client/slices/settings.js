@@ -113,7 +113,7 @@ export function updateSettings(user, settings) {
       if (email) newSettings.email = email;
 
       dispatch(setSettingsSuccess(newSettings));
-      history.push(`/${username}/dashboard`);
+      history.push(`/${user}/dashboard`);
       dispatch(sendMessage(userData.message));
     } catch (err) {
       console.log(err);
