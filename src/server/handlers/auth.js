@@ -120,7 +120,7 @@ module.exports = {
         } = userQuery.rows[0];
 
         const sourcesQuery = await db.query(
-          `SELECT source_id FROM users_sources WHERE user_id = $1`,
+          `SELECT source_id FROM users_sources WHERE user_id = $1 ORDER BY source_id ASC`,
           [id]
         );
 
@@ -150,7 +150,7 @@ module.exports = {
           practiceMode: practice_mode,
           notificationMethod: notification_method,
           languagePreference: language_preference,
-          languagesLearning: languages_learning,
+          languagesLearning: languages_learning.sort((a, b) => a.localeCompare(b)),
           sources: sourceList
         };
 

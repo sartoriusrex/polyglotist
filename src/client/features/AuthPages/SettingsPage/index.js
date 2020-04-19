@@ -5,6 +5,8 @@ import { settingsSelector, updateSettings } from '../../../slices/settings';
 import { addMessage, removeMessage, messageSelector } from '../../../slices/messages';
 import { authSelector } from '../../../slices/auth';
 
+import SourceList, {sources as sourcesObject} from '../../AuthComponents/SourceList';
+
 const SettingsPage = () => {
   const dispatch = useDispatch();
   const settings = useSelector(settingsSelector);
@@ -16,7 +18,8 @@ const SettingsPage = () => {
     practiceMode,
     notificationMethod,
     languagePreference,
-    languagesLearning
+    languagesLearning,
+    sources
   } = settings;
   const { message } = useSelector(messageSelector);
   const { user } = useSelector(authSelector);
@@ -28,6 +31,7 @@ const SettingsPage = () => {
   const [ noticeMethod, setNoticeMethod ] = useState(notificationMethod);
   const [ langPreference, setLangPreference ] = useState(languagePreference);
   const [ practice, setPractice ] = useState(practiceMode);
+  const [ resources, setResources ] = useState(sources);
 
   function handleChange(e, func) {
     const { value } = e.target;
@@ -35,32 +39,47 @@ const SettingsPage = () => {
     func(value);
   }
 
-  function handleLanguageChange(value) {
-    let learningArray = learning ? [...learning] : [];
+  function handleArrayChange(value, arr, func, ...args) {
+    let newArray = arr ? [...arr] : [];
 
-    if (learningArray.indexOf(value) >= 0) {
-      learningArray = learningArray.filter( lang => lang !== value )
+    if (newArray.indexOf(value) >= 0) {
+      newArray = newArray.filter( lang => lang !== value )
     } else {
-      learningArray.push(value);
+      newArray.push(value);
     }
 
-    setLearning(learningArray);
+    func(newArray);
+
+    if (args && resources.length > 0) {
+      const filteredResources = resources.filter( resource => {
+        const availableSources = newArray.map( lang => {
+          const ids = sourcesObject[lang].map( source => source.id );
+          return ids;
+        }).flat(Infinity);
+
+        return availableSources.includes(resource);
+      });
+
+      setResources(filteredResources);
+    }
   }
 
   function handleSubmit(e) {
     e.preventDefault();
 
     if ( !learning || learning.length <= 0 ) return null;
-    const settings = {
+
+    const newSettings = {
       readingSpeed: speed,
       themePreference: theme,
       practiceMode: practice,
       notificationMethod: noticeMethod,
       languagePreference: langPreference,
-      languagesLearning: learning
+      languagesLearning: learning,
+      sources: resources
     }
 
-    dispatch(updateSettings(username, settings));
+    dispatch(updateSettings(username, newSettings));
   }
 
   return (
@@ -82,7 +101,7 @@ const SettingsPage = () => {
       >
         <div>
           <h4>
-            Target Languages
+            What Languages Are you Working On?
             <span className='required' aria-hidden='true'>*</span>
             <span className='sr-only'> * Required</span>
           </h4>
@@ -93,7 +112,7 @@ const SettingsPage = () => {
               type="checkbox"
               id='french'
               name='french'
-              onChange={(e) => handleLanguageChange('french')}
+              onChange={(e) => handleArrayChange('french', learning, setLearning, 'lang')}
               defaultChecked={ languagesLearning && languagesLearning.includes('french') }
               aria-describedby='desc-targetLangs'
             />
@@ -104,7 +123,7 @@ const SettingsPage = () => {
               type="checkbox"
               id='spanish'
               name='spanish'
-              onChange={(e) => handleLanguageChange('spanish')}
+              onChange={(e) => handleArrayChange('spanish', learning, setLearning, 'lang')}
               defaultChecked={ languagesLearning && languagesLearning.includes('spanish') }
               aria-describedby='desc-targetLangs'
             />
@@ -115,11 +134,26 @@ const SettingsPage = () => {
               type="checkbox"
               id='german'
               name='german'
-              onChange={(e) => handleLanguageChange('german')}
+              onChange={(e) => handleArrayChange('german', learning, setLearning, 'lang')}
               defaultChecked={ languagesLearning && languagesLearning.includes('german') }
               aria-describedby='desc-targetLangs'
             />
           </label>
+        </div>
+        <div>
+          {
+            learning.map( lang => {
+              return (
+                <SourceList
+                  key={lang}
+                  lang={lang}
+                  setResources={setResources}
+                  resources={resources}
+                  handleChange={handleArrayChange}
+                />
+              )
+            })
+          }
         </div>
         <label htmlFor="themePreference">
           Theme
@@ -217,7 +251,16 @@ const SettingsPage = () => {
             </option>
           </select>
         </label>
-        <button type='submit' disabled={ !learning || learning.length <= 0}>Update Settings</button>
+        <button
+          type='submit'
+          disabled={ 
+            !learning || 
+            learning.length <= 0 ||
+            resources.length <= 0
+          }
+        >
+          Update Settings
+        </button>
       </form>
     </section>
   )

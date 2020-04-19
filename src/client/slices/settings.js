@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { sendMessage, removeMessage } from './messages';
+import history from '../app/history';
 
 export const initialState = {
   loading: false,
@@ -112,6 +113,7 @@ export function updateSettings(user, settings) {
       if (email) newSettings.email = email;
 
       dispatch(setSettingsSuccess(newSettings));
+      history.push(`/${username}/dashboard`);
       dispatch(sendMessage(userData.message));
     } catch (err) {
       console.log(err);

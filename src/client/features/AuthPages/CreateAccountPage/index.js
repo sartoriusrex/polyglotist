@@ -6,7 +6,7 @@ import { addMessage, removeMessage, messageSelector } from '../../../slices/mess
 import { authSelector } from '../../../slices/auth';
 
 import './createAccountPage.scss';
-import SourceList, { sources } from './SourceList';
+import SourceList, { sources } from '../../AuthComponents/SourceList';
 
 const CreateAccountPage = () => {
   const dispatch = useDispatch();
