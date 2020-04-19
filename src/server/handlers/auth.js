@@ -150,7 +150,7 @@ module.exports = {
           practiceMode: practice_mode,
           notificationMethod: notification_method,
           languagePreference: language_preference,
-          languagesLearning: languages_learning.sort((a, b) => a.localeCompare(b)),
+          languagesLearning: languages_learning,
           sources: sourceList
         };
 
@@ -201,6 +201,28 @@ module.exports = {
           languages_learning
         } = query.rows[0];
 
+        const sourcesQuery = await db.query(
+          `SELECT source_id FROM users_sources WHERE user_id = $1 ORDER BY source_id ASC`,
+          [id]
+        );
+
+        const sourceIds = sourcesQuery.rows;
+
+        const sourceList = sourceIds ?
+          await Promise.all(
+            sourceIds.map( async id => {
+              let srcId = id.source_id;
+
+              let name =  await db.query(
+                `SELECT name FROM sources WHERE id = $1`,
+                [srcId]
+              );
+
+              return name.rows[0].name;
+            })
+          )
+        : [];
+
         const user = {
           id,
           username: usernameDB,
@@ -210,7 +232,8 @@ module.exports = {
           practiceMode: practice_mode,
           notificationMethod: notification_method,
           languagePreference: language_preference,
-          languagesLearning: languages_learning
+          languagesLearning: languages_learning,
+          sources: sourceList
         };
 
         const verifiedPassword = await bcrypt.compare(
