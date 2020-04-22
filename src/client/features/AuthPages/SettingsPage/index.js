@@ -86,8 +86,6 @@ const SettingsPage = () => {
     <section>
       {message && <div>{message}</div>}
 
-      {console.log(resources)}
-
       {loading && <h2>Loading User Settings </h2>}
 
       {hasErrors && (

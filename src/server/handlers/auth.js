@@ -131,7 +131,7 @@ module.exports = {
             sourceIds.map( async id => {
               let srcId = id.source_id;
 
-              let name =  await db.query(
+              let name = await db.query(
                 `SELECT name FROM sources WHERE id = $1`,
                 [srcId]
               );

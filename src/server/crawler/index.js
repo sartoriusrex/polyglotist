@@ -3,10 +3,18 @@ const puppeteer = require('puppeteer');
 const crawlSource = async function( src ) {
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
+  const sourceCrawler = require(`./${src.name}`);
+  const { url, language } = src;
 
-  await page.goTo( src.url );
+  if( src.name === 'twenty') {
+    await page.goto(src.url);
 
-  await browser.close();
+    const text = await sourceCrawler(page, url, language);
+
+    await browser.close();
+
+    return text;
+  }
 }
 
 module.exports = crawlSource;
