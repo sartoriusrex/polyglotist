@@ -21,6 +21,8 @@ module.exports = {
       })
     );
 
+    console.log(urlsAndLangs);
+
     // Loop through each source and initiates its crawl function
     const sourceTexts = await Promise.all(
       urlsAndLangs.map( async url => {
