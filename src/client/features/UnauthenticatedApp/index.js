@@ -13,6 +13,8 @@ import { fetchUsers, usersSelector } from '../../slices/users';
 import NavBar from '../UnauthComponents/Navbar';
 import LandingPage from '../UnauthPages/LandingPage';
 import AuthPage from '../UnauthPages/AuthPage';
+import PrivacyPage from '../UnauthPages/PrivacyPage';
+import ContactPage from '../UnauthPages/ContactPage';
 import NoMatchPage from '../../common/components/NoMatchPage';
 
 const UnauthenticatedApp = () => {
@@ -52,6 +54,12 @@ const UnauthenticatedApp = () => {
           </Route>
           <Route exact path='/signup'>
             <AuthPage newUser />
+          </Route>
+          <Route exact path='/privacy'>
+            <PrivacyPage />
+          </Route>
+          <Route exact path='/contact'>
+            <ContactPage />
           </Route>
           <Redirect from='/:username/dashboard' to='/login' />
           <Redirect from='/:username/articles' to='/login' />
