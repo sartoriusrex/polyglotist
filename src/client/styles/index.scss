@@ -1,5 +1,64 @@
-$primary-color: blue;
+@import '_variables.scss';
+
+@font-face {
+  font-family: 'Alegreya';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/alegreya/alegreya-regular.ttf'); 
+  src: local('Alegreya Regular'), local('Alegreya'),
+       url('../fonts/alegreya/alegreya-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/alegreya/alegreya-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/alegreya/alegreya-regular.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/alegreya/alegreya-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/alegreya/alegreya-regular.svg') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/lato/lato-regular.ttf'); 
+  src: local('Lato Regular'), local('Lato'),
+       url('../fonts/lato/lato-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/lato/lato-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/lato/lato-regular.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/lato/lato-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/lato/lato-regular.svg') format('svg'); /* Legacy iOS */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Alegreya', serif;
+  background: transparent;
+  scroll-behavior: smooth;
+
+  outline: 1px solid red;
+}
+
+ul, ol {
+  list-style: none;
+}
 
 body {
   color: $primary-color;
+}
+
+a {
+  text-decoration: none;
+  color: $white;
+  background: $darkest-green;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  color: $white;
+  line-height: 1.25;
+  font-weight: normal;
+}
+
+p {
+  line-height: 1.5;
 }

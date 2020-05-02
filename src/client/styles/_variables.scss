@@ -1,0 +1,35 @@
+// Neutrals
+$white: #FFFFFF;
+$light-gray: #F0F4F8;
+$dark-blue-gray: #9FB3C8;
+
+// purples
+$pale-purple: #CFBCF2;
+$light-purple: #8662C7;
+$dark-purple: #653CAD;
+
+// greens
+$lighest-pale-green: #C6F7E2;
+$light-pale-green: #8EEDC7;
+$pale-green: #3EBD93;
+$green: #147D64;
+$darkest-green: #014D40;
+
+// blues
+$light-pale-blue: #B6E0FE;
+$blue: #186FAF;
+$darkest-blue: #102A43;
+
+// yellows
+$pale-yellow: #F8E3A3;
+$yellow: #F7D070;
+$mustard-yellow: #C99A2E;
+
+// App variables
+$hover-color: $light-purple;
+$primary-color: $darkest-green;
+$tan-value-content: 0.13397459621;
+$tan-value-section: 0.17863279495;
+$content-width: 100vw;
+$skew-padding: $content-width*$tan-value-content;
+$skew-padding-section: ($content-width*$tan-value-section)-$skew-padding+1;

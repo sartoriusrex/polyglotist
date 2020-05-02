@@ -6,7 +6,7 @@ const crawlSource = async function( src ) {
   const sourceCrawler = require(`./${src.name}`);
   const { url, language } = src;
 
-  if( src.name === 'twenty') {
+  if( src.name === 'figaro') {
     await page.goto(src.url);
 
     const text = await sourceCrawler(page, url, language);

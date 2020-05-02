@@ -1,0 +1,54 @@
+@import '../../../styles/_variables';
+
+#hero {
+  position: relative;
+  margin-top: $skew-padding-section;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle at 0 100%, $green, $darkest-green);
+    transform: skewY(-15deg);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1rem;
+    background: linear-gradient(269.26deg, #3EBD93 1.89%, rgba(62, 189, 147, 0) 67.83%), #8EEDC7;
+    transform: skewY(-15deg);
+  }
+}
+
+.hero-content {
+  position: relative;
+  padding-top: $skew-padding;
+  padding-bottom: 2rem;
+}
+
+h1 {
+  font-size: 1.75rem;
+  width: 14.375rem;
+  margin-left: 1.25rem;
+  margin-top: 1.3rem;
+  margin-bottom: 1.87rem;
+}
+
+p {
+  font-size: .875rem;
+  width: 13.95rem;
+  margin-bottom: 1.875rem;
+  margin-left: 2.5rem;
+}
+
+.cta-container {
+  margin-left: 3.75rem;
+}
+

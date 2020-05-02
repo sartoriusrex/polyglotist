@@ -12,8 +12,6 @@ import { fetchUsers, usersSelector } from '../../slices/users';
 
 import NavBar from '../UnauthComponents/Navbar';
 import LandingPage from '../UnauthPages/LandingPage';
-import AboutPage from '../UnauthPages/AboutPage';
-import FeaturesPage from '../UnauthPages/FeaturesPage';
 import AuthPage from '../UnauthPages/AuthPage';
 import NoMatchPage from '../../common/components/NoMatchPage';
 
@@ -49,12 +47,6 @@ const UnauthenticatedApp = () => {
           <Route exact path='/'>
             <LandingPage />
           </Route>
-          <Route exact path='/about'>
-            <AboutPage />
-          </Route>
-          <Route exact path='/features'>
-            <FeaturesPage />
-          </Route>
           <Route exact path='/login'>
             <AuthPage />
           </Route>
@@ -71,7 +63,7 @@ const UnauthenticatedApp = () => {
         </Switch>
       </Router>
 
-      {renderUsers()}
+      {/* {renderUsers()} */}
     </main>
   );
 };

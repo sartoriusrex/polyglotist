@@ -31,12 +31,12 @@ module.exports = {
           url: url[1],
           language: url[2]
         }
-        return await crawlSource( src ); //return text and info for each source given name and url
+        // return await crawlSource( src ); //return text and info for each source given name and url
         // returns the text data, the source (url), and the language
       })
     );
 
-    if (sourceTexts.error) return res
+    if (sourceTexts.error || !sourceTexts ) return res
       .status(500)
       .send({message: 'error crawling'});
 

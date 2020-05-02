@@ -9,28 +9,25 @@ const Dashboard = () => {
   const { message } = useSelector(messageSelector);
   const { user } = useSelector(authSelector);
   const settings = useSelector(settingsSelector);
+  const { sources } = settings;
 
-  useEffect( () => {
-    if (settings) {
-      const { sources } = settings;
-
+  useEffect(() => {
+    if (sources) {
       async function getSomethinawait() {
-        let result = await fetch('/api/crawl/',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(sources)
-          }
-        )
+        let result = await fetch('/api/crawl/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(sources),
+        });
 
         console.log(result);
       }
 
       getSomethinawait();
     }
-  }, [settings]);
+  }, [sources]);
 
   return (
     <section>
@@ -38,7 +35,7 @@ const Dashboard = () => {
       <h1>Dashboard</h1>
       <p>This is the Dashboard </p>
     </section>
-  )
-}
+  );
+};
 
 export default Dashboard;
