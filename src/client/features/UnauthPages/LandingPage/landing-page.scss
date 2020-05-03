@@ -173,9 +173,12 @@ footer {
     text-align: right;
   }
 
+  li {
+    margin-bottom: 1rem;
+  }
+
   a {
     color: $blue-gray;
     font-size: .75rem;
-    margin-bottom: 1rem;
   }
 }
