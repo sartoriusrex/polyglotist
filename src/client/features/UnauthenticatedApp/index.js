@@ -41,38 +41,36 @@ const UnauthenticatedApp = () => {
   }
 
   return (
-    <main>
-      <Router history={history}>
-        <NavBar />
+    <Router history={history}>
+      <NavBar />
+      <main>
 
-        <Switch>
-          <Route exact path='/'>
-            <LandingPage />
-          </Route>
-          <Route exact path='/login'>
-            <AuthPage />
-          </Route>
-          <Route exact path='/signup'>
-            <AuthPage newUser />
-          </Route>
-          <Route exact path='/privacy'>
-            <PrivacyPage />
-          </Route>
-          <Route exact path='/contact'>
-            <ContactPage />
-          </Route>
-          <Redirect from='/:username/dashboard' to='/login' />
-          <Redirect from='/:username/articles' to='/login' />
-          <Redirect from='/:username/words' to='/login' />
-          <Redirect from='/:username/practice' to='/login' />
-          <Redirect from='/:username/settings' to='/login' />
-          <Redirect from='/:username/create_settings' to='/login' />
-          <Route component={ NoMatchPage } />
-        </Switch>
-      </Router>
-
-      {/* {renderUsers()} */}
-    </main>
+      <Switch>
+        <Route exact path='/'>
+          <LandingPage />
+        </Route>
+        <Route exact path='/login'>
+          <AuthPage />
+        </Route>
+        <Route exact path='/signup'>
+          <AuthPage newUser />
+        </Route>
+        <Route exact path='/privacy'>
+          <PrivacyPage />
+        </Route>
+        <Route exact path='/contact'>
+          <ContactPage />
+        </Route>
+        <Redirect from='/:username/dashboard' to='/login' />
+        <Redirect from='/:username/articles' to='/login' />
+        <Redirect from='/:username/words' to='/login' />
+        <Redirect from='/:username/practice' to='/login' />
+        <Redirect from='/:username/settings' to='/login' />
+        <Redirect from='/:username/create_settings' to='/login' />
+        <Route component={ NoMatchPage } />
+      </Switch>
+      </main>
+    </Router>
   );
 };
 

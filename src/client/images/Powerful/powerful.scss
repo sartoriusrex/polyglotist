@@ -1,0 +1,31 @@
+@keyframes rotateTime {
+  0% {
+    transform: rotate(0);
+  }
+
+  45% {
+    transform: rotate(0);
+  }
+
+  48% {
+    transform: rotate(-0.1turn);
+  }
+
+  52% {
+    transform: rotate(0.6turn);
+  }
+
+  55% {
+    transform: rotate(0.5turn);
+  }
+
+  100% {
+    transform: rotate(0.5turn);
+  }
+}
+
+.powerful,
+.sand {
+  transform-origin: center;
+  animation: 6s rotateTime ease-in-out infinite alternate;
+}

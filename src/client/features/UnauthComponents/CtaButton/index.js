@@ -4,7 +4,7 @@ import './cta-button.scss';
 
 const CtaButton = () => {
   return (
-    <button class='cta-button'>
+    <button className='cta-button'>
       Get Started
     </button>
   )

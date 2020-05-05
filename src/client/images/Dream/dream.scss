@@ -1,0 +1,71 @@
+@keyframes floatingWordsLeft {
+  0% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: rotateX(20deg) rotateY(8deg);
+  }
+}
+
+@keyframes floatingWordsRight {
+  0% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: rotateX(20deg) rotateY(-8deg);
+  }
+}
+
+@keyframes floatingWordsCenter {
+  0% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: rotateX(20deg);
+  }
+}
+
+.floating-right {
+  transform-origin: center;
+  animation: floatingWordsRight 4s ease-in-out infinite;
+}
+
+.floating-left {
+  transform-origin: center;
+  animation: floatingWordsLeft 4s ease-in-out infinite;
+}
+
+.floating-center {
+  transform-origin: top;
+  animation: floatingWordsCenter 4s ease-in-out infinite;
+}
+
+.focal,
+.paraula,
+.word {
+  animation-delay: 1s;
+}
+
+.mot,
+.calima,
+.tu {
+  animation-delay: .1s;
+}
+
+.wort,
+.salita,
+.neno {
+  animation-delay: 2s;
+}

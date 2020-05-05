@@ -1,6 +1,6 @@
 @import '../../../styles/_variables';
 
-nav {
+.nav-top {
   width: 100%;
   background: none;
   display: flex;
@@ -11,16 +11,37 @@ nav {
   top: 0;
   left: 0;
   z-index: 1;
+  transition: background 50ms linear, box-shadow 50mss linear;
+}
+
+.nav-scroll {
+  background: $green;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .logo-container {
   width: 50px;
   height: 50px;
   object-fit: contain;
+  position: relative;
 
-  img {
-    max-width: 100%;
-    max-height: 100%;
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .svg-visible {
+    opacity: 1;
+    z-index: 1;
+    transition: opacity 50ms linear;
+  }
+
+  .svg-invisible {
+    opacity: 0;
+    z-index: 0;
+    transition: opacity 50ms linear;
   }
 }
 
@@ -28,5 +49,28 @@ nav {
   width: 33%;
   display: flex;
   justify-content: space-between;
-  align-items: center;;
+  align-items: center;
+
+  a {
+    position: relative;
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: -100%;
+      left: 0;
+      right: 0;
+      padding-bottom: 0.875rem;
+      border-bottom: 2px solid $light-purple;
+      transform: scaleX(0);
+      transition: transform 100ms linear;
+    }
+
+    &:hover::after,
+    &:focus::after,
+    &:active::after {
+      transform: scale(1);
+    }
+  }
 }

@@ -22,7 +22,12 @@
     left: 0;
     right: 0;
     height: 1rem;
-    background: linear-gradient(269.26deg, #3EBD93 1.89%, rgba(62, 189, 147, 0) 67.83%), #8EEDC7;
+    background: linear-gradient(
+        269.26deg,
+        #3ebd93 1.89%,
+        rgba(62, 189, 147, 0) 67.83%
+      ),
+      #8eedc7;
     transform: skewY(-15deg);
   }
 }
@@ -33,7 +38,7 @@
   padding-bottom: 2rem;
 
   p {
-    font-size: .875rem;
+    font-size: 0.875rem;
     width: 13.95rem;
     margin-bottom: 1.875rem;
     margin-left: 2.5rem;
@@ -45,19 +50,13 @@
 .hero-title-container {
   display: flex;
   justify-content: space-between;
+  padding: 1.3rem 1.25rem 1.875rem;
 
   h1 {
     font-size: 1.75rem;
     width: 14.375rem;
-    margin-left: 1.25rem;
-    margin-top: 1.3rem;
-    margin-bottom: 1.875rem;
     font-family: 'Alegreya';
     color: $white;
-  }
-
-  img {
-    margin-right: 1.25rem;
   }
 }
 
@@ -101,7 +100,7 @@
 .section-content-container {
   display: flex;
   justify-content: space-between;
-  
+
   p {
     max-width: 50%;
     padding-right: 1rem;
@@ -129,8 +128,8 @@
 
   h2 {
     color: $dark-purple;
-    margin-bottom: .625rem;
-    padding-top: 1.25rem;
+    margin-bottom: 0.625rem;
+    margin-top: 1.25rem;
     font-size: 1.5rem;
   }
 
@@ -147,7 +146,7 @@ footer {
 
   p {
     color: $light-blue-gray;
-    font-size: .75rem;
+    font-size: 0.75rem;
     text-align: center;
   }
 }
@@ -160,12 +159,10 @@ footer {
 
 .footer-brand-container {
   width: 50%;
-  object-fit: contain;
+}
 
-  img {
-    max-width: 100%;
-    max-height: 100%;
-  }
+.brand-svg {
+  max-width: none;
 }
 
 .footer-content-links {
@@ -179,6 +176,12 @@ footer {
 
   a {
     color: $blue-gray;
-    font-size: .75rem;
+    font-size: 0.75rem;
+
+    &:hover,
+    &:focus,
+    &:active {
+      text-decoration: underline;
+    }
   }
 }
