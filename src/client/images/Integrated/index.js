@@ -27,7 +27,7 @@ const Integrated = () => {
       <line
         className='line bottom'
         id="line1494"
-        stroke-width="5"
+        strokeWidth="5"
         stroke="#CFBCF2"
         y2="71.5"
         x2="74"
@@ -36,7 +36,7 @@ const Integrated = () => {
       <line
         className='line middle'
         id="line1496"
-        stroke-width="5"
+        strokeWidth="5"
         stroke="#653CAD"
         y2="21.9487"
         x2="51.9994"
@@ -45,7 +45,7 @@ const Integrated = () => {
       <line
         className='line left'
         id="line1498"
-        stroke-width="5"
+        strokeWidth="5"
         stroke="#8662C7"
         y2="18.2793"
         x2="46.611"
@@ -58,12 +58,12 @@ const Integrated = () => {
         x2="118.24604"
         y2="20.679167"
         stroke="#8662c7"
-        stroke-width="4.77827"
+        strokeWidth="4.77827"
         id="line1500" />
       <line
         className='line top'
         id="line1502"
-        stroke-width="5"
+        strokeWidth="5"
         stroke="#653CAD"
         y2="16.5"
         x2="115"
@@ -72,7 +72,7 @@ const Integrated = () => {
       <circle
         className='circle cir-c'
         id="circle1504"
-        stroke-width="5"
+        strokeWidth="5"
         stroke="#F7D070"
         r="5"
         cy="71.5"
@@ -80,7 +80,7 @@ const Integrated = () => {
       <circle
         className='circle cir-d'
         id="circle1506"
-        stroke-width="5"
+        strokeWidth="5"
         stroke="#F7D070"
         r="5"
         cy="71.5"
@@ -88,7 +88,7 @@ const Integrated = () => {
       <circle
         className='circle cir-a'
         id="circle1508"
-        stroke-width="5"
+        strokeWidth="5"
         stroke="#F7D070"
         r="5"
         cy="16.5"
@@ -96,7 +96,7 @@ const Integrated = () => {
       <circle
         className='circle cir-b'
         id="circle1510"
-        stroke-width="5"
+        strokeWidth="5"
         stroke="#F7D070"
         r="5"
         cy="16.5"

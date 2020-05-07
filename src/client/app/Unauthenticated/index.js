@@ -6,15 +6,15 @@ import {
   Redirect
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import history from '../../app/history';
+import history from '../history';
 
 import { fetchUsers, usersSelector } from '../../slices/users';
 
-import NavBar from '../UnauthComponents/Navbar';
-import LandingPage from '../UnauthPages/LandingPage';
-import AuthPage from '../UnauthPages/AuthPage';
-import PrivacyPage from '../UnauthPages/PrivacyPage';
-import ContactPage from '../UnauthPages/ContactPage';
+import NavBar from '../../features/Navbar';
+import LandingPage from '../../features/UnauthPages/LandingPage';
+import AuthPage from '../../features/UnauthPages/AuthPage';
+import PrivacyPage from '../../features/UnauthPages/PrivacyPage';
+import ContactPage from '../../features/UnauthPages/ContactPage';
 import NoMatchPage from '../../common/components/NoMatchPage';
 
 const UnauthenticatedApp = () => {
@@ -42,7 +42,7 @@ const UnauthenticatedApp = () => {
 
   return (
     <Router history={history}>
-      <NavBar />
+      <NavBar history={history} />
       <main>
 
       <Switch>

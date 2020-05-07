@@ -5,10 +5,10 @@ import { login, authSelector } from '../slices/auth';
 import '../styles/index.scss';
 
 const AuthenticatedApp = React.lazy(
-  () => import('../features/AuthenticatedApp')
+  () => import('./Authenticated')
 );
 const UnauthenticatedApp = React.lazy(
-  () => import('../features/UnauthenticatedApp')
+  () => import('./Unauthenticated')
 );
 
 const App = () => {

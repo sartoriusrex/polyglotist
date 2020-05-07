@@ -6,19 +6,19 @@ import {
   Route,
   Redirect
 } from 'react-router-dom';
-import history from '../../app/history';
+import history from '../history';
 
 import { settingsSelector } from '../../slices/settings';
 import { authSelector } from '../../slices/auth';
 
-import Navbar from '../AuthComponents/Navbar';
-import Dashboard from '../AuthPages/Dashboard';
-import CreateAccountPage from '../AuthPages/CreateAccountPage';
-import ArticlesPage from '../AuthPages/ArticlesPage';
-import WordsPage from '../AuthPages/WordsPage';
-import SettingsPage from '../AuthPages/SettingsPage';
-import PracticePage from '../AuthPages/PracticePage';
-import UpdateSettingsPage from '../AuthPages/UpdateSettingsPage';
+import Navbar from '../../features/Navbar';
+import Dashboard from '../../features/AuthPages/Dashboard';
+import CreateAccountPage from '../../features/AuthPages/CreateAccountPage';
+import ArticlesPage from '../../features/AuthPages/ArticlesPage';
+import WordsPage from '../../features/AuthPages/WordsPage';
+import SettingsPage from '../../features/AuthPages/SettingsPage';
+import PracticePage from '../../features/AuthPages/PracticePage';
+import UpdateSettingsPage from '../../features/AuthPages/UpdateSettingsPage';
 import NoMatchPage from '../../common/components/NoMatchPage';
 
 const AuthenticatedApp = () => {

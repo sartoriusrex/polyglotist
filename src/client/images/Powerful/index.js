@@ -5,7 +5,7 @@ import './powerful.scss';
 const Powerful = () => {
   return(
     <svg
-      class='powerful'
+      className='powerful'
       id="svg2115"
       version="1.1"
       fill="none"
@@ -55,12 +55,12 @@ const Powerful = () => {
         y="72"
         x="22" />
       <path
-        class='sand'
+        className='sand'
         id="path2111"
         fill="#F7D070"
         d="M45 52.5L53.6602 57H36.3397L45 52.5Z" />
       <rect
-        class='sand'
+        className='sand'
         id="rect2113"
         fill="#F7D070"
         rx="0.5"

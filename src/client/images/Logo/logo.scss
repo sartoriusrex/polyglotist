@@ -1,0 +1,61 @@
+@import '../../styles/_variables';
+
+.logo-circle-1 {
+  fill:none;
+  fill-opacity:1;
+  stroke: $white;
+  stroke-width:1.32292;
+  stroke-miterlimit:4;
+  stroke-dasharray:none;
+  stroke-opacity:1
+}
+
+.logo-g-1 {
+  font-size:28.2222px;
+  line-height:1.25;
+  font-family:Alegreya;
+  -inkscape-font-specification:'Alegreya, Normal';
+  white-space:pre;
+  shape-inside:url(#rect841);
+  stroke-width:15.875;
+  stroke-miterlimit:4;
+  stroke-dasharray:none
+}
+
+.logo-path-1 {
+  font-size:29.9861px;
+  fill: $white;
+  fill-opacity:1;
+  stroke-width:15.875;
+  stroke-miterlimit:4;
+  stroke-dasharray:none
+}
+
+.logo-g-2 {
+  font-size:10.5833px;
+  line-height:1.25;
+  font-family:Alegreya;
+  -inkscape-font-specification:'Alegreya, Normal';
+  stroke-width:0.264583
+}
+
+.logo-path-2 {
+  font-size:26.4583px;
+  fill: $white;
+  fill-opacity:1;
+  stroke-width:0.264583
+}
+
+.logo-landing-green {
+  .logo-path-2 {
+    fill: $green;
+  }
+
+  .logo-path-1 {
+    fill: $green;
+  }
+
+  .logo-circle-1 {
+    stroke: $green;
+  }
+}
