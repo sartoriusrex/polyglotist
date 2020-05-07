@@ -42,7 +42,7 @@ const UnauthenticatedApp = () => {
 
   return (
     <Router history={history}>
-      <NavBar history={history} />
+      <NavBar />
       <main>
 
       <Switch>

@@ -7,13 +7,14 @@ import { logout, authSelector } from '../../slices/auth';
 import './navbar.scss';
 import Logo from '../../images/Logo';
 
-const Nav = (props) => {
-  const { landingPage, children } = props;
+const Nav = ({children}) => {
   const [isTop, setIsTop] = useState(true);
   const positionThreshold = 20;
+  const root = window.location.pathname === '/';
+  const [isHome, setIsHome] = useState(root);
 
   useEffect(() => {
-    if( landingPage ) {
+    if( isHome ) {
       document.addEventListener('scroll', () => {
         const scrollCheck = window.scrollY < positionThreshold;
         if (scrollCheck !== scroll) {
@@ -21,26 +22,20 @@ const Nav = (props) => {
         }
       });
     }
+
+    document.addEventListener('click', () => {
+      const { pathname } = window.location;
+
+      if (pathname !== '/') setIsHome(false);
+        else setIsHome(true);
+    });
   });
 
-  if (landingPage ) {
-    return (
-      <nav className={isTop ? 'nav-top' : 'nav-top nav-green'}>
-        <Link to='/'>
-          <div className='logo-container' tabIndex='0'>
-            <Logo landingStyle={isTop} />
-          </div>
-        </Link>
-        {children}
-      </nav>
-    )
-  }
-
   return (
-    <nav className='nav-top nav-green'>
+    <nav className={(isTop && isHome) ? 'nav-top' : 'nav-top nav-green'}>
       <Link to='/'>
         <div className='logo-container' tabIndex='0'>
-          <Logo />
+          <Logo landingStyle={isTop && isHome} />
         </div>
       </Link>
       {children}
@@ -108,29 +103,14 @@ const AuthNav = (user) => {
   )
 }
 
-const NavBar = ({history}) => {
+const NavBar = () => {
   const { user } = useSelector(authSelector);
-  const isHome = history.location.pathname === '/';
 
-  if (user) {
-    return(
-      <Nav>
-        <AuthNav user={user}/>
-      </Nav>
-    )
-  } else if (isHome) {
-    return (
-      <Nav landingPage>
-        <UnAuthNav />
-      </Nav>
-    )
-  } else {
-    return (
-      <Nav>
-        <UnAuthNav />
-      </Nav>
-    )
-  }
+  return(
+    <Nav >
+      { user ? <AuthNav user={user} /> : <UnAuthNav /> }
+    </Nav>
+  )
 };
 
 export default NavBar;
