@@ -75,7 +75,7 @@ const AuthPage = ({ newUser }) => {
         <h2>There was a Problem Loading your User Information. Please try again.</h2>
       )}
 
-      <h1>{newUser ? 'Sign up' : 'Log in'}</h1>
+      <h1>{newUser ? 'Create Account' : 'Log In'}</h1>
 
       {
         newUser &&

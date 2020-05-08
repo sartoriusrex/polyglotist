@@ -57,6 +57,11 @@
       width: 100%;
       padding: 1rem;
       border: 1px solid $dark-purple;
+      font-size: 1.25rem;
+
+      &::placeholder {
+        font-size: 1rem;
+      }
     }
 
     p {
