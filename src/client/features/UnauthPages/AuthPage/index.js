@@ -152,7 +152,7 @@ const AuthPage = ({ newUser }) => {
           />
           { 
             newUser &&
-            <p id='desc-un'>Must be between 8 and 16 characters long</p>
+            <p id='desc-un'>Must be between 8 and 16 characters long and only contain letters or numbers</p>
           }
         </label>
         <label htmlFor='password'>

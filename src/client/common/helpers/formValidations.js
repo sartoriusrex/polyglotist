@@ -17,14 +17,22 @@ export function validateEmail(emailString = '', errors) {
 
 export function validateUsername(usernameString = '', errors) {
   const stringLength = usernameString.length;
-  const usernameErrors = errors.usernameError;
+  const test = /^[a-z0-9]+$/i.test(usernameString);
+  let usernameErrors = errors.usernameError;
 
   if (stringLength < 8 || stringLength > 16) {
     usernameErrors.push('Username must be at least 8 -- but no longer than 16 -- characters long.');
-    errors.usernameError = Array.from(new Set(usernameErrors));
   } else {
-    errors.usernameError = []
+    usernameErrors = usernameErrors.filter( err => err !== 'Username must be at least 8 -- but no longer than 16 -- characters long.');
   }
+
+  if (!test) {
+    usernameErrors.push('Username must contain only letters or numbers.');
+  } else {
+    usernameErrors = usernameErrors.filter( err => err !== 'Username must contain only letters or numbers.');
+  }
+
+  errors.usernameError = Array.from(new Set(usernameErrors));
 
   return errors;
 }
