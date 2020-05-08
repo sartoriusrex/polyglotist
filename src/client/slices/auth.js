@@ -151,8 +151,11 @@ export function login(username, password) {
           history.push(`/${username}/dashboard`);
         }
         dispatch(sendMessage(data.message));
-      } else {
+      } else if (response.status === 200 && data.user === null) {
         dispatch(loginUserSuccess(null));
+      } else {
+        dispatch(loginUserFailure());
+        dispatch(sendMessage(data.message));
       }
 
     } catch (err) {

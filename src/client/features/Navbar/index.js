@@ -7,7 +7,7 @@ import { logout, authSelector } from '../../slices/auth';
 import './navbar.scss';
 import Logo from '../../images/Logo';
 
-const Nav = ({children}) => {
+const Nav = ({children, user}) => {
   const positionThreshold = 20;
   const root = window.location.pathname === '/';
   const [isHome, setIsHome] = useState(root);
@@ -33,7 +33,7 @@ const Nav = ({children}) => {
 
   return (
     <nav className={(isTop && isHome) ? 'nav-top' : 'nav-top nav-green'}>
-      <Link to='/'>
+      <Link to={ user ? `/${user.username}/dashboard` : '/' }>
         <div className='logo-container' tabIndex='0'>
           <Logo landingStyle={isTop && isHome} />
         </div>
@@ -52,7 +52,7 @@ const UnAuthNav = () => {
   )
 }
 
-const AuthNav = (user) => {
+const AuthNav = ({user}) => {
   const { username } = user;
   const dispatch = useDispatch();
 
@@ -106,7 +106,7 @@ const NavBar = () => {
   const { user } = useSelector(authSelector);
 
   return(
-    <Nav >
+    <Nav user={ user }>
       { user ? <AuthNav user={user} /> : <UnAuthNav /> }
     </Nav>
   )
