@@ -50,7 +50,7 @@ svg {
   background: transparent;
   scroll-behavior: smooth;
 
-  // outline: 1px solid red;
+  outline: 1px solid red;
 }
 
 main {
@@ -69,6 +69,12 @@ body {
 a {
   text-decoration: none;
   color: $white;
+}
+
+button {
+  &:hover, &:active, &:visited, &:focus {
+    cursor: pointer;
+  }
 }
 
 h1,

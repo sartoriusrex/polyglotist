@@ -17,6 +17,8 @@ import {
 
 import './AuthPage.scss';
 
+import LoadingIndicator from '../../../common/components/LoadingIndicator';
+
 const AuthPage = ({ newUser }) => {
   const dispatch = useDispatch();
   const { loading, hasErrors } = useSelector(authSelector);
@@ -64,29 +66,42 @@ const AuthPage = ({ newUser }) => {
   }
 
   return (
-    <section>
+    <section className='auth-form'>
       {message && <div>{message}</div>}
 
-      {loading && <h2>Loading User Profile </h2>}
+      {loading && <LoadingIndicator />}
 
       {hasErrors && (
         <h2>There was a Problem Loading your User Information. Please try again.</h2>
       )}
 
-      <h1>{newUser ? <div>Sign up</div> : <div>Log in</div>}</h1>
+      <h1>{newUser ? 'Sign up' : 'Log in'}</h1>
 
-      {errors && Object.entries(errors).map( errorArray => {
-        return (
-          <div
-            key={errorArray[0]}
-            className='form-error'
-            id={errorArray[0]}
-          >
-            {errorArray[1].map( value => <p key={value}> {value} </p>)}
-          </div>
-        )
-      })
-        
+      {
+        newUser &&
+        errors &&
+        <div className='form-error-container'>
+          {
+            Object.entries(errors)
+            .map( errorArray => {
+              return (
+                <ul
+                  key={errorArray[0]}
+                  id={errorArray[0]}
+                >
+                  {errorArray[1].map( value => 
+                    <li
+                      key={value}
+                      className='form-error'
+                    > 
+                      - {value} 
+                    </li>
+                  )}
+                </ul>
+              )
+            })
+          }
+        </div>
       }
 
       <form
@@ -96,9 +111,11 @@ const AuthPage = ({ newUser }) => {
       >
         {newUser ? (
           <label htmlFor='email'>
-            Email
-            <span className='required' aria-hidden='true'>*</span>
-            <span className='sr-only'>Required</span>
+            <div>
+              email
+              <span className='required' aria-hidden='true'>*</span>
+              <span className='sr-only'>Required</span> 
+            </div>
             <input
               required
               name='email'
@@ -115,9 +132,11 @@ const AuthPage = ({ newUser }) => {
         )
           : <div />}
         <label htmlFor='username'>
-          Username
-          <span className='required' aria-hidden='true'>*</span>
-          <span className='sr-only'>Required</span>
+          <div>
+            username
+            <span className='required' aria-hidden='true'>*</span>
+            <span className='sr-only'>Required</span>
+          </div>
           <input
             required
             name='username'
@@ -127,15 +146,20 @@ const AuthPage = ({ newUser }) => {
             onChange={(e) => handleChange(e, setUsername)}
             onBlur={(e) => validateInput(e, validateUsername)}
             value={username}
-            className={errors.usernameError.length > 0 ? 'form-error' : ''}
+            className={(errors.usernameError.length > 0 && newUser)? 'form-error' : ''}
             aria-describedby='desc-un usernameError'
           />
-          <p id='desc-un'>Must be between 8 and 16 characters long</p>
+          { 
+            newUser &&
+            <p id='desc-un'>Must be between 8 and 16 characters long</p>
+          }
         </label>
         <label htmlFor='password'>
-          Password
-          <span className='required' aria-hidden='true'>*</span>
-          <span className='sr-only'>Required</span>
+          <div>
+            password
+            <span className='required' aria-hidden='true'>*</span>
+            <span className='sr-only'>Required</span>
+          </div>
           <input
             required
             name='password'
@@ -143,23 +167,34 @@ const AuthPage = ({ newUser }) => {
             placeholder='secret_password'
             type={passwordVisible ? 'text' : 'password'}
             onChange={(e) => handleChange(e, setPassword)}
-            onBlur={
-              (e) => validateInput(
+            onBlur={(e) => validateInput(
                 e,
                 validatePassword,
                 username
               )}
             value={password}
-            className={errors.passwordError.length > 0 ? 'form-error' : ''}
+            className={(errors.passwordError.length > 0 && newUser) ? 'form-error' : ''}
             aria-describedby='desc-pw passwordError'
           />
-          <p id='desc-pw'>Must not be the same as your Username, contain between 8 and 30 characters, and contain at least 1 number</p>
+          {
+            newUser &&
+            <p id='desc-pw'>Must not be the same as your Username, contain between 8 and 30 characters, and contain at least 1 number</p>
+          }
+          <button
+            type='button'
+            onClick={togglePasswordVisible}
+            className={ passwordVisible ? 'form-show-ps-btn' : ''}
+          >
+            { passwordVisible ? 'hide password' : 'show password'}
+          </button>
         </label>
         {newUser ? (
           <label htmlFor='verifyPassword'>
-            Verify password
-            <span className='required' aria-hidden='true'>*</span>
-            <span className='sr-only'>Required</span>
+            <div>
+              verify password
+              <span className='required' aria-hidden='true'>*</span>
+              <span className='sr-only'>Required</span>
+            </div>
             <input
               required
               name='verifyPassword'
@@ -180,13 +215,15 @@ const AuthPage = ({ newUser }) => {
           </label>
         )
           : <div />}
-        <button type='submit' onClick={handleSubmit}>
+        <button 
+          type='submit'
+          onClick={handleSubmit}
+          disabled={Object.values(errors).flat().length > 0 && newUser}
+          className='form-submit-button'
+        >
           Submit
         </button>
       </form>
-      <button type='button' onClick={togglePasswordVisible}>
-        show password
-      </button>
     </section>
   );
 };

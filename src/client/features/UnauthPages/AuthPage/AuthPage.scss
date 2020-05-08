@@ -1,3 +1,5 @@
+@import '../../../styles/variables';
+
 .form-error {
   color: red;
 }
@@ -10,4 +12,89 @@
   position: absolute;
   white-space: nowrap;
   width: 1px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1.25rem;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  h1 {
+    margin-bottom: 1.25rem;
+  }
+
+  label {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    justify-content: space-between;
+    position: relative;
+    color: $dark-purple;
+
+    span {
+      margin-left: .313rem;
+    }
+
+    div {
+      position: absolute;
+      top: -1rem;
+      left: .9rem;
+      z-index: 1;
+      padding: .313rem;
+      background: $white;
+    }
+
+    input {
+      margin-bottom: .625rem;
+      width: 100%;
+      padding: 1rem;
+      border: 1px solid $dark-purple;
+    }
+
+    p {
+      flex-basis: 100%;
+      padding: 0 .313rem;
+    }
+  }
+
+  button {
+    padding: .625rem;
+    background: $white;
+    border: 1px solid $dark-purple;
+    margin: 0 auto;
+  }
+
+  .form-show-ps-btn {
+    background: $dark-purple;
+    color: $white;
+  }
+
+  .form-submit-button {
+    width: 100%;
+    border: none;
+    background: $green;
+    color: $white;
+    font-size: 1rem;
+
+    &:disabled {
+      background: $light-blue-gray;
+      border: 1px solid $blue-gray;
+    }
+  }
+}
+
+.form-error-container {
+  margin-bottom: 2rem;
+
+  li {
+    margin-bottom: .313rem;
+  }
 }
