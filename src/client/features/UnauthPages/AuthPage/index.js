@@ -7,7 +7,6 @@ import {
   signup,
   authSelector
 } from '../../../slices/auth';
-import { messageSelector } from '../../../slices/messages';
 import { 
   validateEmail,
   validatePassword,
@@ -18,12 +17,11 @@ import {
 import './AuthPage.scss';
 
 import LoadingIndicator from '../../../common/components/LoadingIndicator';
+import ServerMessage from '../../../common/components/ServerMessage';
 
 const AuthPage = ({ newUser }) => {
   const dispatch = useDispatch();
   const { loading, hasErrors } = useSelector(authSelector);
-  const { message } = useSelector(messageSelector);
-
   const method = newUser ? 'POST' : 'GET';
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -36,6 +34,7 @@ const AuthPage = ({ newUser }) => {
     passwordError: [],
     verifyPassword: []
   });
+  const errorsPresent = Object.values(errors).flat().length > 0;
 
   function handleChange(e, func) {
     func(e.target.value);
@@ -58,7 +57,7 @@ const AuthPage = ({ newUser }) => {
     e.preventDefault();
 
     if (newUser) {
-      if (Object.values(errors).flat().length > 0) return;
+      if (errorsPresent) return;
 
       return dispatch(signup(email, username, password));
     }
@@ -67,19 +66,21 @@ const AuthPage = ({ newUser }) => {
 
   return (
     <section className='auth-form'>
-      {message && <div>{message}</div>}
 
       {loading && <LoadingIndicator />}
-
-      {hasErrors && (
-        <h2>There was a Problem Loading your User Information. Please try again.</h2>
-      )}
 
       <h1>{newUser ? 'Create Account' : 'Log In'}</h1>
 
       {
+        hasErrors &&
+        <h2>There was a problem loading your information.</h2>
+      }
+
+      <ServerMessage />
+
+      {
         newUser &&
-        errors &&
+        errorsPresent &&
         <div className='form-error-container'>
           {
             Object.entries(errors)
@@ -218,7 +219,7 @@ const AuthPage = ({ newUser }) => {
         <button 
           type='submit'
           onClick={handleSubmit}
-          disabled={Object.values(errors).flat().length > 0 && newUser}
+          disabled={errorsPresent && newUser}
           className='form-submit-button'
         >
           Submit

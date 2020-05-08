@@ -183,37 +183,42 @@ export function signup(email, username, password) {
 
       const data = await response.json();
 
-      const {
-        id,
-        username,
-        email,
-        readingSpeed,
-        themePreference,
-        practiceMode,
-        notificationMethod,
-        languagePreference,
-        languagesLearning
-      } = data.user;
+      if (response.status === 200) {
+        const {
+          id,
+          username,
+          email,
+          readingSpeed,
+          themePreference,
+          practiceMode,
+          notificationMethod,
+          languagePreference,
+          languagesLearning
+        } = data.user;
 
-      const user = {
-        id,
-        username,
-        email 
-      };
-      dispatch(createUserSuccess(user));
+        const user = {
+          id,
+          username,
+          email 
+        };
+        dispatch(createUserSuccess(user));
 
-      const settings = {
-        readingSpeed,
-        themePreference,
-        practiceMode,
-        notificationMethod,
-        languagePreference,
-        languagesLearning
+        const settings = {
+          readingSpeed,
+          themePreference,
+          practiceMode,
+          notificationMethod,
+          languagePreference,
+          languagesLearning
+        }
+        dispatch(loadSettings(settings));
+
+        history.push(`/${username}/create_account`);
+        dispatch(sendMessage(data.message));
+      } else {
+        dispatch(createUserFailure());
+        dispatch(sendMessage(data.message));
       }
-      dispatch(loadSettings(settings));
-
-      history.push(`/${username}/create_account`);
-      dispatch(sendMessage(data.message));
     } catch (err) {
       console.log(err);
       dispatch(createUserFailure());

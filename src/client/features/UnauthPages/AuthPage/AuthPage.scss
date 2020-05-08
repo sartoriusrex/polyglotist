@@ -27,8 +27,16 @@
     width: 100%;
   }
 
-  h1 {
+  h1, h2 {
     margin-bottom: 1.25rem;
+  }
+
+  h2 {
+    color: $blue;
+    padding: 1.25rem;
+    border: 1px solid $blue;
+    font-size: .75rem;
+    width: 100%;
   }
 
   label {
