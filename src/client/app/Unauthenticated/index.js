@@ -16,6 +16,7 @@ import AuthPage from '../../features/UnauthPages/AuthPage';
 import PrivacyPage from '../../features/UnauthPages/PrivacyPage';
 import ContactPage from '../../features/UnauthPages/ContactPage';
 import NoMatchPage from '../../common/components/NoMatchPage';
+import LoadingIndicator from '../../common/components/LoadingIndicator';
 
 const UnauthenticatedApp = () => {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ const UnauthenticatedApp = () => {
   }, [dispatch]);
 
   function renderUsers() {
-    if (loading) return <h1>Loading</h1>;
+    if (loading) return <LoadingIndicator />;
     if (hasErrors) return <h1>Errors!</h1>;
 
     return users.map((user) => (

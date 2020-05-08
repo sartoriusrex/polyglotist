@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import './landing-page.scss';
 
-import Hero from '../../../images/hero.svg';
+import Hero from '../../../images/Hero';
 import Relevant from '../../../images/Relevant';
 import Integrated from '../../../images/Integrated';
 import Powerful from '../../../images/Powerful';
@@ -62,7 +62,7 @@ const LandingPage = () => (
       </div>
       <div className='section-content-container'>
         <p>
-          Look it up words and phrases immediately from the app, without leaving
+          Look up words and phrases immediately from the app, without leaving
           the article. Save it for later review.
         </p>
         <div className='landing-image-container'>

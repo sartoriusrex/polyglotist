@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login, authSelector } from '../slices/auth';
 import '../styles/index.scss';
 
+import LoadingIndicator from '../common/components/LoadingIndicator';
+
 const AuthenticatedApp = React.lazy(
   () => import('./Authenticated')
 );
@@ -22,11 +24,11 @@ const App = () => {
   return (
     user
       ? (
-        <Suspense fallback={<div>loading</div>}>
+        <Suspense fallback={<LoadingIndicator />}>
           <AuthenticatedApp />
         </Suspense>
       ) : (
-        <Suspense fallback={<div>loading</div>}>
+        <Suspense fallback={<LoadingIndicator />}>
           <UnauthenticatedApp />
         </Suspense>
       )

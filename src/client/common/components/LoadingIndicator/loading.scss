@@ -1,0 +1,183 @@
+.loading-section {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-container {
+  width: 50%;
+  height: 50%;
+}
+
+.loading-indicator {
+  width: 100%;
+  height: 100%;
+}
+
+.loading-line {
+  fill:none;
+  stroke:#8662c7;
+  stroke-dasharray:none;
+  stroke-linecap:round;
+  stroke-linejoin:miter;
+  stroke-miterlimit:4;
+  stroke-opacity:1;
+  stroke-width:1.48116;
+}
+
+.loading-g-letter {
+  font-style:normal;
+  font-variant:normal;
+  font-weight:normal;
+  font-stretch:normal;
+  font-size:15.7689px;
+  line-height:1.25;
+  font-family:Alegreya;
+  -inkscape-font-specification:'Alegreya, Normal';
+  font-variant-ligatures:normal;
+  font-variant-caps:normal;
+  font-variant-numeric:normal;
+  font-variant-east-asian:normal;
+  white-space:pre;
+  shape-inside:url(#rect6691);
+}
+
+.loading-g-2 {
+  font-size:29.9861px;
+  line-height:1.25;
+  font-family:Alegreya;
+  -inkscape-font-specification:'Alegreya, Normal';
+  white-space:pre;
+  shape-inside:url(#rect841);
+  fill:#8662c7;
+  fill-opacity:1;
+  stroke:none;
+  stroke-width:11.5271;
+  stroke-miterlimit:4;
+  stroke-dasharray:none;
+  stroke-opacity:1
+}
+
+.loading-g-3 {
+  font-style:normal;
+  font-variant:normal;
+  font-weight:normal;
+  font-stretch:normal;
+  font-size:15.7689px;
+  font-family:Alegreya;
+  -inkscape-font-specification:'Alegreya, Normal';
+  font-variant-ligatures:normal;
+  font-variant-caps:normal;
+  font-variant-numeric:normal;
+  font-variant-east-asian:normal;
+  fill:#8662c7;
+  fill-opacity:1;
+  stroke-width:0.999636;
+  stroke-miterlimit:4;
+  stroke-dasharray:none
+}
+
+.loading-path-1 {
+  font-variation-settings:normal;
+  opacity:1;
+  vector-effect:none;
+  fill:none;
+  fill-opacity:1;
+  fill-rule:evenodd;
+  stroke:#8662c7;
+  stroke-width:1.5875;
+  stroke-linecap:butt;
+  stroke-linejoin:miter;
+  stroke-miterlimit:4;
+  stroke-dasharray:none;
+  stroke-dashoffset:0;
+  stroke-opacity:1;
+  stop-color:#000000;
+  stop-opacity:1
+}
+
+.loading-path-2 {
+  fill:#000000;
+  fill-opacity:0;
+  stroke:#8662c7;
+  stroke-width:27.0632;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-miterlimit:4;
+  stroke-dasharray:none;
+  stroke-opacity:1;
+  paint-order:stroke fill markers;
+}
+
+$animation-duration: 3s;
+
+.loading-letter-container {
+  animation: $animation-duration rotateLetters ease-in-out infinite alternate;
+  transform-origin: center;
+}
+
+@keyframes rotateLetters {
+  0% {
+    transform: rotate3d(0);
+    opacity:1;
+  }
+
+  100% {
+    transform: rotate3d(0,1,0, 3turn);
+    opacity:.8;
+  }
+}
+
+
+.loading-line {
+  animation: $animation-duration linesAppearing linear infinite;
+  opacity: 0;
+}
+
+.l1 {
+  animation-delay: $animation-duration/12*1;
+}
+.l2 {
+  animation-delay: $animation-duration/12*2;
+}
+.l3 {
+  animation-delay: $animation-duration/12*3;
+}
+.l4 {
+  animation-delay: $animation-duration/12*4;
+}
+.l5 {
+  animation-delay: $animation-duration/12*5;
+}
+.l6 {
+  animation-delay: $animation-duration/12*6;
+}
+.l7 {
+  animation-delay: $animation-duration/12*7;
+}
+.l8 {
+  animation-delay: $animation-duration/12*8;
+}
+.l9 {
+  animation-delay: $animation-duration/12*9;
+}
+.l10 {
+  animation-delay: $animation-duration/12*10;
+}
+.l11 {
+  animation-delay: $animation-duration/12*11;
+}
+.l12 {
+  animation-delay: $animation-duration/12*12;
+}
+
+@keyframes linesAppearing {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

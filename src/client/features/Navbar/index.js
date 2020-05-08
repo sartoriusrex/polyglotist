@@ -8,10 +8,10 @@ import './navbar.scss';
 import Logo from '../../images/Logo';
 
 const Nav = ({children}) => {
-  const [isTop, setIsTop] = useState(true);
   const positionThreshold = 20;
   const root = window.location.pathname === '/';
   const [isHome, setIsHome] = useState(root);
+  const [isTop, setIsTop] = useState(true);
 
   useEffect(() => {
     if( isHome ) {
@@ -26,8 +26,8 @@ const Nav = ({children}) => {
     document.addEventListener('click', () => {
       const { pathname } = window.location;
 
-      if (pathname !== '/') setIsHome(false);
-        else setIsHome(true);
+      if (pathname !== '/' && isHome === true) setIsHome(false);
+      if (pathname === '/' && isHome === false) setIsHome(true);
     });
   });
 
@@ -54,7 +54,6 @@ const UnAuthNav = () => {
 
 const AuthNav = (user) => {
   const { username } = user;
-
   const dispatch = useDispatch();
 
   function onLogoutClick() {
