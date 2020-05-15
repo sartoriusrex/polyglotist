@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import throttle from 'lodash.throttle';
 
 import { logout, authSelector } from '../../slices/auth';
 
@@ -16,22 +17,35 @@ const Nav = (props: any) => {
   const [isTop, setIsTop] = useState(true);
 
   useEffect(() => {
-    if (isHome) {
-      document.addEventListener('scroll', () => {
-        const scrollCheck = window.scrollY < positionThreshold;
-        if (scrollCheck) {
-          setIsTop(scrollCheck);
-        }
-      });
+    function listenScroll() {
+      const scrollCheck = window.scrollY < positionThreshold;
+      if ((scrollCheck && !isTop) || (!scrollCheck && isTop))
+        setIsTop(scrollCheck);
     }
 
-    document.addEventListener('click', () => {
+    function listenLocation() {
       const { pathname } = window.location;
+      if (
+        (pathname !== '/' && isHome === true) ||
+        (pathname === '/' && isHome === false)
+      )
+        setIsHome(!isHome);
+    }
 
-      if (pathname !== '/' && isHome === true) setIsHome(false);
-      if (pathname === '/' && isHome === false) setIsHome(true);
-    });
-  });
+    if (isHome)
+      document.addEventListener(
+        'scroll',
+        throttle(() => listenScroll()),
+        1000
+      );
+
+    document.addEventListener('click', listenLocation);
+
+    return () => {
+      if (isHome) document.removeEventListener('scroll', listenScroll);
+      document.removeEventListener('click', listenLocation);
+    };
+  }, [isTop, isHome]);
 
   return (
     <nav className={isTop && isHome ? 'nav-top' : 'nav-top nav-green'}>
