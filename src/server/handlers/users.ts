@@ -1,3 +1,5 @@
+/// <reference path="../global.d.ts"/>
+
 import * as dotenv from 'dotenv';
 dotenv.config({ path: `${__dirname}/.env` });
 

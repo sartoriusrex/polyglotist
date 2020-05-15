@@ -1,9 +1,11 @@
+/// <reference path="../global.d.ts"/>
+
 require('dotenv').config({ path: `${__dirname}/.env` });
 
 import { Request, Response } from 'express';
 
 const { validationResult } = require('express-validator');
-import * as bcrypt from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import db from '../database';
 import cookie from '../utils/constants';
