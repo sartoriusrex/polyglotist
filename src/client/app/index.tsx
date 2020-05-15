@@ -14,15 +14,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const { signal } = abortController;
-
     dispatch(login());
-
-    return () => {
-      abortController.abort();
-      console.log('\naborted fetch\n');
-    };
   }, []);
 
   return user ? (
