@@ -14,7 +14,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(login(null, null));
+    dispatch(login());
   }, []);
 
   return user ? (

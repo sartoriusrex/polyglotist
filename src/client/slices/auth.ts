@@ -101,7 +101,7 @@ export const {
   logoutUserFailure,
 } = actions;
 
-export function login(username: string | null, password: string | null) {
+export function login(username?: string, password?: string | null) {
   const body = { username, password };
 
   return async (dispatch: Function) => {
