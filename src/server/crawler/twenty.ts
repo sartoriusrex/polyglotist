@@ -62,3 +62,5 @@
 // };
 
 // module.exports = crawlTwenty;
+
+export default {};

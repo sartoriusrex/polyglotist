@@ -187,7 +187,7 @@ export default {
           .then((ids: string[]) => {
             // Convert newSourceIds back into their names
             return Promise.all(
-              ids.map(async (id: { rows: { source_id: string } }) => {
+              ids.map(async (id: any) => {
                 let srcId = id.rows[0].source_id;
 
                 try {

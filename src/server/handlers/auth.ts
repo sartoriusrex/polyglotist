@@ -155,21 +155,16 @@ export default {
           sources: sourceList,
         };
 
-        const verified: boolean = jwt.verify(token, secret, function (
-          err: any,
-          decoded: any
-        ) {
-          if (decoded) return true;
-          return false;
+        jwt.verify(token, secret, {}, function (err: any, decoded: any) {
+          if (err) {
+            return res.status(401).send({ message: 'Please log in.' });
+          } else {
+            return res.status(200).send({
+              user,
+              message: 'Welcome Back!',
+            });
+          }
         });
-
-        if (verified)
-          return res.status(200).send({
-            user,
-            message: 'Welcome Back!',
-          });
-
-        return res.status(401).send({ message: 'Please log in.' });
       } catch (err) {
         console.log(err);
         return res.status(400).send({ message: 'Could not find the user.' });

@@ -4,8 +4,8 @@ declare module 'bcryptjs' {
   export function compare(
     s: any,
     hash: any,
-    callback: any,
-    progressCallback: any
+    callback?: any,
+    progressCallback?: any
   ): any;
 
   export function compareSync(s: any, hash: any): any;
@@ -25,8 +25,8 @@ declare module 'bcryptjs' {
   export function hash(
     s: any,
     salt: any,
-    callback: any,
-    progressCallback: any
+    callback?: any,
+    progressCallback?: any
   ): any;
 
   export function hashSync(s: any, salt: any): any;
