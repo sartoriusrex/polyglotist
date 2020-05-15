@@ -6,6 +6,7 @@ const outputDirectory = 'dist';
 
 module.exports = {
   entry: ['babel-polyfill', './src/client/index.js'],
+  devtool: 'inline-source-map',
   output: {
     path: path.join(__dirname, outputDirectory),
     filename: 'bundle.js',
@@ -14,7 +15,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(ts|js)x?$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -35,7 +36,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['*', '.js', '.jsx'],
+    extensions: ['*', '.js', '.jsx', 'ts', 'tsx'],
   },
   devServer: {
     port: 3000,
