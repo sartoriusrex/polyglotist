@@ -17,13 +17,13 @@ const Nav = (props: any) => {
   const [isTop, setIsTop] = useState(true);
 
   useEffect(() => {
-    function listenScroll() {
+    function listenScroll(): void {
       const scrollCheck = window.scrollY < positionThreshold;
       if ((scrollCheck && !isTop) || (!scrollCheck && isTop))
         setIsTop(scrollCheck);
     }
 
-    function listenLocation() {
+    function listenLocation(): void {
       const { pathname } = window.location;
       if (
         (pathname !== '/' && isHome === true) ||
@@ -35,8 +35,7 @@ const Nav = (props: any) => {
     if (isHome)
       document.addEventListener(
         'scroll',
-        throttle(() => listenScroll()),
-        1000
+        throttle(() => listenScroll(), 250)
       );
 
     document.addEventListener('click', listenLocation);
