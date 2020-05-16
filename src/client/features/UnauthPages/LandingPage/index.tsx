@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import './landing-page.scss';
-import styles from './landingPage.module.scss';
+import styles from './landingPage.module';
 
 import Hero from '../../../images/Hero';
 import Relevant from '../../../images/Relevant';
@@ -18,7 +18,7 @@ const LandingPage = () => (
   <>
     <section id={styles.hero}>
       <div className={styles.heroContent}>
-        <div className='hero-title-container'>
+        <div className={styles.heroTitleContainer}>
           <h1>A simple app for expanding your foreign vocabulary.</h1>
           <Hero />
         </div>
@@ -26,13 +26,13 @@ const LandingPage = () => (
           Polyglotist lets you read foreign texts, look up phrases without
           leaving the page, and review learned vocabulary with spaced repetition
         </p>
-        <div className='cta-container'>
+        <div className={styles.ctaContainer}>
           <CtaButton />
         </div>
       </div>
     </section>
-    <section className='landing-section'>
-      <div className='section-title-container'>
+    <section className={styles.landingSection}>
+      <div className={styles.sectionTitleContainer}>
         <Dream />
         <h2>A Logophile’s Dream</h2>
       </div>
@@ -43,9 +43,9 @@ const LandingPage = () => (
         reading--without ever leaving the page.
       </p>
     </section>
-    <section className='landing-section striped-section'>
-      <div className='striped-section-content'>
-        <div className='section-title-container'>
+    <section className={`${styles.landingSection} ${styles.stripedSection}`}>
+      <div className={styles.stripedSectionContent}>
+        <div className={styles.sectionTitleContainer}>
           <Relevant />
           <h2>Relevant</h2>
         </div>
@@ -56,29 +56,31 @@ const LandingPage = () => (
         </p>
       </div>
     </section>
-    <section className='landing-section'>
-      <div className='section-title-container'>
+    <section className={styles.landingSection}>
+      <div className={styles.sectionTitleContainer}>
         <Integrated />
         <h2>Integrated</h2>
       </div>
-      <div className='section-content-container'>
+      <div className={styles.sectionContentContainer}>
         <p>
           Look up words and phrases immediately from the app, without leaving
           the article. Save it for later review.
         </p>
-        <div className='landing-image-container'>
+        <div className={styles.landingImageContainer}>
           <img src={integratedPNG} alt='integrated gif' />
         </div>
       </div>
     </section>
-    <section className='landing-section striped-section'>
-      <div className='striped-section-content'>
-        <div className='section-title-container'>
+    <section className={`${styles.landingSection} ${styles.stripedSection}`}>
+      <div className={styles.stripedSectionContent}>
+        <div className={styles.sectionTitleContainer}>
           <Powerful />
           <h2>Powerful</h2>
         </div>
-        <div className='section-content-container scc-reversed'>
-          <div className='landing-image-container'>
+        <div
+          className={`${styles.sectionContentContainer} ${styles.sccReversed}`}
+        >
+          <div className={styles.landingImageContainer}>
             <img src={integratedPNG} alt='powerful gif' />
           </div>
           <p>
@@ -88,17 +90,17 @@ const LandingPage = () => (
         </div>
       </div>
     </section>
-    <section className='landing-section cta-section'>
+    <section className={`${styles.landingSection} ${styles.ctaSection}`}>
       <h2>Ready to learn?</h2>
       <p>Create an account to get started</p>
       <CtaButton />
     </section>
     <footer>
-      <div className='footer-content-container'>
-        <div className='footer-brand-container'>
-          <Brand className='brand-svg' />
+      <div className={styles.footerContentContainer}>
+        <div className={styles.footerBrandContainer}>
+          <Brand className={styles.brandSvg} />
         </div>
-        <div className='footer-content-links'>
+        <div className={styles.footerContentLinks}>
           <ul>
             <li>
               <Link to='/privacy'>Privacy & Terms</Link>
