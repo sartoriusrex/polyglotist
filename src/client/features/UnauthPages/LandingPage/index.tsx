@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import './landing-page.scss';
+import styles from './landingPage.module.scss';
 
 import Hero from '../../../images/Hero';
 import Relevant from '../../../images/Relevant';
@@ -15,8 +16,8 @@ import Dream from '../../../images/Dream';
 
 const LandingPage = () => (
   <>
-    <section id='hero'>
-      <div className='hero-content'>
+    <section id={styles.hero}>
+      <div className={styles.heroContent}>
         <div className='hero-title-container'>
           <h1>A simple app for expanding your foreign vocabulary.</h1>
           <Hero />

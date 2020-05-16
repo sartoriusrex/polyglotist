@@ -5,9 +5,9 @@
   "main": "src/server/index.ts",
   "scripts": {
     "check-types": "tsc --module esnext",
-    "build": "webpack --mode production",
+    "build": "webpack --mode production --env.production",
     "start": "npm run build && node src/server/index.ts",
-    "client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
+    "client": "webpack-dev-server --mode development --env.NODE_ENV=development --devtool inline-source-map --hot",
     "server": "nodemon src/server/index.ts",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
