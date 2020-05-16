@@ -1,8 +1,10 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const outputDirectory = 'dist';
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 module.exports = {
   entry: ['babel-polyfill', './src/client/index.tsx'],
@@ -22,8 +24,37 @@ module.exports = {
         },
       },
       {
-        test: /\.s[ac]ss$/i,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        test: /\.module\.s(a|c)ss$/,
+        loader: [
+          isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              sourceMap: isDevelopment,
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: isDevelopment,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.s(a|c)ss$/,
+        exclude: /\.module.(s(a|c)ss)$/,
+        loader: [
+          isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: isDevelopment,
+            },
+          },
+        ],
       },
       {
         test: /\.(png|woff|woff2|eot|ttf)$/,
@@ -51,6 +82,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
       favicon: './public/favicon.ico',
+    }),
+    new MiniCssExtractPlugin({
+      filename: isDevelopment ? '[name].css' : '[name].[hash].css',
+      chunkFilename: isDevelopment ? '[id].css' : '[id].[hash].css',
     }),
   ],
 };

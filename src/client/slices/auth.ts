@@ -101,7 +101,7 @@ export const {
   logoutUserFailure,
 } = actions;
 
-export function login(username?: string, password?: string, signal?: any) {
+export function login(username?: string, password?: string) {
   const body = { username, password };
 
   return async (dispatch: Function) => {
@@ -110,7 +110,6 @@ export function login(username?: string, password?: string, signal?: any) {
 
     try {
       const response = await fetch('/api/auth/login', {
-        signal: signal,
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

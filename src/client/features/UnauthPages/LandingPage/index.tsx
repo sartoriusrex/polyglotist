@@ -10,7 +10,7 @@ import Powerful from '../../../images/Powerful';
 import Brand from '../../../images/brand.svg';
 import integratedPNG from '../../../images/app-screenshot-one.png';
 
-import CtaButton from '../../UnauthComponents/CtaButton';
+import CtaButton from '../../CtaButton';
 import Dream from '../../../images/Dream';
 
 const LandingPage = () => (
