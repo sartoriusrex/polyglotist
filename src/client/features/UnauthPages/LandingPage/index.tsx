@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import './landing-page.scss';
 import styles from './landingPage.module';
 
 import Hero from '../../../images/Hero';
