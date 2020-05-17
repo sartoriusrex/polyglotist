@@ -37,17 +37,17 @@
   }
 }
 
-.floating-right {
+.floatingRight {
   transform-origin: center;
   animation: floatingWordsRight 4s ease-in-out infinite;
 }
 
-.floating-left {
+.floatingLeft {
   transform-origin: center;
   animation: floatingWordsLeft 4s ease-in-out infinite;
 }
 
-.floating-center {
+.floatingCenter {
   transform-origin: top;
   animation: floatingWordsCenter 4s ease-in-out infinite;
 }
