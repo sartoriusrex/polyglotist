@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './integrated.scss';
+import styles from './integrated.module';
 
 const Integrated = () => {
   return (
@@ -25,7 +25,7 @@ const Integrated = () => {
         cx="65"
         opacity="0.8" />
       <line
-        className='line bottom'
+        className={styles.bottom}
         id="line1494"
         strokeWidth="5"
         stroke="#CFBCF2"
@@ -34,7 +34,6 @@ const Integrated = () => {
         y1="71.5"
         x1="14" />
       <line
-        className='line middle'
         id="line1496"
         strokeWidth="5"
         stroke="#653CAD"
@@ -43,7 +42,6 @@ const Integrated = () => {
         y1="65.25"
         x1="76.9994" />
       <line
-        className='line left'
         id="line1498"
         strokeWidth="5"
         stroke="#8662C7"
@@ -52,7 +50,6 @@ const Integrated = () => {
         y1="66.8203"
         x1="11.3439" />
       <line
-        className='line right'
         x1="84.209366"
         y1="68.157173"
         x2="118.24604"
@@ -61,7 +58,7 @@ const Integrated = () => {
         strokeWidth="4.77827"
         id="line1500" />
       <line
-        className='line top'
+        className={styles.top}
         id="line1502"
         strokeWidth="5"
         stroke="#653CAD"
@@ -70,7 +67,7 @@ const Integrated = () => {
         y1="16.5"
         x1="55" />
       <circle
-        className='circle cir-c'
+        className={styles.cirC}
         id="circle1504"
         strokeWidth="5"
         stroke="#F7D070"
@@ -78,7 +75,6 @@ const Integrated = () => {
         cy="71.5"
         cx="7.5" />
       <circle
-        className='circle cir-d'
         id="circle1506"
         strokeWidth="5"
         stroke="#F7D070"
@@ -86,7 +82,6 @@ const Integrated = () => {
         cy="71.5"
         cx="80.5" />
       <circle
-        className='circle cir-a'
         id="circle1508"
         strokeWidth="5"
         stroke="#F7D070"
@@ -94,7 +89,7 @@ const Integrated = () => {
         cy="16.5"
         cx="48.5" />
       <circle
-        className='circle cir-b'
+        className={styles.cirB}
         id="circle1510"
         strokeWidth="5"
         stroke="#F7D070"

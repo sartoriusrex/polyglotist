@@ -71,24 +71,24 @@
 
 .top {
   transform-origin: (2.5rem 0rem);
-  animation: 5s lineAppearTop ease-in-out alternate infinite;
+  animation: lineAppearTop 4s ease-in-out alternate infinite;
 }
 
 .bottom {
   transform-origin: (5.5rem 5rem);
-  animation: 5s lineAppearBottom ease-in-out .2s alternate infinite;
+  animation: lineAppearBottom 4s ease-in-out .2s alternate infinite;
 }
 
-.cir-b,
-.cir-c {
-  animation: 5s circleGlow ease-in-out alternate infinite;
+.cirB,
+.cirC {
+  animation: circleGlow 4s ease-in-out alternate infinite;
 }
 
-.cir-b {
+.cirB {
   transform-origin: top right;
 }
 
-.cir-c {
+.cirC {
   transform-origin: 0rem 5rem;
   animation-delay: .2s
 }
