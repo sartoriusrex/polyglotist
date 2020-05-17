@@ -2,7 +2,7 @@
 
 last update: May 15, 2020
 
-This is a full-stack monolithic project using Typescript, React, Redux, Node.js, Express, Webpack, Babel, & PostgresQL. It was built with input from the [simple-react-full-stack](https://github.com/sartoriusrex/polyglotist) repo and inspiration from [Tania Rascia's](https://www.taniarascia.com/) blog and [post on authentication](https://www.taniarascia.com/).
+This is a full-stack monolithic project using Typescript, React, Redux, Node.js, Express, Webpack, Babel, & PostgresQL. It was built with input from the [simple-react-full-stack](https://github.com/crsandeep/simple-react-full-stack) repo and inspiration from [Tania Rascia's](https://www.taniarascia.com/) blog and [post on authentication](https://www.taniarascia.com/).
 
 - [Polyglotist](#polyglotist)
   - [Introduction](#introduction)
@@ -18,7 +18,7 @@ As of the last update, the application only currently supports French. Spanish a
 
 ## Development
 
-Implementation of development can be found at the repo [simple-react-full-stack](https://github.com/sartoriusrex/polyglotist).
+Implementation of development can be found at the repo [simple-react-full-stack](https://github.com/crsandeep/simple-react-full-stack).
 
 ```bash
 #run development servers
