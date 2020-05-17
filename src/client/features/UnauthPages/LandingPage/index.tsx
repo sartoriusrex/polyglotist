@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import styles from './landingPage.module';
+import styles from './landingPage.module.scss';
 
 import Hero from '../../../images/Hero';
 import Relevant from '../../../images/Relevant';

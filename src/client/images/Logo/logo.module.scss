@@ -1,6 +1,6 @@
 @import '../../styles/_variables';
 
-.logo-circle-1 {
+.logoCircle1 {
   fill:none;
   fill-opacity:1;
   stroke: $white;
@@ -10,7 +10,7 @@
   stroke-opacity:1
 }
 
-.logo-g-1 {
+.logoG1 {
   font-size:28.2222px;
   line-height:1.25;
   font-family:Alegreya;
@@ -22,7 +22,7 @@
   stroke-dasharray:none
 }
 
-.logo-path-1 {
+.logoPath1 {
   font-size:29.9861px;
   fill: $white;
   fill-opacity:1;
@@ -31,7 +31,7 @@
   stroke-dasharray:none
 }
 
-.logo-g-2 {
+.logoG2 {
   font-size:10.5833px;
   line-height:1.25;
   font-family:Alegreya;
@@ -39,23 +39,23 @@
   stroke-width:0.264583
 }
 
-.logo-path-2 {
+.logoPath2 {
   font-size:26.4583px;
   fill: $white;
   fill-opacity:1;
   stroke-width:0.264583
 }
 
-.logo-landing-green {
-  .logo-path-2 {
+.logoLandingGreen {
+  .logoPath2 {
     fill: $green;
   }
 
-  .logo-path-1 {
+  .logoPath1 {
     fill: $green;
   }
 
-  .logo-circle-1 {
+  .logoCircle1 {
     stroke: $green;
   }
 }

@@ -69,7 +69,7 @@ module.exports = (env) => {
       ],
     },
     resolve: {
-      extensions: ['*', '.js', '.jsx', '.ts', '.tsx', '.scss', '.css'],
+      extensions: ['*', '.js', '.jsx', '.ts', '.tsx'],
     },
     devServer: {
       port: 3000,
