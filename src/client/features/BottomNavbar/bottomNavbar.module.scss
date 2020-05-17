@@ -1,0 +1,11 @@
+@import '../../styles/_variables';
+
+.bottomNav {
+  width: 100vw;
+  padding: .625rem 1.25rem;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid $green;
+}

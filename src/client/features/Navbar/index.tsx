@@ -5,7 +5,7 @@ import throttle from 'lodash.throttle';
 
 import { logout, authSelector } from '../../slices/auth';
 
-import './navbar.scss';
+import styles from './navbar.module.scss';
 import Logo from '../../images/Logo';
 
 const Nav = (props: any) => {
@@ -47,9 +47,13 @@ const Nav = (props: any) => {
   }, [isTop, isHome]);
 
   return (
-    <nav className={isTop && isHome ? 'nav-top' : 'nav-top nav-green'}>
+    <nav
+      className={
+        isTop && isHome ? styles.navTop : `${styles.navTop} ${styles.navGreen}`
+      }
+    >
       <Link to={user ? `/${user.username}/dashboard` : '/'}>
-        <div className='logo-container' tabIndex={0}>
+        <div className={styles.logoContainer} tabIndex={0}>
           <Logo landingStyle={isTop && isHome} />
         </div>
       </Link>
@@ -60,7 +64,7 @@ const Nav = (props: any) => {
 
 const UnAuthNav = () => {
   return (
-    <div className='auth-container'>
+    <div className={styles.authContainer}>
       <Link to='/login'>Login</Link>
       <Link to='/signup'>Signup</Link>
     </div>

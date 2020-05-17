@@ -1,17 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import {
-  Router,
-  Switch,
-  Route,
-  Redirect
-} from 'react-router-dom';
+import { Router, Switch, Route, Redirect } from 'react-router-dom';
 import history from '../history';
 
 import { settingsSelector } from '../../slices/settings';
 import { authSelector } from '../../slices/auth';
 
 import Navbar from '../../features/Navbar';
+import BottomNavbar from '../../features/BottomNavbar';
 import Dashboard from '../../features/AuthPages/Dashboard';
 import CreateAccountPage from '../../features/AuthPages/CreateAccountPage';
 import ArticlesPage from '../../features/AuthPages/ArticlesPage';
@@ -26,25 +22,25 @@ const AuthenticatedApp = () => {
   const { user } = useSelector(authSelector);
   const { username } = user;
 
-  return(
+  return (
     <main>
       <Router history={history}>
         <Navbar />
 
         <Switch>
           <Route exact path='/:username/dashboard'>
-            {
-              settings.languagesLearning ?
-              <Dashboard /> :
+            {settings.languagesLearning ? (
+              <Dashboard />
+            ) : (
               <Redirect to={`/${username}/create_account`} />
-            }
+            )}
           </Route>
           <Route exact path='/:username/create_account'>
-            {
-              settings.languagesLearning ?
-              <Redirect to={`/${username}/settings`} /> :
+            {settings.languagesLearning ? (
+              <Redirect to={`/${username}/settings`} />
+            ) : (
               <CreateAccountPage />
-            }
+            )}
           </Route>
           <Route exact path='/:username/articles'>
             <ArticlesPage />
@@ -56,20 +52,22 @@ const AuthenticatedApp = () => {
             <PracticePage />
           </Route>
           <Route exact path='/:username/settings'>
-            {
-              settings.languagesLearning ?
-              <SettingsPage /> :
+            {settings.languagesLearning ? (
+              <SettingsPage />
+            ) : (
               <Redirect to={`/${username}/create_account`} />
-            }
+            )}
           </Route>
           <Route exact path='/:username/update_settings'>
             <UpdateSettingsPage />
           </Route>
-          <Route component={ NoMatchPage } />
+          <Route component={NoMatchPage} />
         </Switch>
+
+        <BottomNavbar />
       </Router>
     </main>
   );
-}
+};
 
 export default AuthenticatedApp;

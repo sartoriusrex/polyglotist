@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { authSelector } from '../../../slices/auth';
 import { settingsSelector } from '../../../slices/settings';
 
-import './dashboard.scss';
+import styles from './dashboard.module.scss';
 
 import ServerMessage from '../../../common/components/ServerMessage';
 
