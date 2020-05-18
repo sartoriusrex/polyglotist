@@ -30,7 +30,7 @@ const BottomNavbar = () => {
   }, [location]);
 
   return (
-    <div className={styles.bottomNav}>
+    <nav className={styles.bottomNav}>
       <Link to={`/${username}/dashboard`}>
         <HomeIcon active={location === 'dashboard'} />
       </Link>
@@ -43,7 +43,7 @@ const BottomNavbar = () => {
       <Link to={`/${username}/practice`}>
         <SandClockIcon active={location === 'practice'} />
       </Link>
-    </div>
+    </nav>
   );
 };
 
