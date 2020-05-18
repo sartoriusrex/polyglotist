@@ -86,18 +86,6 @@ const AuthNav = ({ user }: { user: { username: string } }) => {
         <button onClick={onLogoutClick}>Logout</button>
       </li>
       <li>
-        <Link to={`/${username}/dashboard`}>Dashboard</Link>
-      </li>
-      <li>
-        <Link to={`/${username}/words`}>Word Bank</Link>
-      </li>
-      <li>
-        <Link to={`/${username}/articles`}>Articles</Link>
-      </li>
-      <li>
-        <Link to={`/${username}/practice`}>Practice</Link>
-      </li>
-      <li>
         <Link to={`/${username}/settings`}>Settings & Preferences</Link>
       </li>
       <li>
