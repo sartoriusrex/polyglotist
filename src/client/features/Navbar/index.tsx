@@ -136,7 +136,7 @@ const NavBar = ({ accountMenuOpen, setAccountMenuOpen }: NavbarProps) => {
 
   return (
     <Nav user={user}>
-      {user && accountMenuOpen && setAccountMenuOpen ? (
+      {user && accountMenuOpen !== undefined && setAccountMenuOpen ? (
         <AuthNav
           user={user}
           accountMenuOpen={accountMenuOpen}
