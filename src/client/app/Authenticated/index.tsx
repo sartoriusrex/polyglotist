@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Router, Switch, Route, Redirect } from 'react-router-dom';
 import history from '../history';
@@ -17,15 +17,27 @@ import PracticePage from '../../features/AuthPages/PracticePage';
 import UpdateSettingsPage from '../../features/AuthPages/UpdateSettingsPage';
 import NoMatchPage from '../../common/components/NoMatchPage';
 
+import styles from './authIndex.module.scss';
+
 const AuthenticatedApp = () => {
   const settings = useSelector(settingsSelector);
   const { user } = useSelector(authSelector);
   const { username } = user;
+  const [accountMenuOpen, setAccountMenuOpen] = useState<boolean>(false);
 
   return (
     <main>
       <Router history={history}>
-        <Navbar />
+        <Navbar
+          accountMenuOpen={accountMenuOpen}
+          setAccountMenuOpen={setAccountMenuOpen}
+        />
+        <div
+          className={
+            accountMenuOpen ? styles.appOverlayOpen : styles.appOverlay
+          }
+          onClick={() => setAccountMenuOpen(!accountMenuOpen)}
+        ></div>
 
         <Switch>
           <Route exact path='/:username/dashboard'>

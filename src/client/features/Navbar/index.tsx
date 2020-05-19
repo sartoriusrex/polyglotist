@@ -7,6 +7,7 @@ import { logout, authSelector } from '../../slices/auth';
 
 import styles from './navbar.module.scss';
 import Logo from '../../images/Logo';
+import ChevronUp from '../../images/ChevronUp';
 
 const Nav = (props: any) => {
   const { children } = props;
@@ -52,12 +53,14 @@ const Nav = (props: any) => {
         isTop && isHome ? styles.navTop : `${styles.navTop} ${styles.navGreen}`
       }
     >
-      <Link to={user ? `/${user.username}/dashboard` : '/'}>
-        <div className={styles.logoContainer} tabIndex={0}>
-          <Logo landingStyle={isTop && isHome} />
-        </div>
-      </Link>
-      {children}
+      <div className={styles.navTopContent}>
+        <Link to={user ? `/${user.username}/dashboard` : '/'}>
+          <div className={styles.logoContainer} tabIndex={0}>
+            <Logo landingStyle={isTop && isHome} />
+          </div>
+        </Link>
+        {children}
+      </div>
     </nav>
   );
 };
@@ -71,7 +74,17 @@ const UnAuthNav = () => {
   );
 };
 
-const AuthNav = ({ user }: { user: { username: string } }) => {
+type AuthNavProps = {
+  user: { username: string };
+  accountMenuOpen: boolean;
+  setAccountMenuOpen: (value: boolean) => void;
+};
+
+const AuthNav = ({
+  user,
+  accountMenuOpen,
+  setAccountMenuOpen,
+}: AuthNavProps) => {
   const { username } = user;
   const dispatch = useDispatch();
 
@@ -79,29 +92,60 @@ const AuthNav = ({ user }: { user: { username: string } }) => {
     dispatch(logout());
   }
 
+  function handleButtonClick() {
+    setAccountMenuOpen(!accountMenuOpen);
+  }
+
   return (
-    <ul>
-      <li>{username}</li>
-      <li>
-        <button onClick={onLogoutClick}>Logout</button>
-      </li>
-      <li>
-        <Link to={`/${username}/settings`}>Settings & Preferences</Link>
-      </li>
-      <li>
-        <Link to={`/${username}/create_settings`}>
-          Create Settings & Preferences
-        </Link>
-      </li>
-    </ul>
+    <>
+      <button className={styles.accountButton} onClick={handleButtonClick}>
+        {username}
+      </button>
+      <ul
+        className={
+          accountMenuOpen ? styles.accountMenuOpen : styles.accountMenu
+        }
+        onClick={handleButtonClick}
+      >
+        <li>
+          <button onClick={onLogoutClick}>Logout</button>
+        </li>
+        <li>
+          <Link to={`/${username}/settings`}>Settings & Preferences</Link>
+        </li>
+        <li>
+          <Link to={`/${username}/create_settings`}>
+            Create Settings & Preferences
+          </Link>
+        </li>
+        <li>
+          <ChevronUp />
+        </li>
+      </ul>
+    </>
   );
 };
 
-const NavBar = () => {
+type NavbarProps = {
+  accountMenuOpen?: boolean;
+  setAccountMenuOpen?: (value: boolean) => void;
+};
+
+const NavBar = ({ accountMenuOpen, setAccountMenuOpen }: NavbarProps) => {
   const { user } = useSelector(authSelector);
 
   return (
-    <Nav user={user}>{user ? <AuthNav user={user} /> : <UnAuthNav />}</Nav>
+    <Nav user={user}>
+      {user && accountMenuOpen && setAccountMenuOpen ? (
+        <AuthNav
+          user={user}
+          accountMenuOpen={accountMenuOpen}
+          setAccountMenuOpen={setAccountMenuOpen}
+        />
+      ) : (
+        <UnAuthNav />
+      )}
+    </Nav>
   );
 };
 

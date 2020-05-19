@@ -2,21 +2,27 @@
 
 .navTop {
   width: 100%;
-  background: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5px;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1;
-  transition: background 50ms linear, box-shadow 50mss linear;
+  z-index: 10;
+  transition: background 50ms linear, box-shadow 50ms linear;
 }
 
 .navGreen {
   background: $green;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.navTopContent {
+  width: 100%;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .3125rem;
+  padding-right: .625rem;
+  position: relative;
 }
 
 .logoContainer {
@@ -61,4 +67,42 @@
       transform: scale(1);
     }
   }
+}
+
+.accountMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  border-bottom: 1px solid $green;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateY(-20rem);
+  opacity: 0;
+  transition: transform ease-in-out 300ms, opacity ease-in-out 300ms;
+
+  li {
+    padding: .5rem 0;
+
+    a {
+      color: $darkest-blue;
+    }
+  }
+}
+
+.accountMenuOpen {
+  @extend .accountMenu;
+
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.accountButton {
+  border: none;
+  padding: .625rem 0;
+  border-bottom: 1px solid $pale-purple;
+  color: $white;
+  font-size: .75rem;
 }
