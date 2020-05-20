@@ -9,7 +9,6 @@ import {
   verifyPassword,
 } from '../../../common/helpers/formValidations';
 
-import './AuthPage.scss';
 import styles from './authPage.module.scss';
 
 import LoadingIndicator from '../../../common/components/LoadingIndicator';

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { settingsSelector, updateSettings } from '../../../slices/settings';
 import { authSelector } from '../../../slices/auth';
 
-import './createAccountPage.scss';
+import styles from './createAccountPage.module.scss';
 import SourceList, { sources } from '../../AuthComponents/SourceList';
 
 const CreateAccountPage = () => {
@@ -89,7 +89,7 @@ const CreateAccountPage = () => {
       <button
         type='button'
         onClick={handleNextClick}
-        className='next-button'
+        className={styles.nextButton}
         disabled={!learning || learning.length <= 0}
       >
         Next
@@ -102,7 +102,7 @@ const CreateAccountPage = () => {
       <button
         type='button'
         onClick={() => setStep(step - 1)}
-        className='back-button'
+        className={styles.backButton}
       >
         Previous
       </button>
@@ -126,7 +126,7 @@ const CreateAccountPage = () => {
         method='PATCH'
         onSubmit={handleSubmit}
       >
-        <div className={step === 0 ? 'current-step' : 'hidden-step'}>
+        <div className={step === 0 ? styles.currentStep : styles.hiddenStep}>
           <h3>Step 1: What Languages Are you Working On?</h3>
           <label htmlFor='french'>
             French
@@ -174,7 +174,7 @@ const CreateAccountPage = () => {
           {nextButton()}
         </div>
 
-        <div className={step === 1 ? 'current-step' : 'hidden-step'}>
+        <div className={step === 1 ? styles.currentStep : styles.hiddenStep}>
           <label htmlFor='practiceMode'>
             <h3>
               Do you want to enable Practice Mode to better retain vocabulary
@@ -210,7 +210,7 @@ const CreateAccountPage = () => {
           {backButton()}
         </div>
 
-        <div className={step === 2 ? 'current-step' : 'hidden-step'}>
+        <div className={step === 2 ? styles.currentStep : styles.hiddenStep}>
           <h3>
             From which sources would you like to read and improve your
             vocabulary?
@@ -239,7 +239,7 @@ const CreateAccountPage = () => {
           </button>
         </div>
 
-        <div className={step === 3 ? 'current-step' : 'hidden-step'}>
+        <div className={step === 3 ? styles.currentStep : styles.hiddenStep}>
           <h3>You're all set! Let's continue</h3>
         </div>
       </form>
