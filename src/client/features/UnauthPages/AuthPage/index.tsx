@@ -10,6 +10,7 @@ import {
 } from '../../../common/helpers/formValidations';
 
 import './AuthPage.scss';
+import styles from './authPage.module.scss';
 
 import LoadingIndicator from '../../../common/components/LoadingIndicator';
 import ServerMessage from '../../../common/components/ServerMessage';
@@ -60,7 +61,7 @@ const AuthPage = ({ newUser }: { newUser: boolean }) => {
   }
 
   return (
-    <section className='auth-form'>
+    <section className={styles.authForm}>
       {loading && <LoadingIndicator />}
 
       <h1>{newUser ? 'Create Account' : 'Log In'}</h1>
@@ -70,12 +71,12 @@ const AuthPage = ({ newUser }: { newUser: boolean }) => {
       <ServerMessage />
 
       {newUser && errorsPresent && (
-        <div className='form-error-container'>
+        <div className={styles.formErrorContainer}>
           {Object.entries(errors).map((errorArray) => {
             return (
               <ul key={errorArray[0]} id={errorArray[0]}>
                 {errorArray[1].map((value) => (
-                  <li key={value} className='form-error'>
+                  <li key={value} className={styles.formError}>
                     - {value}
                   </li>
                 ))}
@@ -90,10 +91,8 @@ const AuthPage = ({ newUser }: { newUser: boolean }) => {
           <label htmlFor='email'>
             <div>
               email
-              <span className='required' aria-hidden='true'>
-                *
-              </span>
-              <span className='sr-only'>Required</span>
+              <span aria-hidden='true'>*</span>
+              <span className={styles.srOnly}>Required</span>
             </div>
             <input
               required
@@ -104,7 +103,7 @@ const AuthPage = ({ newUser }: { newUser: boolean }) => {
               onChange={(e) => handleChange(e, setEmail)}
               onBlur={(e) => validateInput(e, validateEmail)}
               value={email}
-              className={errors.emailError.length > 0 ? 'form-error' : ''}
+              className={errors.emailError.length > 0 ? styles.formError : ''}
               aria-describedby='emailError'
             />
           </label>
@@ -114,10 +113,8 @@ const AuthPage = ({ newUser }: { newUser: boolean }) => {
         <label htmlFor='username'>
           <div>
             username
-            <span className='required' aria-hidden='true'>
-              *
-            </span>
-            <span className='sr-only'>Required</span>
+            <span aria-hidden='true'>*</span>
+            <span className={styles.srOnly}>Required</span>
           </div>
           <input
             required
@@ -129,7 +126,7 @@ const AuthPage = ({ newUser }: { newUser: boolean }) => {
             onBlur={(e) => validateInput(e, validateUsername)}
             value={username}
             className={
-              errors.usernameError.length > 0 && newUser ? 'form-error' : ''
+              errors.usernameError.length > 0 && newUser ? styles.formError : ''
             }
             aria-describedby='desc-un usernameError'
           />
@@ -143,10 +140,8 @@ const AuthPage = ({ newUser }: { newUser: boolean }) => {
         <label htmlFor='password'>
           <div>
             password
-            <span className='required' aria-hidden='true'>
-              *
-            </span>
-            <span className='sr-only'>Required</span>
+            <span aria-hidden='true'>*</span>
+            <span className={styles.srOnly}>Required</span>
           </div>
           <input
             required
@@ -158,7 +153,7 @@ const AuthPage = ({ newUser }: { newUser: boolean }) => {
             onBlur={(e) => validateInput(e, validatePassword, username)}
             value={password}
             className={
-              errors.passwordError.length > 0 && newUser ? 'form-error' : ''
+              errors.passwordError.length > 0 && newUser ? styles.formError : ''
             }
             aria-describedby='desc-pw passwordError'
           />
@@ -171,7 +166,7 @@ const AuthPage = ({ newUser }: { newUser: boolean }) => {
           <button
             type='button'
             onClick={togglePasswordVisible}
-            className={passwordVisible ? 'form-show-ps-btn' : ''}
+            className={passwordVisible ? styles.formShowPsBtn : ''}
           >
             {passwordVisible ? 'hide password' : 'show password'}
           </button>
@@ -180,10 +175,8 @@ const AuthPage = ({ newUser }: { newUser: boolean }) => {
           <label htmlFor='verifyPassword'>
             <div>
               verify password
-              <span className='required' aria-hidden='true'>
-                *
-              </span>
-              <span className='sr-only'>Required</span>
+              <span aria-hidden='true'>*</span>
+              <span className={styles.srOnly}>Required</span>
             </div>
             <input
               required
@@ -192,7 +185,9 @@ const AuthPage = ({ newUser }: { newUser: boolean }) => {
               type='password'
               placeholder='secret_password_again'
               onChange={(e) => handleChange(e, setPasswordVerified)}
-              className={errors.verifyPassword.length > 0 ? 'form-error' : ''}
+              className={
+                errors.verifyPassword.length > 0 ? styles.formError : ''
+              }
               onBlur={(e) => validateInput(e, verifyPassword, password)}
               value={passwordVerified}
               aria-describedby='verifyPasswordError'
@@ -205,7 +200,7 @@ const AuthPage = ({ newUser }: { newUser: boolean }) => {
           type='submit'
           onClick={handleSubmit}
           disabled={errorsPresent && newUser}
-          className='form-submit-button'
+          className={styles.formSubmitButton}
         >
           Submit
         </button>

@@ -6,8 +6,6 @@ import { settingsSelector } from '../../../slices/settings';
 
 import styles from './dashboard.module.scss';
 
-import ServerMessage from '../../../common/components/ServerMessage';
-
 const Dashboard = () => {
   const { user } = useSelector(authSelector);
   const settings = useSelector(settingsSelector);
@@ -33,7 +31,6 @@ const Dashboard = () => {
 
   return (
     <section>
-      <ServerMessage />
       <h1>Dashboard</h1>
       <p>This is the Dashboard </p>
     </section>

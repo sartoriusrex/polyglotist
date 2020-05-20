@@ -14,8 +14,8 @@ import ArticlesPage from '../../features/AuthPages/ArticlesPage';
 import WordsPage from '../../features/AuthPages/WordsPage';
 import SettingsPage from '../../features/AuthPages/SettingsPage';
 import PracticePage from '../../features/AuthPages/PracticePage';
-import UpdateSettingsPage from '../../features/AuthPages/UpdateSettingsPage';
 import NoMatchPage from '../../common/components/NoMatchPage';
+import ServerMessage from '../../common/components/ServerMessage';
 
 import styles from './authIndex.module.scss';
 
@@ -32,6 +32,7 @@ const AuthenticatedApp = () => {
           accountMenuOpen={accountMenuOpen}
           setAccountMenuOpen={setAccountMenuOpen}
         />
+        <ServerMessage />
         <div
           className={
             accountMenuOpen ? styles.appOverlayOpen : styles.appOverlay
@@ -69,9 +70,6 @@ const AuthenticatedApp = () => {
             ) : (
               <Redirect to={`/${username}/create_account`} />
             )}
-          </Route>
-          <Route exact path='/:username/update_settings'>
-            <UpdateSettingsPage />
           </Route>
           <Route component={NoMatchPage} />
         </Switch>

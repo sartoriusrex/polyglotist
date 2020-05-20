@@ -2,11 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { settingsSelector, updateSettings } from '../../../slices/settings';
-import {
-  addMessage,
-  removeMessage,
-  messageSelector,
-} from '../../../slices/messages';
 import { authSelector } from '../../../slices/auth';
 
 import SourceList, {
@@ -27,7 +22,6 @@ const SettingsPage = () => {
     languagesLearning,
     sources,
   } = settings;
-  const { message } = useSelector(messageSelector);
   const { user } = useSelector(authSelector);
   const { username } = user;
 
@@ -101,8 +95,6 @@ const SettingsPage = () => {
 
   return (
     <section>
-      {message && <div>{message}</div>}
-
       {loading && <h2>Loading User Settings </h2>}
 
       {hasErrors && (

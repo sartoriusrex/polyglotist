@@ -40,6 +40,7 @@ const UpdateSettingsPage = () => {
 
     func(value);
   }
+  
 
   function handleLanguageChange(value: string) {
     let learningArray = learning ? [...learning] : [];

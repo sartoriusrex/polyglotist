@@ -1,0 +1,116 @@
+@import '../../../styles/variables';
+
+.formError {
+  color: red;
+}
+
+.srOnly {
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1.25rem;
+  position: relative;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  h1, h2 {
+    margin-bottom: 1.25rem;
+  }
+
+  h2 {
+    color: $blue;
+    padding: 1.25rem;
+    border: 1px solid $blue;
+    font-size: .75rem;
+    width: 100%;
+  }
+
+  label {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    justify-content: space-between;
+    position: relative;
+    color: $dark-purple;
+
+    span {
+      margin-left: .313rem;
+    }
+
+    div {
+      position: absolute;
+      top: -1rem;
+      left: .9rem;
+      z-index: 1;
+      padding: .313rem;
+      background: $white;
+    }
+
+    input {
+      margin-bottom: .625rem;
+      width: 100%;
+      padding: 1rem;
+      border: 1px solid $dark-purple;
+      font-size: 1.25rem;
+      box-shadow: 0 4px 4px rgba(0,0,0,.1);
+
+      &::placeholder {
+        font-size: 1rem;
+      }
+    }
+
+    p {
+      flex-basis: 100%;
+      padding: 0 .313rem;
+      font-size: .875rem;
+    }
+  }
+
+  button {
+    padding: .625rem;
+    background: $white;
+    border: 1px solid $dark-purple;
+    margin: 1.25rem auto;
+  }
+
+  .formShowPsBtn {
+    background: $dark-purple;
+    color: $white;
+  }
+
+  .formSubmitButton {
+    width: 100%;
+    border: none;
+    background: $green;
+    color: $white;
+    font-size: 1rem;
+
+    &:disabled {
+      background: $light-blue-gray;
+      border: 1px solid $blue-gray;
+    }
+  }
+}
+
+.formErrorContainer {
+  margin-bottom: 2rem;
+
+  li {
+    margin-bottom: .313rem;
+  }
+}

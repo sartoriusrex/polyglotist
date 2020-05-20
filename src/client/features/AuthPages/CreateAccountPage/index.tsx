@@ -2,11 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { settingsSelector, updateSettings } from '../../../slices/settings';
-import {
-  addMessage,
-  removeMessage,
-  messageSelector,
-} from '../../../slices/messages';
 import { authSelector } from '../../../slices/auth';
 
 import './createAccountPage.scss';
@@ -25,7 +20,6 @@ const CreateAccountPage = () => {
     languagePreference,
     languagesLearning,
   } = settings;
-  const { message } = useSelector(messageSelector);
   const { user } = useSelector(authSelector);
   const { username } = user;
 
@@ -117,8 +111,6 @@ const CreateAccountPage = () => {
 
   return (
     <section>
-      {message && <div>{message}</div>}
-
       {loading && <h2>Loading User Settings </h2>}
 
       {hasErrors && (
