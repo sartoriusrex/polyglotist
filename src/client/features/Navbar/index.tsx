@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import throttle from 'lodash.throttle';
 
@@ -13,50 +13,40 @@ const Nav = (props: any) => {
   const { children } = props;
   const { user } = props;
   const positionThreshold = 20;
-  const root = window.location.pathname === '/';
-  const [isHome, setIsHome] = useState(root);
+  const location = useLocation();
   const [isTop, setIsTop] = useState(true);
 
   useEffect(() => {
-    function listenScroll(): void {
-      const scrollCheck = window.scrollY < positionThreshold;
-      if ((scrollCheck && !isTop) || (!scrollCheck && isTop))
-        setIsTop(scrollCheck);
-    }
+    if (location.pathname === '/') {
+      function listenScroll(): void {
+        const scrollCheck = window.scrollY < positionThreshold;
+        if ((scrollCheck && !isTop) || (!scrollCheck && isTop))
+          setIsTop(scrollCheck);
+      }
 
-    function listenLocation(): void {
-      const { pathname } = window.location;
-      if (
-        (pathname !== '/' && isHome === true) ||
-        (pathname === '/' && isHome === false)
-      )
-        setIsHome(!isHome);
-    }
-
-    if (isHome)
       document.addEventListener(
         'scroll',
         throttle(() => listenScroll(), 250)
       );
 
-    document.addEventListener('click', listenLocation);
-
-    return () => {
-      if (isHome) document.removeEventListener('scroll', listenScroll);
-      document.removeEventListener('click', listenLocation);
-    };
-  }, [isTop, isHome]);
+      return () => {
+        document.removeEventListener('scroll', listenScroll);
+      };
+    }
+  }, [isTop, location]);
 
   return (
     <nav
       className={
-        isTop && isHome ? styles.navTop : `${styles.navTop} ${styles.navGreen}`
+        isTop && location.pathname === '/'
+          ? styles.navTop
+          : `${styles.navTop} ${styles.navGreen}`
       }
     >
       <div className={styles.navTopContent}>
         <Link to={user ? `/${user.username}/dashboard` : '/'}>
           <div className={styles.logoContainer} tabIndex={0}>
-            <Logo landingStyle={isTop && isHome} />
+            <Logo landingStyle={isTop && location.pathname === '/'} />
           </div>
         </Link>
         {children}
