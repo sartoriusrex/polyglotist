@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import throttle from 'lodash.throttle';
 
 import { logout, authSelector } from '../../slices/auth';
+import { settingsSelector } from '../../slices/settings';
 
 import styles from './navbar.module.scss';
 import Logo from '../../images/Logo';
@@ -77,6 +78,7 @@ const AuthNav = ({
 }: AuthNavProps) => {
   const { username } = user;
   const dispatch = useDispatch();
+  const settings = useSelector(settingsSelector);
 
   function onLogoutClick() {
     dispatch(logout());
@@ -101,12 +103,13 @@ const AuthNav = ({
           <button onClick={onLogoutClick}>Logout</button>
         </li>
         <li>
-          <Link to={`/${username}/settings`}>Settings & Preferences</Link>
-        </li>
-        <li>
-          <Link to={`/${username}/create_settings`}>
-            Create Settings & Preferences
-          </Link>
+          {settings.languagesLearning ? (
+            <Link to={`/${username}/settings`}>Settings & Preferences</Link>
+          ) : (
+            <Link to={`/${username}/create_settings`}>
+              Create Settings & Preferences
+            </Link>
+          )}
         </li>
         <li>
           <ChevronUp />
