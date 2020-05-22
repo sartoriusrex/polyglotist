@@ -39,7 +39,7 @@ const UnauthenticatedApp = () => {
   return (
     <Router history={history}>
       <NavBar />
-      <main>
+      <main className='unauth-main'>
         <Switch>
           <Route exact path='/'>
             <LandingPage />

@@ -7,10 +7,14 @@
 }
 
 .sourceList {
-  padding: .625rem;
+  padding: .625rem .625rem 0;
 
   li {
-    padding-bottom: .75rem;
+    padding-bottom: 1.5rem;
+
+    &:last-child {
+      padding-bottom: 0;
+    }
   }
 
   p {

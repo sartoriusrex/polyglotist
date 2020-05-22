@@ -3,6 +3,7 @@
 .settingsSection {
   display: flex;
   flex-direction: column;
+  margin-bottom: 2rem;
 
   h1, h2 {
     text-align: center;
@@ -29,7 +30,7 @@
   margin-bottom: 2rem;
 
   h4 {
-    margin-bottom: .3125rem;
+    margin-bottom: .625rem;
   }
 
   p {
@@ -55,4 +56,29 @@
   background-color: $white;
   color: $dark-purple;
   border: 1px solid $dark-purple;
+}
+
+.sectionSetting {
+  color: $blue;
+  font-size: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 2rem;
+
+  p {
+    font-size: 1rem;
+    margin: .3125rem 0;
+  }
+
+  select {
+    font-size: 1rem;
+    padding: .3125rem;
+    border: 1px solid $dark-purple;
+    color: $dark-purple;
+  }
+}
+
+.submitButton {
+  margin-top: 2rem;
 }

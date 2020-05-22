@@ -200,9 +200,9 @@ const SettingsPage = () => {
             );
           })}
         </div>
-        <label htmlFor='themePreference'>
+        <label className={styles.sectionSetting} htmlFor='themePreference'>
           Theme
-          <p id='desc-theme'>
+          <p id='desc-theme' className='sr-only'>
             Select a Theme. Nightowls often prefer the Dark Theme
           </p>
           <select
@@ -216,9 +216,9 @@ const SettingsPage = () => {
             <option value='dark'>Dark</option>
           </select>
         </label>
-        <label htmlFor='readingSpeed'>
+        <label className={styles.sectionSetting} htmlFor='readingSpeed'>
           Reading Speed
-          <p id='desc-speed'>
+          <p id='desc-speed' className='sr-only'>
             How quickly do you typically read a news article?
           </p>
           <select
@@ -230,12 +230,12 @@ const SettingsPage = () => {
           >
             <option value='slow'>Slow</option>
             <option value='normal'>Normal</option>
-            <option value='fast'>fast</option>
+            <option value='fast'>Fast</option>
           </select>
         </label>
-        <label htmlFor='practiceMode'>
+        <label className={styles.sectionSetting} htmlFor='practiceMode'>
           Practice Mode
-          <p id='desc-practice'>
+          <p id='desc-practice' className='sr-only'>
             Do you want to enable Practice Mode to better retain vocabulary
             you've learned?
           </p>
@@ -250,9 +250,11 @@ const SettingsPage = () => {
             <option value='false'>Disabled</option>
           </select>
         </label>
-        <label htmlFor='notifyMethod'>
-          Notification Method
-          <p id='desc-method'>How do you want to be notified?</p>
+        <label className={styles.sectionSetting} htmlFor='notifyMethod'>
+          Notifications
+          <p id='desc-method' className='sr-only'>
+            How do you want to be notified?
+          </p>
           <select
             name='notifyMethod'
             id='notifyMethod'
@@ -266,9 +268,11 @@ const SettingsPage = () => {
             <option value='email'>Email Alerts</option>
           </select>
         </label>
-        <label htmlFor='langPref'>
-          Language Preference
-          <p id='desc-langPref'>Set the language of the application</p>
+        <label className={styles.sectionSetting} htmlFor='langPref'>
+          Application Language
+          <p id='desc-langPref' className='sr-only'>
+            Set the language of the application
+          </p>
           <select
             name='langPref'
             id='langPref'
@@ -282,7 +286,7 @@ const SettingsPage = () => {
         <button
           type='submit'
           disabled={!learning || learning.length <= 0 || resources.length <= 0}
-          className='form-submit-button'
+          className={`form-submit-button ${styles.submitButton}`}
         >
           Update Settings
         </button>
