@@ -1,26 +1,120 @@
+@import '../../../styles/variables';
+
+.progressBarContainer {
+  width: 100%;
+  margin: 1.25rem 0;
+  position: relative;
+}
+
+.progressBar {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.progressBarLine {
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 0;
+  border-top: 1px solid $dark-purple;
+}
+
+.createAccountSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 2rem;
+
+  form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 .currentStep {
-  display: visible;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h3 {
+    margin-bottom: 1.25rem;
+  }
+
+  &:not(:first-child) {
+    label {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1.25rem;
+      align-items: center;
+    }
+
+    select {
+      width: 50%;
+      border: 1px solid $dark-purple;
+      color: $dark-purple;
+      padding: .3125rem;
+    }
+  }
 }
 
 .hiddenStep {
+  @extend .currentStep;
   display: none;
 }
 
+.langChoiceContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
 .nextButton, .backButton {
-  background-color: black;
-  color: white;
+  border: 1px solid $dark-purple;
+  color: $white;
+  background-color: $dark-purple;
   font-size: 1rem;
   padding: .5rem;
   margin: .5rem;
 
   &:disabled {
-    background-color: gray;
-    color: black;
+    border: 1px solid $blue-gray;
+    background-color: $light-gray;
+    color: $blue-gray;
   }
 }
 
 .backButton {
-  background-color: white;
-  color: black;
+  color: $mustard-yellow;
+  border: 1px solid $mustard-yellow;
+  background-color: $white;
 }
 
+.navButtonContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.labelActive {
+  margin-right: .3125rem;
+  padding: .3125rem;
+  background-color: $dark-purple;
+  color: $white;
+  border: 1px solid transparent;
+
+  input {
+    display: none;
+  }
+}
+
+.labelInactive {
+  @extend .labelActive;
+  background-color: $white;
+  color: $dark-purple;
+  border: 1px solid $dark-purple;
+}

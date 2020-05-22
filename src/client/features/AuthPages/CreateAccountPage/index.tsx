@@ -7,6 +7,8 @@ import { authSelector } from '../../../slices/auth';
 import styles from './createAccountPage.module.scss';
 import SourceList, { sources } from '../../AuthComponents/SourceList';
 
+import LoadingIndicator from '../../../common/components/LoadingIndicator';
+
 const CreateAccountPage = () => {
   const dispatch = useDispatch();
   const settings = useSelector(settingsSelector);
@@ -63,7 +65,7 @@ const CreateAccountPage = () => {
     dispatch(updateSettings(username, settings));
   }
 
-  const nextButton = () => {
+  const NextButton = () => {
     function handleNextClick() {
       // if the User has added sources and gone back to choose languages, we check that they haven't added sources that are no longer available in the languages they've selected. i.e. if they selected German and German sources, but go back and remove German and add French, we filter out all German sources.
       if (step === 1 && resources.length > 0) {
@@ -97,7 +99,7 @@ const CreateAccountPage = () => {
     );
   };
 
-  const backButton = () => {
+  const BackButton = () => {
     return (
       <button
         type='button'
@@ -109,9 +111,40 @@ const CreateAccountPage = () => {
     );
   };
 
+  const ProgressBar = ({ step }: { step: string }) => {
+    return (
+      <div className={styles.progressBarContainer}>
+        <div className={`${styles.progressBarLine}-${step}`}></div>
+        <ul className={styles.progressBar}>
+          <li
+            className={
+              step === 1 ? styles.progressActive : styles.progressInactive
+            }
+          >
+            Step 1
+          </li>
+          <li
+            className={
+              step === 2 ? styles.progressActive : styles.progressInactive
+            }
+          >
+            Step 2
+          </li>
+          <li
+            className={
+              step === 3 ? styles.progressActive : styles.progressInactive
+            }
+          >
+            Step 3
+          </li>
+        </ul>
+      </div>
+    );
+  };
+
   return (
-    <section>
-      {loading && <h2>Loading User Settings </h2>}
+    <section className={styles.createAccountSection}>
+      {loading && <LoadingIndicator />}
 
       {hasErrors && (
         <h2>
@@ -121,57 +154,81 @@ const CreateAccountPage = () => {
 
       <h1>Create Account</h1>
 
+      <ProgressBar step={step} />
+
       <form
         action={`/api/user/${username}`}
         method='PATCH'
         onSubmit={handleSubmit}
       >
         <div className={step === 0 ? styles.currentStep : styles.hiddenStep}>
-          <h3>Step 1: What Languages Are you Working On?</h3>
-          <label htmlFor='french'>
-            French
-            <input
-              type='checkbox'
-              id='french'
-              name='french'
-              onChange={() =>
-                handleArrayChange('french', learning, setLearning)
+          <h3>What Languages Are you Working On?</h3>
+          <div className={styles.langChoiceContainer}>
+            <label
+              htmlFor='french'
+              className={
+                learning && learning.includes('french')
+                  ? styles.labelActive
+                  : styles.labelInactive
               }
-              defaultChecked={
-                languagesLearning && languagesLearning.includes('french')
+            >
+              French
+              <input
+                type='checkbox'
+                id='french'
+                name='french'
+                onChange={() =>
+                  handleArrayChange('french', learning, setLearning)
+                }
+                defaultChecked={
+                  languagesLearning && languagesLearning.includes('french')
+                }
+              />
+            </label>
+            <label
+              htmlFor='spanish'
+              className={
+                learning && learning.includes('spanish')
+                  ? styles.labelActive
+                  : styles.labelInactive
               }
-            />
-          </label>
-          <label htmlFor='spanish'>
-            Spanish
-            <input
-              type='checkbox'
-              id='spanish'
-              name='spanish'
-              onChange={() =>
-                handleArrayChange('spanish', learning, setLearning)
+            >
+              Spanish
+              <input
+                type='checkbox'
+                id='spanish'
+                name='spanish'
+                onChange={() =>
+                  handleArrayChange('spanish', learning, setLearning)
+                }
+                defaultChecked={
+                  languagesLearning && languagesLearning.includes('spanish')
+                }
+              />
+            </label>
+            <label
+              htmlFor='german'
+              className={
+                learning && learning.includes('german')
+                  ? styles.labelActive
+                  : styles.labelInactive
               }
-              defaultChecked={
-                languagesLearning && languagesLearning.includes('spanish')
-              }
-            />
-          </label>
-          <label htmlFor='german'>
-            German
-            <input
-              type='checkbox'
-              id='german'
-              name='german'
-              onChange={() =>
-                handleArrayChange('german', learning, setLearning)
-              }
-              defaultChecked={
-                languagesLearning && languagesLearning.includes('german')
-              }
-            />
-          </label>
-
-          {nextButton()}
+            >
+              German
+              <input
+                type='checkbox'
+                id='german'
+                name='german'
+                onChange={() =>
+                  handleArrayChange('german', learning, setLearning)
+                }
+                defaultChecked={
+                  languagesLearning && languagesLearning.includes('german')
+                }
+              />
+            </label>
+          </div>
+          <NextButton />
         </div>
 
         <div className={step === 1 ? styles.currentStep : styles.hiddenStep}>
@@ -206,8 +263,10 @@ const CreateAccountPage = () => {
             </select>
           </label>
 
-          {nextButton()}
-          {backButton()}
+          <div className={styles.navButtonContainer}>
+            <BackButton />
+            <NextButton />
+          </div>
         </div>
 
         <div className={step === 2 ? styles.currentStep : styles.hiddenStep}>
@@ -230,7 +289,7 @@ const CreateAccountPage = () => {
             }
           })}
 
-          {backButton()}
+          <BackButton />
           <button
             type='submit'
             disabled={!learning || resources.length <= 0 || step !== 2}
