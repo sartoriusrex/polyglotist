@@ -7,6 +7,9 @@ import { authSelector } from '../../../slices/auth';
 import SourceList, {
   sources as sourcesObject,
 } from '../../AuthComponents/SourceList';
+import LoadingIndicator from '../../../common/components/LoadingIndicator';
+
+import styles from './settingsPage.module.scss';
 
 const SettingsPage = () => {
   const dispatch = useDispatch();
@@ -94,8 +97,8 @@ const SettingsPage = () => {
   }
 
   return (
-    <section>
-      {loading && <h2>Loading User Settings </h2>}
+    <section className={styles.settingsSection}>
+      {loading && <LoadingIndicator />}
 
       {hasErrors && (
         <h2>
@@ -110,16 +113,21 @@ const SettingsPage = () => {
         method='PATCH'
         onSubmit={handleSubmit}
       >
-        <div>
+        <div className={styles.sectionDiv}>
           <h4>
             What Languages Are you Working On?
-            <span className='required' aria-hidden='true'>
-              *
-            </span>
+            <span aria-hidden='true'>*</span>
             <span className='sr-only'> * Required</span>
           </h4>
-          <p id='desc-targetLangs'>Choose at least one language to improve.</p>
-          <label htmlFor='french'>
+          <p id='desc-targetLangs'>Choose at least one language.</p>
+          <label
+            htmlFor='french'
+            className={
+              learning && learning.includes('french')
+                ? styles.labelActive
+                : styles.labelInactive
+            }
+          >
             French
             <input
               type='checkbox'
@@ -134,7 +142,14 @@ const SettingsPage = () => {
               aria-describedby='desc-targetLangs'
             />
           </label>
-          <label htmlFor='spanish'>
+          <label
+            htmlFor='spanish'
+            className={
+              learning && learning.includes('spanish')
+                ? styles.labelActive
+                : styles.labelInactive
+            }
+          >
             Spanish
             <input
               type='checkbox'
@@ -149,7 +164,14 @@ const SettingsPage = () => {
               aria-describedby='desc-targetLangs'
             />
           </label>
-          <label htmlFor='german'>
+          <label
+            htmlFor='german'
+            className={
+              learning && learning.includes('german')
+                ? styles.labelActive
+                : styles.labelInactive
+            }
+          >
             German
             <input
               type='checkbox'
@@ -165,7 +187,7 @@ const SettingsPage = () => {
             />
           </label>
         </div>
-        <div>
+        <div className={styles.sectionDiv}>
           {learning.map((lang: string) => {
             return (
               <SourceList
@@ -260,6 +282,7 @@ const SettingsPage = () => {
         <button
           type='submit'
           disabled={!learning || learning.length <= 0 || resources.length <= 0}
+          className='form-submit-button'
         >
           Update Settings
         </button>

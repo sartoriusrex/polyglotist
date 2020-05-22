@@ -1,5 +1,7 @@
 import React from 'react';
 
+import styles from './sourceList.module.scss';
+
 interface sourceArrayInterface {
   name: string;
   id: string;
@@ -97,15 +99,23 @@ const SourceList = (props: {
   const { lang, handleChange, resources, setResources } = props;
 
   return (
-    <div>
+    <div className={styles.sourceListContainer}>
       <h4>{`${lang.charAt(0).toUpperCase() + lang.slice(1)} Sources`}</h4>
-      <ul>
+      <p id='desc-targetSources'>Choose at least one source.</p>
+      <ul aria-describedby='desc-targetSources' className={styles.sourceList}>
         {sources[lang].map(
           (src: { id: string; name: string; desc: string }) => {
             const { id, name, desc } = src;
             return (
               <li key={id}>
-                <label htmlFor={`${id}`}>
+                <label
+                  htmlFor={`${id}`}
+                  className={
+                    resources.includes(id)
+                      ? styles.labelActive
+                      : styles.labelInactive
+                  }
+                >
                   {name}
                   <input
                     type='checkbox'
@@ -115,8 +125,8 @@ const SourceList = (props: {
                     onChange={() => handleChange(id, resources, setResources)}
                     aria-describedby={`desc-${id}`}
                   />
-                  <p id={`desc-${id}`}>{desc}</p>
                 </label>
+                <p id={`desc-${id}`}>{desc}</p>
               </li>
             );
           }

@@ -4,16 +4,6 @@
   color: red;
 }
 
-.srOnly {
-  clip-path: inset(100%);
-  clip: rect(0 0 0 0);
-  height: 1px;
-  overflow: hidden;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
-}
-
 .authForm {
   display: flex;
   flex-direction: column;
@@ -29,7 +19,7 @@
   }
 
   h1, h2 {
-    margin-bottom: 1.25rem;
+    margin: 1.25rem 0;
   }
 
   h2 {
@@ -83,27 +73,20 @@
 
   button {
     padding: .625rem;
-    background: $white;
+    background-color: $dark-purple;
     border: 1px solid $dark-purple;
     margin: 1.25rem auto;
+    color: $white;
+  }
+
+  .hidePsBtn {
+    background-color: $white;
+    color: $dark-purple;
   }
 
   .formShowPsBtn {
-    background: $dark-purple;
+    background-color: $dark-purple;
     color: $white;
-  }
-
-  .formSubmitButton {
-    width: 100%;
-    border: none;
-    background: $green;
-    color: $white;
-    font-size: 1rem;
-
-    &:disabled {
-      background: $light-blue-gray;
-      border: 1px solid $blue-gray;
-    }
   }
 }
 

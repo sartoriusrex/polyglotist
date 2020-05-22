@@ -91,7 +91,7 @@ const AuthPage = ({ newUser }: { newUser: boolean }) => {
             <div>
               email
               <span aria-hidden='true'>*</span>
-              <span className={styles.srOnly}>Required</span>
+              <span className='sr-only'>Required</span>
             </div>
             <input
               required
@@ -113,7 +113,7 @@ const AuthPage = ({ newUser }: { newUser: boolean }) => {
           <div>
             username
             <span aria-hidden='true'>*</span>
-            <span className={styles.srOnly}>Required</span>
+            <span className='sr-only'>Required</span>
           </div>
           <input
             required
@@ -140,7 +140,7 @@ const AuthPage = ({ newUser }: { newUser: boolean }) => {
           <div>
             password
             <span aria-hidden='true'>*</span>
-            <span className={styles.srOnly}>Required</span>
+            <span className='sr-only'>Required</span>
           </div>
           <input
             required
@@ -165,7 +165,9 @@ const AuthPage = ({ newUser }: { newUser: boolean }) => {
           <button
             type='button'
             onClick={togglePasswordVisible}
-            className={passwordVisible ? styles.formShowPsBtn : ''}
+            className={
+              passwordVisible ? styles.formShowPsBtn : styles.hidePsBtn
+            }
           >
             {passwordVisible ? 'hide password' : 'show password'}
           </button>
@@ -175,7 +177,7 @@ const AuthPage = ({ newUser }: { newUser: boolean }) => {
             <div>
               verify password
               <span aria-hidden='true'>*</span>
-              <span className={styles.srOnly}>Required</span>
+              <span className='sr-only'>Required</span>
             </div>
             <input
               required
@@ -199,7 +201,7 @@ const AuthPage = ({ newUser }: { newUser: boolean }) => {
           type='submit'
           onClick={handleSubmit}
           disabled={errorsPresent && newUser}
-          className={styles.formSubmitButton}
+          className='form-submit-button'
         >
           Submit
         </button>

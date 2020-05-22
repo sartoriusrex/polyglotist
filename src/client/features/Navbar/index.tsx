@@ -94,6 +94,8 @@ const AuthNav = ({
         className={styles.accountButton}
         onClick={handleButtonClick}
         aria-controls='account-menu'
+        aria-haspopup={true}
+        aria-expanded={accountMenuOpen}
       >
         {username}
       </button>
