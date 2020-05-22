@@ -90,28 +90,37 @@ const AuthNav = ({
 
   return (
     <>
-      <button className={styles.accountButton} onClick={handleButtonClick}>
+      <button
+        className={styles.accountButton}
+        onClick={handleButtonClick}
+        aria-controls='account-menu'
+      >
         {username}
       </button>
       <ul
+        id='account-menu'
+        role='menu'
         className={
           accountMenuOpen ? styles.accountMenuOpen : styles.accountMenu
         }
         onClick={handleButtonClick}
+        aria-hidden={accountMenuOpen ? false : true}
       >
         <li>
           <button onClick={onLogoutClick}>Logout</button>
         </li>
-        <li>
+        <li role='presentation'>
           {settings.languagesLearning ? (
-            <Link to={`/${username}/settings`}>Settings & Preferences</Link>
+            <Link role='menu-item' to={`/${username}/settings`}>
+              Settings & Preferences
+            </Link>
           ) : (
-            <Link to={`/${username}/create_settings`}>
+            <Link role='menu-item' to={`/${username}/create_settings`}>
               Create Settings & Preferences
             </Link>
           )}
         </li>
-        <li>
+        <li role='presentation'>
           <ChevronUp />
         </li>
       </ul>
