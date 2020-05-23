@@ -111,31 +111,58 @@ const CreateAccountPage = () => {
     );
   };
 
-  const ProgressBar = ({ step }: { step: string }) => {
+  const ProgressBar = ({ step }: { step: number }) => {
     return (
-      <div className={styles.progressBarContainer}>
-        <div className={`${styles.progressBarLine}-${step}`}></div>
+      <div role='presentation' className={styles.progressBarContainer}>
+        <div className={styles.progressBarLineContainer}>
+          <span
+            className={
+              step > 0
+                ? styles.progressBarLineActive
+                : styles.progressBarLineInactive
+            }
+          ></span>
+          <span
+            className={
+              step > 1
+                ? styles.progressBarLineActive
+                : styles.progressBarLineInactive
+            }
+          ></span>
+        </div>
         <ul className={styles.progressBar}>
           <li
             className={
-              step === 1 ? styles.progressActive : styles.progressInactive
+              step === 0
+                ? styles.progressActive
+                : step > 0
+                ? styles.progressComplete
+                : styles.progressInactive
             }
           >
-            Step 1
+            1
           </li>
           <li
             className={
-              step === 2 ? styles.progressActive : styles.progressInactive
+              step === 1
+                ? styles.progressActive
+                : step > 1
+                ? styles.progressComplete
+                : styles.progressInactive
             }
           >
-            Step 2
+            2
           </li>
           <li
             className={
-              step === 3 ? styles.progressActive : styles.progressInactive
+              step === 2
+                ? styles.progressActive
+                : step > 2
+                ? styles.progressComplete
+                : styles.progressInactive
             }
           >
-            Step 3
+            3
           </li>
         </ul>
       </div>
@@ -152,9 +179,9 @@ const CreateAccountPage = () => {
         </h2>
       )}
 
-      <h1>Create Account</h1>
-
       <ProgressBar step={step} />
+
+      {step === 0 && <h1>Create Account</h1>}
 
       <form
         action={`/api/user/${username}`}
@@ -232,7 +259,7 @@ const CreateAccountPage = () => {
         </div>
 
         <div className={step === 1 ? styles.currentStep : styles.hiddenStep}>
-          <label htmlFor='practiceMode'>
+          <label htmlFor='practiceMode' className={styles.createAcctLabel}>
             <h3>
               Do you want to enable Practice Mode to better retain vocabulary
               you've learned?
@@ -248,7 +275,7 @@ const CreateAccountPage = () => {
             </select>
           </label>
 
-          <label htmlFor='notifyMethod'>
+          <label htmlFor='notifyMethod' className={styles.createAcctLabel}>
             <h3>Do you want reminders to practice?</h3>
             <select
               name='notifyMethod'
@@ -293,13 +320,10 @@ const CreateAccountPage = () => {
           <button
             type='submit'
             disabled={!learning || resources.length <= 0 || step !== 2}
+            className='form-submit-button'
           >
             Create Account
           </button>
-        </div>
-
-        <div className={step === 3 ? styles.currentStep : styles.hiddenStep}>
-          <h3>You're all set! Let's continue</h3>
         </div>
       </form>
     </section>

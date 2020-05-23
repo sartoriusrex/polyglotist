@@ -12,13 +12,48 @@
   width: 100%;
 }
 
-.progressBarLine {
+.progressBarLineContainer {
   position: absolute;
   z-index: -1;
   top: 50%;
   left: 0;
-  border-top: 1px solid $dark-purple;
+  width: 100%;
+  height: 3px;
+  display: flex;
 }
+
+.progressBarLineActive {
+  border-top: 3px solid $dark-purple;
+  width: 50%;
+  height: 100%;
+}
+
+.progressBarLineInactive {
+  @extend .progressBarLineActive;
+  border-top: 3px solid $blue-gray;
+}
+
+.progressActive {
+  border: 1px solid $dark-purple;
+  padding: .3125rem;
+  border-radius: .3125rem;
+  color: $dark-purple;
+  background-color: $white;
+}
+
+.progressInactive {
+  @extend .progressActive;
+  border-color: $blue-gray;
+  color: $blue-gray;
+  background-color: $white;
+}
+
+.progressComplete {
+  @extend .progressActive;
+  color: $white;
+  background-color: $dark-purple;
+}
+
 
 .createAccountSection {
   display: flex;
@@ -43,21 +78,36 @@
     margin-bottom: 1.25rem;
   }
 
-  &:not(:first-child) {
-    label {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 1.25rem;
-      align-items: center;
-    }
+  // &:not(:first-child) {
+  //   label {
+  //     width: 100%;
+  //     display: flex;
+  //     flex-direction: column;
+  //     margin-bottom: 1.25rem;
+  //     align-items: center;
+  //   }
 
-    select {
-      width: 50%;
-      border: 1px solid $dark-purple;
-      color: $dark-purple;
-      padding: .3125rem;
-    }
+  //   select {
+  //     width: 50%;
+  //     border: 1px solid $dark-purple;
+  //     color: $dark-purple;
+  //     padding: .3125rem;
+  //   }
+  // }
+}
+
+.createAcctLabel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.25rem;
+  align-items: center;
+
+  select {
+    width: 50%;
+    border: 1px solid $dark-purple;
+    color: $dark-purple;
+    padding: .3125rem;
   }
 }
 
@@ -79,7 +129,7 @@
   background-color: $dark-purple;
   font-size: 1rem;
   padding: .5rem;
-  margin: .5rem;
+  margin: 1.25rem 0;
 
   &:disabled {
     border: 1px solid $blue-gray;

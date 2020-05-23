@@ -1,8 +1,19 @@
 @import '../../../styles/variables';
 
 .sourceListContainer {
+  padding-bottom: 1.25rem;
+
   h4 {
     border-bottom: 1px solid $blue;
+    margin-bottom: .625rem;
+  }
+
+  &:last-child{
+    padding-bottom: 0;
+  }
+
+  p {
+    margin-bottom: .3125rem;
   }
 }
 
