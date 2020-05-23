@@ -181,7 +181,7 @@ const CreateAccountPage = () => {
 
       <ProgressBar step={step} />
 
-      {step === 0 && <h1>Create Account</h1>}
+      {step === 0 && <h1>Let's get you started</h1>}
 
       <form
         action={`/api/user/${username}`}
@@ -189,7 +189,7 @@ const CreateAccountPage = () => {
         onSubmit={handleSubmit}
       >
         <div className={step === 0 ? styles.currentStep : styles.hiddenStep}>
-          <h3>What Languages Are you Working On?</h3>
+          <h3>What languages are you working on?</h3>
           <div className={styles.langChoiceContainer}>
             <label
               htmlFor='french'
@@ -276,7 +276,7 @@ const CreateAccountPage = () => {
           </label>
 
           <label htmlFor='notifyMethod' className={styles.createAcctLabel}>
-            <h3>Do you want reminders to practice?</h3>
+            <h3>Do you want practice reminders?</h3>
             <select
               name='notifyMethod'
               id='notifyMethod'
@@ -322,7 +322,7 @@ const CreateAccountPage = () => {
             disabled={!learning || resources.length <= 0 || step !== 2}
             className='form-submit-button'
           >
-            Create Account
+            Let's Go!
           </button>
         </div>
       </form>
