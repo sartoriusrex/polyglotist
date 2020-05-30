@@ -1,14 +1,21 @@
 const crawlfigaro = async function (page: any, url: string, language: string) {
   try {
     let results = [];
+
     const RandomArticleUrls = await page.$$eval(
-      'article a:not([class])',
+      'h2>a:not([aria-label])',
       (aTags: any, url: string) => {
         let urls = aTags
-          .filter((a: any) => a.getAttribute('href').slice(0, 1) === '/')
-          .map((a: any) => url.slice(0, -1) + a.getAttribute('href'));
+          .filter(
+            (tag: any) =>
+              tag.hostname === 'www.lefigaro.fr' &&
+              tag.pathname.slice(0, 7) !== '/photos'
+          )
+          .map((tag: any) => tag.href);
+
         let max = urls.length;
         let numArticles = 3;
+
         const getRandomInt = (max: number) =>
           Math.floor(Math.random() * Math.floor(max));
 
@@ -28,32 +35,92 @@ const crawlfigaro = async function (page: any, url: string, language: string) {
 
     for (let url of RandomArticleUrls) {
       await page.goto(url);
+      let title;
+      let body;
 
       try {
-        const title = await page.$eval(
-          'h1.nodeheader-title',
-          (title: any) => title.innerText
-        );
+        title = await page.$eval('h1', (title: any) => title.innerText);
+      } catch (err) {
+        console.log(err);
+      }
 
-        const body = await page.$eval('.lt-endor-body.content', (body: any) => {
-          let children = Array.from(body.children);
-          let allowedTags = ['P', 'H2'];
+      if (!title) {
+        try {
+          title = await page.$eval('h2', (title: any) => title.innerText)[0];
+        } catch (err) {
+          console.log(err);
+          console.log('failed to retreive title 2nd time via getting first h2');
+          return { error: 'Failed to get any title' };
+        }
+      }
 
-          const allowedChildren = children.filter((element: any) =>
-            allowedTags.includes(element.tagName)
-          );
+      try {
+        if (title.slice(0, 9) === 'EN DIRECT') {
+          body = await page.$eval('.live-message.pinned', (body: any) => {
+            let children = Array.from(body.children);
+            return children.map((tag: any) => {
+              if (tag.tagName === 'H2') {
+                return [tag.tagName, tag.innerText];
+              }
+              if (tag.classList.includes('live-article')) {
+                return ['P', tag.innerText];
+              }
+            });
+          });
+        } else {
+          body = await page.$eval('#fig-article > div', async (body: any) => {
+            if (body.innerText === 'Votre avis') {
+              let commentsButtonClicked = await page.click(
+                '#commentsTitle+ul+span'
+              );
 
-          return allowedChildren.map((element: any) => [
-            element.tagName,
-            element.innerText,
-          ]);
-        });
+              if (!commentsButtonClicked) {
+                return [
+                  'P',
+                  'There are not enough comments to display the survey question results',
+                ];
+              }
+
+              let commentsContainer = Array.from(
+                document.querySelectorAll('.figc-comments')
+              );
+
+              return commentsContainer.map((comment: any) => {
+                const username = comment.querySelector(
+                  '.figc_comment__username'
+                );
+                const date = comment.querySelector('.figc_comment__date');
+                const text = comment.querySelector('.figc_comment__text');
+
+                const returningArray: string[] = [username, date, text];
+
+                returningArray.forEach((textData: string) => ['P', textData]);
+              });
+            }
+
+            let children = Array.from(body.children);
+            let allowedTags = ['P', 'H2', 'UL'];
+
+            const allowedChildren = children.filter((element: any) =>
+              allowedTags.includes(element.tagName)
+            );
+
+            return allowedChildren.map((element: any) => {
+              if (element.tagName === 'UL') {
+                let listItems = Array.from(element.children);
+
+                listItems.map((item: any) => [item.tagName, item.innerText]);
+              }
+              return [element.tagName, element.innerText];
+            });
+          });
+        }
 
         results.push({ title, url, body, language });
       } catch (err) {
         console.log(err);
         return {
-          error: 'Failed to get article Titles or Bodies from Twenty.fr',
+          error: 'Failed to get article Bodies from figaro.fr',
         };
       }
     }
@@ -61,7 +128,7 @@ const crawlfigaro = async function (page: any, url: string, language: string) {
     return results;
   } catch (err) {
     console.log(err);
-    return { error: 'Failed to get article URLs from Twenty.fr' };
+    return { error: 'Failed to get article URLs from figaro.fr' };
   }
 };
 
