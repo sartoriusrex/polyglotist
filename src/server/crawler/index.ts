@@ -23,7 +23,7 @@ const crawlSource = async function (src: {
     if (src.name === 'figaro') {
       await page.goto(src.url);
 
-      const text: Array<CrawlResult> | { error: string } = await sourceCrawler(
+      const articleArray: CrawlResult[] | string = await sourceCrawler(
         page,
         url,
         language
@@ -31,18 +31,21 @@ const crawlSource = async function (src: {
 
       await browser.close();
 
-      // console.log(text);
-      // console.log(`\n\n\n text length is ${Object.entries(text).length}\n\n\n`);
-      // Object.entries(text).forEach((item: any) => {
-      //   console.log(`\n\n${Object.entries(item)}\n\n`);
-      //   // console.log('title ' + item.title);
-      //   // console.log('text body length is ' + item.body.length);
-      //   // item.body.forEach((bodyItem: any) => {
-      //   //   console.log(bodyItem[0]);
-      //   // });
-      // });
-
-      return text;
+      console.log('\n\n\n');
+      if (Array.isArray(articleArray)) {
+        articleArray.forEach((article: CrawlResult) => {
+          console.log('title : ' + article.title + '\n');
+          console.log('url: ' + article.url + '\n');
+          article.body.forEach((body: string[]) => {
+            console.log(body[0]);
+            console.log(body[1]);
+          });
+          console.log('\n=======\n');
+        });
+      } else {
+        console.log(articleArray);
+      }
+      return articleArray;
     }
   } catch (err) {
     console.log(err);
