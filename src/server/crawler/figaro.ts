@@ -11,22 +11,21 @@ export const grabURLs = async function (page: any, url: string) {
           )
           .map((tag: any) => tag.href);
 
-        let max = urls.length;
-        let numArticles = 10;
+        // Shuffle the array in place: From https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+        function shuffleArray(array: any) {
+          for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+          }
+        }
 
-        const getRandomInt = (max: number) =>
-          Math.floor(Math.random() * Math.floor(max));
+        shuffleArray(urls);
 
-        let randomIndexes = Array(numArticles)
-          .fill(1)
-          .map((num: number) => getRandomInt(max))
-          .sort((a: number, b: number) => a - b)
-          .map((num: number, i: number, arr: any[]) => {
-            if (i > 0 && num === arr[i - 1]) return ++num;
-            return num;
-          });
+        const max = urls.length;
+        const numArticlesChoice = 10;
+        const numArticles = Math.min(max, numArticlesChoice);
 
-        return randomIndexes.map((index: number) => urls[index]);
+        return urls.slice(0, numArticles);
       },
       url
     );
@@ -69,6 +68,8 @@ export const grabBody = async function (page: any, title: string, url: string) {
 
   // EN DIRECT articles have live-article tags which have a multitude of non-semantic tags which we will treat their inner text only as P tags
   if (title.slice(0, 9) === 'EN DIRECT') {
+    console.log('\n EN DIRECT! \n');
+
     try {
       body = await page.$eval('.live-message', (body: any) => {
         console.log(body);
@@ -108,7 +109,10 @@ export const grabBody = async function (page: any, title: string, url: string) {
 
           seeAllCommentsButton.click();
 
-          await (async () => setTimeout(() => {}, 5000));
+          await (async () =>
+            setTimeout(() => {
+              console.log('\n\n Waiting after button click \n\n');
+            }, 5000));
 
           const commentsAside = document.querySelector('.figc-comments');
 
@@ -128,8 +132,6 @@ export const grabBody = async function (page: any, title: string, url: string) {
               returningArray.forEach((textData: string) => ['P', textData]);
             });
           } else {
-            console.log('error');
-            console.log(url);
             return ['error', 'no comments'];
           }
         }
@@ -174,6 +176,8 @@ const crawlfigaro = async function (page: any, url: string, language: string) {
   );
 
   if (!Array.isArray(randomArticleUrls)) return randomArticleUrls.error;
+
+  console.log(randomArticleUrls);
 
   for (let url of randomArticleUrls) {
     console.log(`\n${url}\n`);
