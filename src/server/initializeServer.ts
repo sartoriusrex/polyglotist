@@ -41,6 +41,8 @@ let src: SrcObj = transformInitSourceText(
   'french'
 );
 
+// src = transformInitSourceText('twenty', 'https://www.20minutes.fr/', 'french');
+
 let getText = async function (src: SrcObj) {
   try {
     return await crawl(src);

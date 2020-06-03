@@ -1,8 +1,10 @@
 export const grabURLs = async function (page: any, url: string) {
   try {
+    // Grab only center column articles that specifically match this query
     const randomArticleUrls = await page.$$eval(
-      'h2>a:not([aria-label])',
+      'section > div > h2>a:not([aria-label])',
       (aTags: any, url: string) => {
+        // filter out articles with domain not lefigaro, such as madame articles. Also filter out photo articles, that have no text.
         let urls = aTags
           .filter(
             (tag: any) =>
@@ -22,7 +24,7 @@ export const grabURLs = async function (page: any, url: string) {
         shuffleArray(urls);
 
         const max = urls.length;
-        const numArticlesChoice = 10;
+        const numArticlesChoice = 3;
         const numArticles = Math.min(max, numArticlesChoice);
 
         return urls.slice(0, numArticles);
@@ -33,7 +35,7 @@ export const grabURLs = async function (page: any, url: string) {
     return randomArticleUrls;
   } catch (err) {
     console.log(err);
-    return { error: 'Failed to get article URLs from figaro.fr' };
+    return { error: `Failed to get article URLs from ${url}` };
   }
 };
 
@@ -44,17 +46,16 @@ export const grabTitle = async function (page: any, url: string) {
     title = await page.$eval('h1', (title: any) => title.innerText);
   } catch (err) {
     console.log(err);
-    console.log(`\n\n${url}`);
+    console.log(`\n\n${url}\n\n`);
   }
 
+  // If we cannot grab an h1 for whatever reason, grab the first h2
   if (!title) {
     try {
       title = await page.$eval('h2', (title: any) => title.innerText);
     } catch (err) {
       console.log(err);
-      console.log('failed to retreive title 2nd time via getting first h2');
-      console.log(`\n\n${url}`);
-      return { error: 'Failed to get any title' };
+      return { error: `Failed to get any title from ${url}` };
     }
   }
 
@@ -65,35 +66,10 @@ export const grabBody = async function (page: any, title: string, url: string) {
   let body;
 
   // Different article types need to be treated differently
-
-  // EN DIRECT articles have live-article tags which have a multitude of non-semantic tags which we will treat their inner text only as P tags
-  if (title.slice(0, 9) === 'EN DIRECT') {
-    console.log('\n EN DIRECT! \n');
-
-    try {
-      body = await page.$eval('.live-message', (body: any) => {
-        console.log(body);
-        console.log(body.children);
-        let children = Array.from(body.children);
-
-        return children.map((tag: any) => {
-          if (tag.tagName === 'H2') {
-            return [tag.tagName, tag.innerText];
-          }
-          if (tag.classList.includes('live-article')) {
-            return ['P', tag.innerText];
-          }
-        });
-      });
-    } catch (err) {
-      console.log('EN DIRECT body capture failed\n');
-      console.log(err + '\n');
-      console.log(`\n\n${url}\n\n`);
-      return ['error', 'EN DIRECT body capture failed'];
-    }
-  } else {
-    try {
-      body = await page.$$eval('#fig-article > div', async (body: any) => {
+  try {
+    body = await page.$$eval(
+      '#fig-article > div',
+      async (body: any, url: string) => {
         //  Votre Avis reader surveys aren't articles, but they often contain comments, which we are scraping here.
         if (body[0].innerText.toLowerCase() === 'votre avis') {
           const seeAllCommentsButton: any = document.querySelector(
@@ -107,8 +83,10 @@ export const grabBody = async function (page: any, title: string, url: string) {
             ];
           }
 
+          // click button to view all comments;
           seeAllCommentsButton.click();
 
+          // Wait 5 seconds
           await (async () =>
             setTimeout(() => {
               console.log('\n\n Waiting after button click \n\n');
@@ -129,13 +107,16 @@ export const grabBody = async function (page: any, title: string, url: string) {
 
               const returningArray: string[] = [username, date, text];
 
-              returningArray.forEach((textData: string) => ['P', textData]);
+              return returningArray.map((textData: string) => ['P', textData]);
             });
           } else {
-            return ['error', 'no comments'];
+            return {
+              error: `Failed to retreive article comments from ${url}.`,
+            };
           }
         }
 
+        // This is the normal sequence for all other articles, marked with attribute [data-component]='fig-article-content or something like that
         const bodyContainer: any = body.filter((divElement: any) =>
           divElement.hasAttribute('data-component')
         )[0];
@@ -147,23 +128,33 @@ export const grabBody = async function (page: any, title: string, url: string) {
           allowedTags.includes(element.tagName)
         );
 
-        return allowedChildren.map((element: any) => {
-          if (element.tagName === 'UL') {
-            let listItems = Array.from(element.children);
+        // In the case of ul tags that have child elements, we grab their children and insert them into a flattened array with all the other non-ul elements
+        const allChildren = allowedChildren
+          .map((element: any) => {
+            if (element.tagName === 'UL') {
+              const { children } = element;
+              return [...children];
+            }
+            return element;
+          })
+          .flat(1);
 
-            listItems.map((item: any) => [item.tagName, item.innerText]);
+        // Some elements from ul flattened array above will be lis, or perhaps some other non-semantic tag. We will simply make them all p tags, otherwise they are the normal tags.
+        return allChildren.map((element: any) => {
+          if (element.tagName !== 'H2' && element.tagName !== 'P') {
+            return ['P', element.innerText];
           }
           return [element.tagName, element.innerText];
         });
-      });
-    } catch (err) {
-      console.log(err);
-      console.log(`\n\n${url}\n\n`);
-      return ['error', 'Failed to get article Bodies from figaro.fr'];
-    }
-
-    return body;
+      },
+      url
+    );
+  } catch (err) {
+    console.log(err);
+    return { error: `Failed to get article bodies from ${url}` };
   }
+
+  return body;
 };
 
 const crawlfigaro = async function (page: any, url: string, language: string) {
@@ -177,23 +168,17 @@ const crawlfigaro = async function (page: any, url: string, language: string) {
 
   if (!Array.isArray(randomArticleUrls)) return randomArticleUrls.error;
 
-  console.log(randomArticleUrls);
-
   for (let url of randomArticleUrls) {
-    console.log(`\n${url}\n`);
     await page.goto(url);
 
-    const title: string | { error: string } = await grabTitle(page, url);
+    let title: string | { error: string } = await grabTitle(page, url);
 
-    if (typeof title !== 'string') return title.error;
+    if (typeof title !== 'string') title = 'No Title Found';
 
-    const body: string[][] | { error: string } = await grabBody(
-      page,
-      title,
-      url
-    );
+    let body: string[][] | { error: string } = await grabBody(page, title, url);
 
-    if (!Array.isArray(body)) return body.error;
+    if (!Array.isArray(body))
+      body = [['H2', 'Failed to retrieve article body']];
 
     results.push({ title, url, body, language });
   }

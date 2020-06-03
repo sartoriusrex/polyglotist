@@ -1,42 +1,49 @@
 const crawlTwenty = async function (page: any, url: string, language: string) {
+  let results = [];
+
   try {
-    //
-    let results = [];
     const RandomArticleUrls = await page.$$eval(
       'article a:not([class])',
       (aTags: any, url: string) => {
         let urls = aTags
           .filter((a: any) => a.getAttribute('href').slice(0, 1) === '/')
           .map((a: any) => url.slice(0, -1) + a.getAttribute('href'));
-        let max = urls.length;
-        let numArticles = 3;
-        const getRandomInt = (max: number) =>
-          Math.floor(Math.random() * Math.floor(max));
 
-        let randomIndexes = Array(numArticles)
-          .fill(1)
-          .map((num: number) => getRandomInt(max))
-          .sort((a: number, b: number) => a - b)
-          .map((num: number, i: number, arr: any[]) => {
-            if (i > 0 && num === arr[i - 1]) return ++num;
-            return num;
-          });
+        // Shuffle the array in place: From https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+        function shuffleArray(array: any) {
+          for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+          }
+        }
 
-        return randomIndexes.map((index: number) => urls[index]);
+        shuffleArray(urls);
+
+        const max = urls.length;
+        const numArticlesChoice = 3;
+        const numArticles = Math.min(max, numArticlesChoice);
+
+        return urls.slice(0, numArticles);
       },
       url
     );
 
     for (let url of RandomArticleUrls) {
       await page.goto(url);
+      let title;
+      let body;
 
       try {
-        const title = await page.$eval(
+        title = await page.$eval(
           'h1.nodeheader-title',
           (title: any) => title.innerText
         );
+      } catch (err) {
+        return { error: `Failed to capture title for ${url}` };
+      }
 
-        const body = await page.$eval('.lt-endor-body.content', (body: any) => {
+      try {
+        body = await page.$eval('.lt-endor-body.content', (body: any) => {
           let children = Array.from(body.children);
           let allowedTags = ['P', 'H2'];
 
@@ -54,7 +61,7 @@ const crawlTwenty = async function (page: any, url: string, language: string) {
       } catch (err) {
         console.log(err);
         return {
-          error: 'Failed to get article Titles or Bodies from Twenty.fr',
+          error: `Failed to get article bodies from ${url}`,
         };
       }
     }
