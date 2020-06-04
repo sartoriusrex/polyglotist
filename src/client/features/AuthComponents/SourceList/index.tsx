@@ -42,7 +42,7 @@ export const sources: {
       name: '20 Minutos',
       id: 'veinte',
       desc:
-        'A beginner to lower-intermediate level selection of articles selected for a US audience (20minutos Estados Unidos edition).',
+        'A beginner to lower-intermediate level selection of articles selected for a USA audience (20minutos Estados Unidos edition).',
     },
     // {
     //   name: 'BBC Mundo',
@@ -60,7 +60,7 @@ export const sources: {
       name: 'El Pais',
       id: 'pais',
       desc:
-        'Most popular and widely read, with four worldwide versions available (but only the version for Spain here). Good for all levels, with center-left bias. ',
+        'Most popular and widely read, with four worldwide versions available. Currently Polyglotist only offers the USA version. Good for all levels, with center-left bias. ',
     },
   ],
   // german: [

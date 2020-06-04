@@ -53,7 +53,7 @@ const populate_sources = `
   ('veinte', 'https://www.20minutos.com/', 'spanish'),
   ('bbc', 'https://www.bbc.com/mundo', 'spanish'),
   ('mundo', 'https://www.elmundo.es/', 'spanish'),
-  ('pais', 'https://elpais.com/', 'spanish'),
+  ('pais', 'https://elpais.com/america/', 'spanish'),
   ('welt', 'https://www.welt.de/', 'german'),
   ('faz', 'https://www.faz.net/aktuell/', 'german'),
   ('sz', 'https://www.sueddeutsche.de/', 'german'),

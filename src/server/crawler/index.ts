@@ -3,6 +3,7 @@ import figaro from './figaro';
 import twenty from './twenty';
 import monde from './monde';
 import veinte from './veinte';
+import pais from './pais';
 
 const headless = true;
 
@@ -18,7 +19,7 @@ const crawlSource = async function (src: {
   language: string;
   name: string;
 }) {
-  const crawlers: any = { figaro, twenty, monde, veinte };
+  const crawlers: any = { figaro, twenty, monde, veinte, pais };
 
   try {
     const browser = await puppeteer.launch({ headless: headless });
