@@ -177,8 +177,7 @@ const crawlfigaro = async function (page: any, url: string, language: string) {
 
     let body: string[][] | { error: string } = await grabBody(page, title, url);
 
-    if (!Array.isArray(body))
-      body = [['H2', 'Failed to retrieve article body']];
+    if (!Array.isArray(body)) body = [['H2', body.error]];
 
     results.push({ title, url, body, language });
   }

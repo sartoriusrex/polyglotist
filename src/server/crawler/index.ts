@@ -1,6 +1,7 @@
 const puppeteer = require('puppeteer');
 import figaro from './figaro';
 import twenty from './twenty';
+import monde from './monde';
 
 const headless = true;
 
@@ -16,7 +17,7 @@ const crawlSource = async function (src: {
   language: string;
   name: string;
 }) {
-  const crawlers: any = { figaro, twenty };
+  const crawlers: any = { figaro, twenty, monde };
 
   try {
     const browser = await puppeteer.launch({ headless: headless });
@@ -36,12 +37,19 @@ const crawlSource = async function (src: {
 
     if (Array.isArray(articleArray)) {
       articleArray.forEach((article: CrawlResult) => {
-        console.log('\n\n');
-        console.log(article.title + '\n');
-        console.log(article.url + '\n');
-        article.body.forEach((bodyArray: string[]) => {
-          console.log(bodyArray + '\n');
-        });
+        // console.log('\n===\n');
+        // console.log(article.title + '\n');
+        if (Array.isArray(article.body)) {
+          if (article.body.length <= 2) {
+            console.log(article.url + '\n');
+            article.body.forEach((bodyArray: string[]) => {
+              console.log(bodyArray + '\n');
+            });
+            console.log(`===\n${articleArray.length}\n===`);
+          }
+        } else {
+          console.log(article.body);
+        }
       });
     } else {
       console.log(articleArray);
