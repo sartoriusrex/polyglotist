@@ -164,7 +164,7 @@ const SettingsPage = () => {
               aria-describedby='desc-targetLangs'
             />
           </label>
-          <label
+          {/* <label
             htmlFor='german'
             className={
               learning && learning.includes('german')
@@ -185,7 +185,7 @@ const SettingsPage = () => {
               }
               aria-describedby='desc-targetLangs'
             />
-          </label>
+          </label> */}
         </div>
         <div className={styles.sectionDiv}>
           {learning.map((lang: string) => {

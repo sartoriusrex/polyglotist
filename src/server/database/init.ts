@@ -50,7 +50,7 @@ const populate_sources = `
   ('monde', 'https://www.lemonde.fr/', 'french'),
   ('figaro', 'https://www.lefigaro.fr/', 'french'),
   ('parisien', 'http://www.leparisien.fr/', 'french'),
-  ('abc', 'https://www.abc.es/', 'spanish'),
+  ('veinte', 'https://www.20minutos.com/', 'spanish'),
   ('bbc', 'https://www.bbc.com/mundo', 'spanish'),
   ('mundo', 'https://www.elmundo.es/', 'spanish'),
   ('pais', 'https://elpais.com/', 'spanish'),
@@ -69,7 +69,7 @@ const update_user_five_settings = `
   (4, 1),
   (4, 3),
   (4, 5),
-  (4, 6)
+  (4, 8)
 `;
 
 const create_articles = `

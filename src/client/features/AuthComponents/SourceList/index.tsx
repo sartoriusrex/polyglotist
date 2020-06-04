@@ -30,32 +30,32 @@ export const sources: {
       desc:
         'One of the most widely respected newspapers in the world, covering every topic. Intellectual and almost academic. Challenging, with center-left bias.',
     },
-    {
-      name: 'Le Parisien',
-      id: 'parisien',
-      desc:
-        'National, International, and Paris metro-area news. Intermediate skill, with neutral bias.',
-    },
+    // {
+    //   name: 'Le Parisien',
+    //   id: 'parisien',
+    //   desc:
+    //     'National, International, and Paris metro-area news. Intermediate skill, with neutral bias.',
+    // },
   ],
   spanish: [
     {
-      name: 'ABC',
-      id: 'abc',
+      name: '20 Minutos',
+      id: 'veinte',
       desc:
-        'Recently known for good coverage of Culture and Arts. Historically known for its conservative, right bias.',
+        'A beginner to lower-intermediate level selection of articles selected for a US audience (20minutos Estados Unidos edition).',
     },
-    {
-      name: 'BBC Mundo',
-      id: 'bbc',
-      desc:
-        'All topics at all levels available, and a favorite for developing breadth on vocabularly and improving. The website itself also has video sections specifically for improving listening.',
-    },
-    {
-      name: 'El Mundo',
-      id: 'mundo',
-      desc:
-        'Second most popular, known for its coverage of the Economy and International News, as well as culture. Center-right bias.',
-    },
+    // {
+    //   name: 'BBC Mundo',
+    //   id: 'bbc',
+    //   desc:
+    //     'All topics at all levels available, and a favorite for developing breadth on vocabularly and improving. The website itself also has video sections specifically for improving listening.',
+    // },
+    // {
+    //   name: 'El Mundo',
+    //   id: 'mundo',
+    //   desc:
+    //     'Second most popular, known for its coverage of the Economy and International News, as well as culture. Center-right bias.',
+    // },
     {
       name: 'El Pais',
       id: 'pais',
@@ -63,31 +63,31 @@ export const sources: {
         'Most popular and widely read, with four worldwide versions available (but only the version for Spain here). Good for all levels, with center-left bias. ',
     },
   ],
-  german: [
-    {
-      name: 'Die Welt',
-      id: 'welt',
-      desc: 'Large German weekly newspaper, with conservative, right bias.',
-    },
-    {
-      name: 'Frankfurter Allgemeine Zeitung',
-      id: 'faz',
-      desc:
-        'One of the most widely-read German newspapers read both domestically and abroad, with center-right and liberal-conservative bias.',
-    },
-    {
-      name: 'Suddeutsche Zeitung',
-      id: 'sz',
-      desc:
-        'Most popular daily newspaper throughout Germany, with center-left and liberal bias.',
-    },
-    {
-      name: 'Der Spiegel',
-      id: 'spiegel',
-      desc:
-        'Largest German National weekly magazine, famous for its investigative journalism.',
-    },
-  ],
+  // german: [
+  //   {
+  //     name: 'Die Welt',
+  //     id: 'welt',
+  //     desc: 'Large German weekly newspaper, with conservative, right bias.',
+  //   },
+  //   {
+  //     name: 'Frankfurter Allgemeine Zeitung',
+  //     id: 'faz',
+  //     desc:
+  //       'One of the most widely-read German newspapers read both domestically and abroad, with center-right and liberal-conservative bias.',
+  //   },
+  //   {
+  //     name: 'Suddeutsche Zeitung',
+  //     id: 'sz',
+  //     desc:
+  //       'Most popular daily newspaper throughout Germany, with center-left and liberal bias.',
+  //   },
+  //   {
+  //     name: 'Der Spiegel',
+  //     id: 'spiegel',
+  //     desc:
+  //       'Largest German National weekly magazine, famous for its investigative journalism.',
+  //   },
+  // ],
 };
 
 const SourceList = (props: {

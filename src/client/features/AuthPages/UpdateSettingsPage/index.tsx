@@ -40,7 +40,6 @@ const UpdateSettingsPage = () => {
 
     func(value);
   }
-  
 
   function handleLanguageChange(value: string) {
     let learningArray = learning ? [...learning] : [];
@@ -127,7 +126,7 @@ const UpdateSettingsPage = () => {
               aria-describedby='desc-targetLangs'
             />
           </label>
-          <label htmlFor='german'>
+          {/* <label htmlFor='german'>
             German
             <input
               type='checkbox'
@@ -139,7 +138,7 @@ const UpdateSettingsPage = () => {
               }
               aria-describedby='desc-targetLangs'
             />
-          </label>
+          </label> */}
         </div>
         <label htmlFor='themePreference'>
           Theme
