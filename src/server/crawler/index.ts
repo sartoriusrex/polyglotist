@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer');
 import figaro from './figaro';
 import twenty from './twenty';
 import monde from './monde';
+import veinte from './veinte';
 
 const headless = true;
 
@@ -17,7 +18,7 @@ const crawlSource = async function (src: {
   language: string;
   name: string;
 }) {
-  const crawlers: any = { figaro, twenty, monde };
+  const crawlers: any = { figaro, twenty, monde, veinte };
 
   try {
     const browser = await puppeteer.launch({ headless: headless });
@@ -45,12 +46,13 @@ const crawlSource = async function (src: {
             article.body.forEach((bodyArray: string[]) => {
               console.log(bodyArray + '\n');
             });
-            console.log(`===\n${articleArray.length}\n===`);
           }
         } else {
           console.log(article.body);
         }
       });
+      console.log(`===\n${articleArray.length}\n===`);
+      console.log('\nAll Done scraping\n');
     } else {
       console.log(articleArray);
     }
