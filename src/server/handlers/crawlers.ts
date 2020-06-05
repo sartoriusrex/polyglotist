@@ -33,7 +33,7 @@ export default {
           url: url[1],
           language: url[2],
         };
-        // return await crawlSource( src ); //return text and info for each source given name and url
+        return await crawlSource(src); //return text and info for each source given name and url
         // returns the text data, the source (url), and the language
       })
     );
