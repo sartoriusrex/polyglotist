@@ -4,7 +4,6 @@ export const grabURLs = async function (page: any, url: string) {
     const randomArticleUrls = await page.$$eval(
       'article h1 a',
       (aTags: any, url: string) => {
-        // filter out articles with domain not lefigaro, such as madame articles. Also filter out photo articles, that have no text.
         let urls = aTags.map((tag: any) => tag.href);
 
         // Shuffle the array in place: From https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array

@@ -38,20 +38,32 @@ const crawlSource = async function (src: {
     await browser.close();
 
     if (Array.isArray(articleArray)) {
+      let count: number = 0;
       articleArray.forEach((article: CrawlResult) => {
         // console.log('\n===\n');
         // console.log(article.title + '\n');
         if (Array.isArray(article.body)) {
-          if (article.body.length <= 2) {
-            console.log(article.url + '\n');
-            article.body.forEach((bodyArray: string[]) => {
-              console.log(bodyArray + '\n');
-            });
+          // if (article.body.length <= 2) {
+          //   console.log(article.url + '\n');
+          //   article.body.forEach((bodyArray: string[]) => {
+          //     console.log(bodyArray + '\n');
+          //   });
+          // }
+          // console.log('\n===\n');
+          // console.log(article.title);
+          // console.log(article.url);
+          // console.log('\n');
+          // article.body.forEach((bd: any) => console.log(bd));
+          if (article.body.length > 2) {
+            count++;
+          } else {
+            console.log(article.url);
           }
         } else {
           console.log(article.body);
         }
       });
+      console.log('articles with body count greather than 2: ', count);
       console.log(`===\n${articleArray.length}\n===`);
       console.log('\nAll Done scraping\n');
     } else {

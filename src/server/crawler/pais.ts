@@ -2,10 +2,20 @@ export const grabURLs = async function (page: any, url: string) {
   try {
     // Grab only center column articles that specifically match this query
     const randomArticleUrls = await page.$$eval(
-      'article h1 a',
-      (aTags: any, url: string) => {
-        // filter out articles with domain not lefigaro, such as madame articles. Also filter out photo articles, that have no text.
-        let urls = aTags.map((tag: any) => tag.href);
+      'article',
+      (articles: any, url: string) => {
+        // filter out articles 'en vivo' since they're a bit complicated for scraping (iframe with another url - may do these later)
+
+        const articlesNoVivo = articles.filter(
+          (element: any) => !element.querySelector('.kicker span')
+        );
+
+        let urls = articlesNoVivo
+          .map((element: any) => element.querySelector('h2 a').href)
+          .filter(
+            (href: string) =>
+              href.slice(8, 14) === 'elpais' && !href.includes('album')
+          );
 
         // Shuffle the array in place: From https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
         function shuffleArray(array: any) {
@@ -18,7 +28,7 @@ export const grabURLs = async function (page: any, url: string) {
         shuffleArray(urls);
 
         const max = urls.length;
-        const numArticlesChoice = max;
+        const numArticlesChoice = 3;
         const numArticles = Math.min(max, numArticlesChoice);
 
         return urls.slice(0, numArticles);
@@ -52,18 +62,38 @@ export const grabBody = async function (page: any, title: string, url: string) {
   // Different article types need to be treated differently
   try {
     body = await page.$eval(
-      'main',
+      'article',
       async (body: any, url: string) => {
         let desc = null;
-        if (body.querySelector('.article-intro')) {
-          desc = ['P', body.querySelector('.article-intro').innerText];
+        if (body.querySelector('h1 + h2')) {
+          desc = ['H2', body.querySelector('h1 + h2').innerText];
         }
 
-        const articleText = Array.from(
-          body.querySelector('.article-text').children
-        )
-          .filter((element: any) => element.tagName === 'P')
-          .map((element: any) => [element.tagName, element.innerText]);
+        const articleBodyContainer =
+          body.querySelector('.article_body') ||
+          body.querySelector('.articulo-cuerpo') ||
+          body.querySelector('.cuerpo');
+
+        const allowedTags = ['P', 'H2', 'H3', 'BLOCKQUOTE', 'UL'];
+        let articleText;
+
+        if (articleBodyContainer !== null) {
+          articleText = Array.from(articleBodyContainer.children)
+            .filter((element: any) => allowedTags.includes(element.tagName))
+            .map((element: any) => {
+              if (element.tagName === 'UL') {
+                const ulChildren = Array.from(element.children);
+
+                return ulChildren.map((el: any) => [
+                  el.tagName,
+                  el.textContent,
+                ]);
+              }
+              return [element.tagName, element.textContent];
+            });
+        } else {
+          articleText = [['H2', `No Body Found in ${url}`]];
+        }
 
         if (desc) articleText.unshift(desc);
         return articleText;
