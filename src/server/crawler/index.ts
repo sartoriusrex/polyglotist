@@ -28,6 +28,8 @@ const crawlSource = async function (src: {
     const page = await browser.newPage();
     const sourceCrawler: any = crawlers[name];
 
+    console.log(`\n===\nCrawling ${name} \n===\n`);
+
     await page.goto(url, { timeout: 0 });
     await page.waitFor(2000);
 
@@ -39,11 +41,16 @@ const crawlSource = async function (src: {
 
     await browser.close();
 
+    // Testing the articles crawled
+    // 1. Check that the articleArray is in fact an array
     if (Array.isArray(articleArray)) {
       let count: number = 0;
+      // Loop through each Article in the array
       articleArray.forEach((article: CrawlResult) => {
         // console.log('\n===\n');
         // console.log(article.title + '\n');
+
+        // Check that the body is also an array
         if (Array.isArray(article.body)) {
           // if (article.body.length <= 2) {
           //   console.log(article.url + '\n');
@@ -65,11 +72,12 @@ const crawlSource = async function (src: {
           console.log(article.body);
         }
       });
-      console.log('articles with body count greather than 2: ', count);
-      console.log(`===\n${articleArray.length}\n===`);
-      console.log('\nAll Done scraping\n');
+      console.log(
+        `\n====\nArticles with body count greater than 2: ${count} / ${articleArray.length}\n====\n`
+      );
+      console.log(`All Done scraping ${name}\n`);
     } else {
-      console.log(articleArray);
+      console.log(`Article array is not an array: ${articleArray}`);
     }
 
     return articleArray;
