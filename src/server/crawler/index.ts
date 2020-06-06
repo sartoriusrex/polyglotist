@@ -12,6 +12,7 @@ interface CrawlResult {
   url: string;
   language: string;
   body: string[][];
+  error?: string;
 }
 
 const crawlSource = async function (src: {
@@ -20,16 +21,17 @@ const crawlSource = async function (src: {
   name: string;
 }) {
   const crawlers: any = { figaro, twenty, monde, veinte, pais };
+  const { url, language, name } = src;
 
   try {
     const browser = await puppeteer.launch({ headless: headless });
     const page = await browser.newPage();
-    const { url, language, name } = src;
     const sourceCrawler: any = crawlers[name];
 
-    await page.goto(url);
+    await page.goto(url, { timeout: 0 });
+    await page.waitFor(2000);
 
-    const articleArray: CrawlResult[] | string = await sourceCrawler(
+    const articleArray: CrawlResult[] = await sourceCrawler(
       page,
       url,
       language
@@ -73,6 +75,8 @@ const crawlSource = async function (src: {
     return articleArray;
   } catch (err) {
     console.log(err);
+
+    return { error: `Failed to scrape ${name}` };
   }
 };
 

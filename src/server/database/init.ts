@@ -67,6 +67,7 @@ const create_user_five = `
 const update_user_five_settings = `
   INSERT INTO users_sources (user_id, source_id) VALUES
   (4, 1),
+  (4, 2),
   (4, 3),
   (4, 5),
   (4, 8)

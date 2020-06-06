@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { sendMessage, removeMessage } from './messages';
+import { fetchNewArticles } from './newArticles';
 import { loadSettings } from './settings';
 import history from '../app/history';
 
@@ -153,11 +154,15 @@ export function login(username?: string, password?: string) {
         };
         dispatch(loadSettings(settings));
 
+        // If user has never set languages, redirect them to create their account, otherwise redirect to dashboard and fetch relevant information
         if (!languagesLearning) {
           history.push(`/${username}/create_account`);
         } else {
+          // dispatch action to fetch artcles from their sources
+          dispatch(fetchNewArticles(sources));
           history.push(`/${username}/dashboard`);
         }
+
         dispatch(sendMessage(data.message));
       } else if (response.status === 200 && data.user === null) {
         dispatch(loginUserSuccess(null));
