@@ -153,9 +153,7 @@ async function init() {
     await db.query(create_users_sources);
     console.log('=======\nCreated users_sources.\n=======\n');
     await db.query(update_user_five_settings);
-    console.log(
-      '=======Updated username5"s settings to include sources.\n=======\n'
-    );
+    console.log('=======Updated settings for username5.\n=======\n');
     console.log('=======\nSuccessfully initialized db.\n=======\n');
   } catch (err) {
     console.log(err);

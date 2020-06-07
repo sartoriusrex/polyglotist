@@ -12,46 +12,46 @@ import crawl from './crawler';
 
 initializeDatabase();
 
-// // test crawl functions
-// // define interface for src object
-// interface SrcObj {
-//   url: string;
-//   name: string;
-//   language: string;
-// }
+// test crawl functions
+// define interface for src object
+interface SrcObj {
+  url: string;
+  name: string;
+  language: string;
+}
 
-// // transform text for init sources function in /database/init.ts, returning object matching instance of SrcObj
-// let transformInitSourceText = function (
-//   name: string,
-//   url: string,
-//   language: string
-// ): SrcObj {
-//   let srcObject: SrcObj = {
-//     url,
-//     name,
-//     language,
-//   };
+// transform text for init sources function in /database/init.ts, returning object matching instance of SrcObj
+let transformInitSourceText = function (
+  name: string,
+  url: string,
+  language: string
+): SrcObj {
+  let srcObject: SrcObj = {
+    url,
+    name,
+    language,
+  };
 
-//   return srcObject;
-// };
+  return srcObject;
+};
 
-// let src: SrcObj = transformInitSourceText(
-//   'figaro',
-//   'https://www.lefigaro.fr/',
-//   'french'
-// );
+let src: SrcObj = transformInitSourceText(
+  'figaro',
+  'https://www.lefigaro.fr/',
+  'french'
+);
 
 // src = transformInitSourceText('pais', 'https://elpais.com/america/', 'spanish');
 
-// let getText = async function (src: SrcObj) {
-//   try {
-//     return await crawl(src);
-//   } catch (err) {
-//     return { message: err.message };
-//   }
-// };
+let getText = async function (src: SrcObj) {
+  try {
+    return await crawl(src);
+  } catch (err) {
+    return { message: err.message };
+  }
+};
 
-// let text = getText(src);
+let text = getText(src);
 
 export default function initializeServer(router: Router) {
   const app = express();

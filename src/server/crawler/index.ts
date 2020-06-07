@@ -9,6 +9,7 @@ const headless = true;
 
 interface CrawlResult {
   title: string;
+  date: string;
   url: string;
   language: string;
   body: string[][];
@@ -28,8 +29,6 @@ const crawlSource = async function (src: {
     const page = await browser.newPage();
     const sourceCrawler: any = crawlers[name];
 
-    console.log(`\n===\nCrawling ${name} \n===\n`);
-
     await page.goto(url, { timeout: 0 });
     await page.waitFor(2000);
 
@@ -38,6 +37,8 @@ const crawlSource = async function (src: {
       url,
       language
     );
+
+    console.log(`\n=+=+=+=\n Crawled ${name} \n=+=+=+=\n`);
 
     await browser.close();
 
@@ -49,6 +50,7 @@ const crawlSource = async function (src: {
       articleArray.forEach((article: CrawlResult) => {
         // console.log('\n===\n');
         // console.log(article.title + '\n');
+        console.log(article.date);
 
         // Check that the body is also an array
         if (Array.isArray(article.body)) {
