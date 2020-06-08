@@ -141,7 +141,7 @@ async function init() {
     await db.query(populate_users, [pw1, pw2, pw3]);
     console.log('=======\nPopulated Users.\n=======\n');
     await db.query(populate_sources);
-    console.log('=======\nPopulated Users.\n=======\n');
+    console.log('=======\nPopulated Sources.\n=======\n');
     await db.query(create_user_five, [pw5]);
     console.log('=======\nCreated User 5.\n=======\n');
     await db.query(create_articles);
@@ -153,7 +153,7 @@ async function init() {
     await db.query(create_users_sources);
     console.log('=======\nCreated users_sources.\n=======\n');
     await db.query(update_user_five_settings);
-    console.log('=======Updated settings for username5.\n=======\n');
+    console.log('=======\nUpdated settings for username5.\n=======\n');
     console.log('=======\nSuccessfully initialized db.\n=======\n');
   } catch (err) {
     console.log(err);
