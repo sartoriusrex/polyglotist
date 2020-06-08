@@ -1,18 +1,12 @@
 import { Request, Response } from 'express';
 
+import { DatabaseSource, CrawlResult, SourceText } from './interfaces';
 import db from '../database';
 import crawlSource from '../crawler/index';
 
 export default {
   crawlSources: async (req: Request, res: Response) => {
     const sources: string[] = req.body;
-
-    interface DatabaseSource {
-      name: string;
-      url: string;
-      language: string;
-      error?: string;
-    }
 
     // query db for urls to go to for each source;
     const databaseSources: DatabaseSource[] = await Promise.all(
@@ -39,21 +33,6 @@ export default {
         }
       })
     );
-
-    interface CrawlResult {
-      title: string;
-      date: string;
-      url: string;
-      language: string;
-      body: string[][];
-      error?: string;
-    }
-
-    interface SourceText {
-      source: DatabaseSource;
-      articles?: CrawlResult[] | { error: string };
-      error?: string;
-    }
 
     // Loop through each source and initiates its crawl function
     const sourceTexts: SourceText[] = await Promise.all(

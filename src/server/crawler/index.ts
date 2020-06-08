@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 
+import { Error, CrawlResult } from './interfaces';
 import crawlerFunction from './crawlerFunction';
 
 import figaro from './figaro';
@@ -9,19 +10,6 @@ import veinte from './veinte';
 import pais from './pais';
 
 const headless = true;
-
-interface CrawlResult {
-  title: string;
-  date: string;
-  url: string;
-  language: string;
-  body: string[][];
-  error?: string;
-}
-
-interface Error {
-  error: string;
-}
 
 const crawlSource = async function (src: {
   url: string;

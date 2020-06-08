@@ -1,17 +1,4 @@
-interface Error {
-  error: string;
-}
-
-interface Crawler {
-  grabURLs: (page: any, url: string) => Promise<string[] | Error>;
-  grabTitle: (page: any, url: string) => Promise<string | Error>;
-  grabDate: (page: any, url: string) => Promise<string | Error>;
-  grabBody: (
-    page: any,
-    url: string,
-    title: string
-  ) => Promise<string[][] | Error>;
-}
+import { Error, Crawler } from './interfaces';
 
 const figaroCrawler: Crawler = {
   grabURLs: async function (page: any, url: string) {
