@@ -1,3 +1,7 @@
+interface Error {
+  error: string;
+}
+
 export const grabURLs = async function (page: any, url: string) {
   try {
     // Grab only center column articles that specifically match this query
@@ -66,6 +70,10 @@ export const grabTitle = async function (page: any, url: string) {
   return title;
 };
 
+export const grabDate = async function (page: any, url: string) {
+  let date: string;
+};
+
 export const grabBody = async function (page: any, title: string, url: string) {
   let body;
 
@@ -125,25 +133,20 @@ const crawlMonde = async function (page: any, url: string, language: string) {
   // go to main page, scrape for desired links to article pages and return 3 random articles, and scrape those pages for their contents;
   let results = [];
 
-  const randomArticleUrls: string[] | { error: string } = await grabURLs(
-    page,
-    url
-  );
-
+  const randomArticleUrls: string[] | Error = await grabURLs(page, url);
   if (!Array.isArray(randomArticleUrls)) return randomArticleUrls.error;
 
   for (let url of randomArticleUrls) {
     await page.goto(url);
 
-    let title: string | { error: string } = await grabTitle(page, url);
-
+    let title: string | Error = await grabTitle(page, url);
     if (typeof title !== 'string') title = 'No Title Found';
 
-    let body: string[][] | { error: string } = await grabBody(page, title, url);
+    // let date: string | Error = await grabDate(page, url);
+    // if (typeof date !== 'string') date = 'No Date Found';
 
-    if (!Array.isArray(body)) {
-      body = [['H2', body.error]];
-    }
+    let body: string[][] | Error = await grabBody(page, title, url);
+    if (!Array.isArray(body)) body = [['H2', body.error]];
 
     results.push({ title, url, body, language });
   }

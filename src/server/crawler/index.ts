@@ -1,4 +1,7 @@
 const puppeteer = require('puppeteer');
+
+import crawlerFunction from './crawlerFunction';
+
 import figaro from './figaro';
 import twenty from './twenty';
 import monde from './monde';
@@ -16,6 +19,10 @@ interface CrawlResult {
   error?: string;
 }
 
+interface Error {
+  error: string;
+}
+
 const crawlSource = async function (src: {
   url: string;
   language: string;
@@ -27,12 +34,16 @@ const crawlSource = async function (src: {
   try {
     const browser = await puppeteer.launch({ headless: headless });
     const page = await browser.newPage();
-    const sourceCrawler: any = crawlers[name];
+    const { grabURLs, grabTitle, grabDate, grabBody } = crawlers[name];
 
     await page.goto(url, { timeout: 0 });
     await page.waitFor(2000);
 
-    const articleArray: CrawlResult[] = await sourceCrawler(
+    const articleArray: CrawlResult[] | Error = await crawlerFunction(
+      grabURLs,
+      grabTitle,
+      grabDate,
+      grabBody,
       page,
       url,
       language

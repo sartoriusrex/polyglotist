@@ -41,7 +41,7 @@ let src: SrcObj = transformInitSourceText(
   'french'
 );
 
-src = transformInitSourceText('pais', 'https://elpais.com/america/', 'spanish');
+// src = transformInitSourceText('monde', 'https://www.lemonde.fr/', 'french');
 
 let getText = async function (src: SrcObj) {
   try {
