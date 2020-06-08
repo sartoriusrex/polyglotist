@@ -1,3 +1,7 @@
+interface Error {
+  error: string;
+}
+
 export const grabURLs = async function (page: any, url: string) {
   try {
     // Grab only center column articles that specifically match this query
@@ -7,7 +11,9 @@ export const grabURLs = async function (page: any, url: string) {
         // filter out articles 'en vivo' since they're a bit complicated for scraping (iframe with another url - may do these later)
 
         const articlesNoVivo = articles.filter(
-          (element: any) => !element.querySelector('.kicker span')
+          (element: any) =>
+            !element.querySelector('.kicker span') &&
+            element.querySelector('h2 a')
         );
 
         let urls = articlesNoVivo
@@ -28,7 +34,7 @@ export const grabURLs = async function (page: any, url: string) {
         shuffleArray(urls);
 
         const max = urls.length;
-        const numArticlesChoice = 3;
+        const numArticlesChoice = max;
         const numArticles = Math.min(max, numArticlesChoice);
 
         return urls.slice(0, numArticles);
@@ -54,6 +60,78 @@ export const grabTitle = async function (page: any, url: string) {
   }
 
   return title;
+};
+
+export const grabDate = async function (page: any, url: string) {
+  let date: string;
+  const months: { [key: string]: string } = {
+    ENE: 'january',
+    FEB: 'february',
+    MAR: 'march',
+    ABR: 'april',
+    MAY: 'may',
+    JUN: 'june',
+    JUL: 'july',
+    AGO: 'august',
+    SEP: 'september',
+    OCT: 'october',
+    NOV: 'november',
+    DIC: 'december',
+  };
+
+  try {
+    date = await page.$eval(
+      '.a_ti',
+      (timeElement: any, months: { [key: string]: string }) => {
+        const dateText = timeElement.innerText.slice(0, 11);
+        let dateTimeObject = new Date(dateText);
+
+        if (typeof dateTimeObject === 'string') {
+          const dateTextArray = dateText.split(' ');
+          const newDateText = dateTextArray
+            .map((el: string) => {
+              if (months[el]) return months[el];
+              return el;
+            })
+            .join(' ');
+
+          dateTimeObject = new Date(newDateText);
+        }
+
+        return dateTimeObject.toLocaleString();
+      },
+      months
+    );
+
+    return date;
+  } catch (err) {
+    console.log('\n failed to grab .a_ti. Will now attempt 2nd capture');
+  }
+
+  try {
+    date = await page.$eval(
+      'time',
+      (dateElement: any, months: { [key: string]: string }) => {
+        const dateText = dateElement.innerText.slice(0, 11);
+
+        const dateTextInEnglish = dateText
+          .split(' ')
+          .map((el: any) => {
+            if (months[el]) return months[el];
+            return el;
+          })
+          .join(' ');
+
+        return new Date(dateTextInEnglish).toLocaleString();
+      },
+      months
+    );
+
+    return date;
+  } catch (err) {
+    console.log(err);
+    return { error: `Failed to grab the time from ${url}` };
+  }
 };
 
 export const grabBody = async function (page: any, title: string, url: string) {
@@ -112,27 +190,22 @@ const crawlPais = async function (page: any, url: string, language: string) {
   // go to main page, scrape for desired links to article pages and return 3 random articles, and scrape those pages for their contents;
   let results = [];
 
-  const randomArticleUrls: string[] | { error: string } = await grabURLs(
-    page,
-    url
-  );
-
+  const randomArticleUrls: string[] | Error = await grabURLs(page, url);
   if (!Array.isArray(randomArticleUrls)) return randomArticleUrls.error;
 
   for (let url of randomArticleUrls) {
     await page.goto(url);
 
-    let title: string | { error: string } = await grabTitle(page, url);
-
+    let title: string | Error = await grabTitle(page, url);
     if (typeof title !== 'string') title = 'No Title Found';
 
-    let body: string[][] | { error: string } = await grabBody(page, title, url);
+    let date: string | Error = await grabDate(page, url);
+    if (typeof date !== 'string') date = 'No Date Found';
 
-    if (!Array.isArray(body)) {
-      body = [['H2', body.error]];
-    }
+    let body: string[][] | Error = await grabBody(page, title, url);
+    if (!Array.isArray(body)) body = [['H2', body.error]];
 
-    results.push({ title, url, body, language });
+    results.push({ title, date, url, body, language });
   }
 
   return results;

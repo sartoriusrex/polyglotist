@@ -79,7 +79,7 @@ const crawlSource = async function (src: {
       );
       console.log(`All Done scraping ${name}\n`);
     } else {
-      console.log(`Article array is not an array: ${articleArray}`);
+      console.log(`\nArticle array is not an array: ${articleArray}\n`);
     }
 
     return articleArray;
