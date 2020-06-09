@@ -1,4 +1,4 @@
-import { Error, Crawler } from './interfaces';
+import { Error, Crawler, Months } from './interfaces';
 
 const figaroCrawler: Crawler = {
   grabURLs: async function (page: any, url: string) {
@@ -80,7 +80,7 @@ const figaroCrawler: Crawler = {
         date = await page.$eval('.date', (dateElement: any) => {
           const dateText = dateElement.textContent.slice(9).split(' ');
 
-          const months: { [key: string]: string } = {
+          const months: Months = {
             janvier: 'january',
             fevrier: 'february',
             marz: 'march',

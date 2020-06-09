@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 
-import { Error, CrawlResult } from './interfaces';
+import { Error, CrawlResult, Crawler } from './interfaces';
 import crawlerFunction from './crawlerFunction';
 
 import figaro from './figaro';
@@ -17,6 +17,13 @@ const crawlSource = async function (src: {
   name: string;
 }) {
   const crawlers: any = { figaro, twenty, monde, veinte, pais };
+  // const crawlers: { [key: string]: Crawler } = {
+  //   figaro,
+  //   twenty,
+  //   monde,
+  //   veinte,
+  //   pais,
+  // };
   const { url, language, name } = src;
 
   try {
@@ -49,7 +56,14 @@ const crawlSource = async function (src: {
       articleArray.forEach((article: CrawlResult) => {
         // console.log('\n===\n');
         // console.log(article.title + '\n');
-        console.log(article.date);
+        if (
+          article.date === 'No Date Found' ||
+          article.date === 'Invalid Date'
+        ) {
+          console.log(`Bad Date at ${article.url}`);
+        } else {
+          console.log(article.date);
+        }
 
         // Check that the body is also an array
         if (Array.isArray(article.body)) {

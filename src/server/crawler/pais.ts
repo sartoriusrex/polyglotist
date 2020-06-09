@@ -1,4 +1,4 @@
-import { Error, Crawler } from './interfaces';
+import { Error, Crawler, Months } from './interfaces';
 
 const paisCrawler: Crawler = {
   grabURLs: async function (page: any, url: string) {
@@ -61,7 +61,7 @@ const paisCrawler: Crawler = {
   },
   grabDate: async function (page: any, url: string) {
     let date: string;
-    const months: { [key: string]: string } = {
+    const months: Months = {
       ENE: 'january',
       FEB: 'february',
       MAR: 'march',
@@ -79,7 +79,7 @@ const paisCrawler: Crawler = {
     try {
       date = await page.$eval(
         '.a_ti',
-        (timeElement: any, months: { [key: string]: string }) => {
+        (timeElement: any, months: Months) => {
           const dateText = timeElement.innerText.slice(0, 11);
           let dateTimeObject = new Date(dateText);
 
@@ -108,7 +108,7 @@ const paisCrawler: Crawler = {
     try {
       date = await page.$eval(
         'time',
-        (dateElement: any, months: { [key: string]: string }) => {
+        (dateElement: any, months: Months) => {
           const dateText = dateElement.innerText.slice(0, 11);
 
           const dateTextInEnglish = dateText

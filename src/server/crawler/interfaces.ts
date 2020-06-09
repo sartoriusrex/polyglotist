@@ -21,3 +21,7 @@ export interface CrawlResult {
   body: string[][];
   error?: string;
 }
+
+export interface Months {
+  [key: string]: string;
+}
