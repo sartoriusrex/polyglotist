@@ -176,13 +176,26 @@ const mondeCrawler: Crawler = {
         'time',
         (dateElement: any, months: Months) => {
           const dateText = dateElement.innerText;
-          const convertedDateText = dateText
-            .split(' ')
-            .map((el: string) => {
-              if (months[el.toLowerCase()]) return months[el];
-              return el;
-            })
-            .join(' ');
+          let convertedDateText;
+
+          if (!(Number(dateText.slice(0, 1)) === NaN)) {
+            convertedDateText = dateText
+              .split('/')
+              .map((el: any, i: number, arr: string[]) => {
+                if (i === 0) return arr[1];
+                if (i === 1) return arr[0];
+                return el;
+              })
+              .join('/');
+          } else {
+            convertedDateText = dateText
+              .split(' ')
+              .map((el: string) => {
+                if (months[el.toLowerCase()]) return months[el];
+                return el;
+              })
+              .join(' ');
+          }
 
           return new Date(convertedDateText);
         },
@@ -266,10 +279,14 @@ const mondeCrawler: Crawler = {
                 element.tagName === 'H2'
               );
             });
-          } else {
+          } else if (body.querySelector('.entry-content')) {
             // Blog posts from lemonde have a different structure
             filteredArticleContent = Array.from(
               body.querySelector('.entry-content').children
+            ).filter((element: any) => element.tagName === 'P');
+          } else if (body.querySelector('.content.content__testimony')) {
+            filteredArticleContent = Array.from(
+              body.querySelector('.content.content__testimony').children
             ).filter((element: any) => element.tagName === 'P');
           }
 
