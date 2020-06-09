@@ -100,6 +100,8 @@ const mondeCrawler: Crawler = {
             returnDate = ((d) => new Date(d.setDate(d.getDate() - 1)))(
               new Date()
             );
+          } else if (slicedDateText === 'aujourd’hui') {
+            returnDate = new Date();
           } else {
             const frenchDate = rawDateText.slice(
               rawDateText.indexOf('le') + 3,
@@ -108,7 +110,8 @@ const mondeCrawler: Crawler = {
             const frenchDateArray = frenchDate.split(' ');
             const convertedDate = frenchDateArray
               .map((el: string) => {
-                if (months[el.toLowerCase()]) return months[el];
+                let monthString = el.toLowerCase();
+                if (months[monthString]) return months[monthString];
                 return el;
               })
               .join(' ');
@@ -143,6 +146,8 @@ const mondeCrawler: Crawler = {
             returnDate = ((d) => new Date(d.setDate(d.getDate() - 1)))(
               new Date()
             );
+          } else if (slicedDateText === 'aujourd’hui') {
+            returnDate = new Date();
           } else {
             const frenchDate = rawDateText.slice(
               rawDateText.indexOf('le') + 3,
@@ -151,7 +156,8 @@ const mondeCrawler: Crawler = {
             const frenchDateArray = frenchDate.split(' ');
             const convertedDate = frenchDateArray
               .map((el: string) => {
-                if (months[el.toLowerCase()]) return months[el];
+                let monthString = el.toLowerCase();
+                if (months[monthString]) return months[monthString];
                 return el;
               })
               .join(' ');
@@ -178,7 +184,7 @@ const mondeCrawler: Crawler = {
           const dateText = dateElement.innerText;
           let convertedDateText;
 
-          if (!(Number(dateText.slice(0, 1)) === NaN)) {
+          if (dateText.split('/').length > 1) {
             convertedDateText = dateText
               .split('/')
               .map((el: any, i: number, arr: string[]) => {
@@ -191,13 +197,16 @@ const mondeCrawler: Crawler = {
             convertedDateText = dateText
               .split(' ')
               .map((el: string) => {
-                if (months[el.toLowerCase()]) return months[el];
+                let monthString = el.toLowerCase();
+                if (months[monthString]) return months[monthString];
                 return el;
               })
               .join(' ');
           }
 
-          return new Date(convertedDateText);
+          convertedDateText = new Date(convertedDateText);
+
+          return convertedDateText.toLocaleString();
         },
         months
       );
@@ -224,6 +233,8 @@ const mondeCrawler: Crawler = {
             returnDate = ((d) => new Date(d.setDate(d.getDate() - 1)))(
               new Date()
             );
+          } else if (slicedDateText === 'aujourd’hui') {
+            return returnDate = new Date();
           } else {
             const frenchDate = rawDateText.slice(
               rawDateText.indexOf('le') + 3,
@@ -232,7 +243,8 @@ const mondeCrawler: Crawler = {
             const frenchDateArray = frenchDate.split(' ');
             const convertedDate = frenchDateArray
               .map((el: string) => {
-                if (months[el.toLowerCase()]) return months[el];
+                let monthString = el.toLowerCase();
+                if (months[monthString]) return months[monthString];
                 return el;
               })
               .join(' ');
