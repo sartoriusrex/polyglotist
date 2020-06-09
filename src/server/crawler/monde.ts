@@ -86,182 +86,89 @@ const mondeCrawler: Crawler = {
     };
 
     try {
-      date = await page.$eval(
-        '.meta__date',
-        (dateElement: any, months: Months) => {
-          const rawDateText = dateElement.innerText;
-          const endingPoint = rawDateText.indexOf('à') - 1;
-          const slicedDateText = rawDateText.slice(7, endingPoint);
+      const specialDate = await page.$eval(
+        'body',
+        (body: any, months: Months) => {
+          function returnDate(dateElement: any) {
+            const rawDateText = dateElement.innerText;
+            const endingPoint = rawDateText.indexOf('à') - 1;
+            const slicedDateText = rawDateText.slice(7, endingPoint);
 
-          let returnDate;
+            let returnDate;
 
-          if (slicedDateText === 'hier') {
-            // Calculate yesterday's date from https://stackoverflow.com/questions/5511323/calculate-the-date-yesterday-in-javascript
-            returnDate = ((d) => new Date(d.setDate(d.getDate() - 1)))(
-              new Date()
-            );
-          } else if (slicedDateText === 'aujourd’hui') {
-            returnDate = new Date();
-          } else {
-            const frenchDate = rawDateText.slice(
-              rawDateText.indexOf('le') + 3,
-              endingPoint
-            );
-            const frenchDateArray = frenchDate.split(' ');
-            const convertedDate = frenchDateArray
-              .map((el: string) => {
-                let monthString = el.toLowerCase();
-                if (months[monthString]) return months[monthString];
-                return el;
-              })
-              .join(' ');
+            if (slicedDateText === 'hier') {
+              // Calculate yesterday's date from https://stackoverflow.com/questions/5511323/calculate-the-date-yesterday-in-javascript
+              returnDate = ((d) => new Date(d.setDate(d.getDate() - 1)))(
+                new Date()
+              );
+            } else if (slicedDateText === 'aujourd’hui') {
+              returnDate = new Date();
+            } else {
+              const frenchDate = rawDateText.slice(
+                rawDateText.indexOf('le') + 3,
+                endingPoint
+              );
+              const frenchDateArray = frenchDate.split(' ');
+              const convertedDate = frenchDateArray
+                .map((el: string) => {
+                  let monthString = el.toLowerCase();
+                  if (months[monthString]) return months[monthString];
+                  return el;
+                })
+                .join(' ');
 
-            returnDate = new Date(convertedDate);
+              returnDate = new Date(convertedDate);
+            }
+
+            return returnDate.toLocaleString();
           }
 
-          return returnDate.toLocaleString();
+          let dateElement: any =
+            document.querySelector('.meta__date') ||
+            document.querySelector('.meta__publisher') ||
+            document.querySelector('.summary__live-testimony-gray') ||
+            document.querySelector('time') ||
+            'No method available to grab date.';
+
+          if (typeof dateElement === 'string') {
+            return { error: dateElement };
+          } else if (document.querySelector('time')) {
+            const dateText = dateElement.innerText;
+            let convertedDateText;
+
+            if (dateText.split('/').length > 1) {
+              convertedDateText = dateText
+                .split('/')
+                .map((el: any, i: number, arr: string[]) => {
+                  if (i === 0) return arr[1];
+                  if (i === 1) return arr[0];
+                  return el;
+                })
+                .join('/');
+            } else {
+              convertedDateText = dateText
+                .split(' ')
+                .map((el: string) => {
+                  let monthString = el.toLowerCase();
+                  if (months[monthString]) return months[monthString];
+                  return el;
+                })
+                .join(' ');
+            }
+
+            convertedDateText = new Date(convertedDateText);
+
+            return convertedDateText.toLocaleString();
+          } else {
+            return returnDate(dateElement);
+          }
         },
         months
       );
 
-      return date;
+      return specialDate;
     } catch (err) {
-      console.log(
-        `Failed to grab date from .meta__date in \n\n ${url} \n\n Attemping again with another method`
-      );
-    }
-
-    try {
-      date = await page.$eval(
-        '.meta__publisher',
-        (dateElement: any, months: Months) => {
-          const rawDateText = dateElement.innerText;
-          const endingPoint = rawDateText.indexOf('à') - 1;
-          const slicedDateText = rawDateText.slice(7, endingPoint);
-
-          let returnDate;
-
-          if (slicedDateText === 'hier') {
-            // Calculate yesterday's date from https://stackoverflow.com/questions/5511323/calculate-the-date-yesterday-in-javascript
-            returnDate = ((d) => new Date(d.setDate(d.getDate() - 1)))(
-              new Date()
-            );
-          } else if (slicedDateText === 'aujourd’hui') {
-            returnDate = new Date();
-          } else {
-            const frenchDate = rawDateText.slice(
-              rawDateText.indexOf('le') + 3,
-              endingPoint
-            );
-            const frenchDateArray = frenchDate.split(' ');
-            const convertedDate = frenchDateArray
-              .map((el: string) => {
-                let monthString = el.toLowerCase();
-                if (months[monthString]) return months[monthString];
-                return el;
-              })
-              .join(' ');
-
-            returnDate = new Date(convertedDate);
-          }
-
-          return returnDate.toLocaleString();
-        },
-        months
-      );
-
-      return date;
-    } catch (err) {
-      console.log(
-        `Failed to grab date from .meta__publisher in \n\n ${url} \n\n Attemping again with another method`
-      );
-    }
-
-    try {
-      date = await page.$eval(
-        'time',
-        (dateElement: any, months: Months) => {
-          const dateText = dateElement.innerText;
-          let convertedDateText;
-
-          if (dateText.split('/').length > 1) {
-            convertedDateText = dateText
-              .split('/')
-              .map((el: any, i: number, arr: string[]) => {
-                if (i === 0) return arr[1];
-                if (i === 1) return arr[0];
-                return el;
-              })
-              .join('/');
-          } else {
-            convertedDateText = dateText
-              .split(' ')
-              .map((el: string) => {
-                let monthString = el.toLowerCase();
-                if (months[monthString]) return months[monthString];
-                return el;
-              })
-              .join(' ');
-          }
-
-          convertedDateText = new Date(convertedDateText);
-
-          return convertedDateText.toLocaleString();
-        },
-        months
-      );
-
-      return date;
-    } catch (err) {
-      console.log(
-        `Failed to grab date from time element in \n\n ${url} \n\n Attemping again with another method`
-      );
-    }
-
-    try {
-      date = await page.$eval(
-        '.summary__live-testimony-gray',
-        (dateElement: any, months: Months) => {
-          const rawDateText = dateElement.innerText;
-          const endingPoint = rawDateText.indexOf('à') - 1;
-          const slicedDateText = rawDateText.slice(7, endingPoint);
-
-          let returnDate;
-
-          if (slicedDateText === 'hier') {
-            // Calculate yesterday's date from https://stackoverflow.com/questions/5511323/calculate-the-date-yesterday-in-javascript
-            returnDate = ((d) => new Date(d.setDate(d.getDate() - 1)))(
-              new Date()
-            );
-          } else if (slicedDateText === 'aujourd’hui') {
-            return returnDate = new Date();
-          } else {
-            const frenchDate = rawDateText.slice(
-              rawDateText.indexOf('le') + 3,
-              endingPoint
-            );
-            const frenchDateArray = frenchDate.split(' ');
-            const convertedDate = frenchDateArray
-              .map((el: string) => {
-                let monthString = el.toLowerCase();
-                if (months[monthString]) return months[monthString];
-                return el;
-              })
-              .join(' ');
-
-            returnDate = new Date(convertedDate);
-          }
-
-          return returnDate.toLocaleString();
-        },
-        months
-      );
-
-      return date;
-    } catch (err) {
-      console.log(
-        `Failed to grab date from .summary__live-testimony-gray in \n\n ${url} \n\n Attemping again with another method`
-      );
+      console.log(err);
     }
 
     return { error: `Failed to grab the time from ${url}` };
