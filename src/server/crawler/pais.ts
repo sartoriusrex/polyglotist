@@ -87,7 +87,8 @@ const paisCrawler: Crawler = {
             const dateTextArray = dateText.split(' ');
             const newDateText = dateTextArray
               .map((el: string) => {
-                if (months[el]) return months[el];
+                let mo = el.toUpperCase();
+                if (months[mo]) return months[mo];
                 return el;
               })
               .join(' ');
@@ -114,7 +115,8 @@ const paisCrawler: Crawler = {
           const dateTextInEnglish = dateText
             .split(' ')
             .map((el: any) => {
-              if (months[el]) return months[el];
+              let mo = el.toUpperCase();
+              if (months[mo]) return months[mo];
               return el;
             })
             .join(' ');

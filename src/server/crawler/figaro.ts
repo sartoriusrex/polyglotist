@@ -95,7 +95,8 @@ const figaroCrawler: Crawler = {
 
           const dateTextInEnglish = dateText
             .map((el: any) => {
-              if (months[el]) return months[el];
+              const mo = el.toLowerCase();
+              if (months[mo]) return months[mo];
               return el;
             })
             .join(' ');
