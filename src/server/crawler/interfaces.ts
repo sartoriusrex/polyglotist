@@ -2,11 +2,16 @@ export interface Error {
   error: string;
 }
 
+export type GrabURLs = (page: any, url: string) => Promise<string[] | Error>;
+export type GrabTitle = (page: any, url: string) => Promise<string | Error>;
+export type GrabDate = (page: any, url: string) => Promise<string | Error>;
+export type GrabBody = (page: any, url: string) => Promise<string[][] | Error>;
+
 export interface Crawler {
-  grabURLs: (page: any, url: string) => Promise<string[] | Error>;
-  grabTitle: (page: any, url: string) => Promise<string | Error>;
-  grabDate: (page: any, url: string) => Promise<string | Error>;
-  grabBody: (page: any, url: string) => Promise<string[][] | Error>;
+  grabURLs: GrabURLs;
+  grabTitle: GrabTitle;
+  grabDate: GrabDate;
+  grabBody: GrabBody;
 }
 
 export interface CrawlResult {

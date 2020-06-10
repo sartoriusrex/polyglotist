@@ -1,12 +1,10 @@
-interface Error {
-  error: string;
-}
+import { Error, GrabURLs, GrabTitle, GrabDate, GrabBody } from './interfaces';
 
 export default async function (
-  grabURLs: any,
-  grabTitle: any,
-  grabDate: any,
-  grabBody: any,
+  grabURLs: GrabURLs,
+  grabTitle: GrabTitle,
+  grabDate: GrabDate,
+  grabBody: GrabBody,
   page: any,
   url: string,
   language: string

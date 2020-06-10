@@ -6,7 +6,7 @@ const figaroCrawler: Crawler = {
       // Grab only center column articles that specifically match this query
       const randomArticleUrls = await page.$$eval(
         'section > div > h2>a:not([aria-label])',
-        (aTags: any, url: string) => {
+        (aTags: HTMLElement[], url: string) => {
           // filter out articles with domain not lefigaro, such as madame articles. Also filter out photo articles, that have no text.
           let urls = aTags
             .filter(
