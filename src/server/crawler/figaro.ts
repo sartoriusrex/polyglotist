@@ -45,7 +45,10 @@ const figaroCrawler: Crawler = {
     let title;
 
     try {
-      title = await page.$eval('h1', (title: any) => title.innerText);
+      title = await page.$eval(
+        'h1',
+        (title: HTMLElement) => (<HTMLElement>title).innerText
+      );
     } catch (err) {
       console.log(err);
       console.log(`\n\n${url}\n\n`);
@@ -54,7 +57,10 @@ const figaroCrawler: Crawler = {
     // If we cannot grab an h1 for whatever reason, grab the first h2
     if (!title) {
       try {
-        title = await page.$eval('h2', (title: any) => title.innerText);
+        title = await page.$eval(
+          'h2',
+          (title: HTMLElement) => (<HTMLElement>title).innerText
+        );
       } catch (err) {
         console.log(err);
         return { error: `Failed to get any title from ${url}` };
@@ -67,8 +73,10 @@ const figaroCrawler: Crawler = {
     let date: string;
 
     try {
-      date = await page.$eval('time', (timeElement: any) => {
-        const dateTimeObject = new Date(timeElement.dateTime);
+      date = await page.$eval('time', (timeElement: HTMLTimeElement) => {
+        const dateTimeObject = new Date(
+          (<HTMLTimeElement>timeElement).dateTime
+        );
 
         const theDate = dateTimeObject.toLocaleDateString();
         const theTime = dateTimeObject.toLocaleTimeString('fr');
@@ -118,10 +126,10 @@ const figaroCrawler: Crawler = {
     try {
       body = await page.$$eval(
         '#fig-article > div',
-        async (body: any, url: string) => {
+        async (body: HTMLElement[], url: string) => {
           //  Votre Avis reader surveys aren't articles, but they often contain comments, which we are scraping here.
           if (body[0].innerText.toLowerCase() === 'votre avis') {
-            const seeAllCommentsButton: any = document.querySelector(
+            const seeAllCommentsButton: HTMLElement | null = document.querySelector(
               '#commentsTitle+ul+span'
             );
 
