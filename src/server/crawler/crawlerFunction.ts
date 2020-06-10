@@ -25,7 +25,7 @@ export default async function (
     let date: string | Error = await grabDate(page, url);
     if (typeof date !== 'string') date = 'No Date Found';
 
-    let body: string[][] | Error = await grabBody(page, title, url);
+    let body: string[][] | Error = await grabBody(page, url);
     if (!Array.isArray(body)) body = [['H2', body.error]];
 
     results.push({ title, date, url, body, language });

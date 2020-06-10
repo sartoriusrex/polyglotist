@@ -111,7 +111,7 @@ const figaroCrawler: Crawler = {
 
     return date;
   },
-  grabBody: async function (page: any, title: string, url: string) {
+  grabBody: async function (page: any, url: string) {
     let body;
 
     // Different article types need to be treated differently

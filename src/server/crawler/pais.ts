@@ -132,7 +132,7 @@ const paisCrawler: Crawler = {
       return { error: `Failed to grab the time from ${url}` };
     }
   },
-  grabBody: async function (page: any, title: string, url: string) {
+  grabBody: async function (page: any, url: string) {
     let body;
 
     // Different article types need to be treated differently
