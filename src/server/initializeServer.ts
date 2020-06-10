@@ -42,7 +42,12 @@ let src: SrcObj = transformInitSourceText(
 );
 
 // src = transformInitSourceText('monde', 'https://www.lemonde.fr/', 'french');
-src = transformInitSourceText('twenty', 'https://www.20minutes.fr/', 'french');
+// src = transformInitSourceText('twenty', 'https://www.20minutes.fr/', 'french');
+src = transformInitSourceText(
+  'veinte',
+  'https://www.20minutos.com/',
+  'spanish'
+);
 
 let getText = async function (src: SrcObj) {
   try {
