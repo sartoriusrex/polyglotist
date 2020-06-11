@@ -9,6 +9,7 @@ interface DatabaseSource {
 
 interface CrawlResult {
   title: string;
+  date: string;
   url: string;
   language: string;
   body: string[][];

@@ -15,7 +15,7 @@ export default async function (
   if (!Array.isArray(randomArticleUrls)) return randomArticleUrls;
 
   for (let url of randomArticleUrls) {
-    await page.goto(url);
+    await page.goto(url, { timeout: 0 });
 
     let title: string | Error = await grabTitle(page, url);
     if (typeof title !== 'string') title = 'No Title Found';

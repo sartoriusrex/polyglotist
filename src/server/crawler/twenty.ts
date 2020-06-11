@@ -29,7 +29,7 @@ const twentyCrawler: Crawler = {
           shuffleArray(urls);
 
           const max = urls.length;
-          const numArticlesChoice = max;
+          const numArticlesChoice = 3;
           const numArticles = Math.min(max, numArticlesChoice);
 
           return urls.slice(0, numArticles);
