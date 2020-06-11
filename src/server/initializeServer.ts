@@ -10,36 +10,36 @@ import rateLimit from 'express-rate-limit';
 import initializeDatabase from './database/init';
 import crawl from './crawler';
 
-initializeDatabase();
+// test crawl functions
+const test = false;
 
-// // test crawl functions
-// // define interface for src object
-// interface SrcObj {
-//   url: string;
-//   name: string;
-//   language: string;
-// }
+// define interface for src object
+interface SrcObj {
+  url: string;
+  name: string;
+  language: string;
+}
 
-// // transform text for init sources function in /database/init.ts, returning object matching instance of SrcObj
-// let transformInitSourceText = function (
-//   name: string,
-//   url: string,
-//   language: string
-// ): SrcObj {
-//   let srcObject: SrcObj = {
-//     url,
-//     name,
-//     language,
-//   };
+// transform text for init sources function in /database/init.ts, returning object matching instance of SrcObj
+const transformInitSourceText = function (
+  name: string,
+  url: string,
+  language: string
+): SrcObj {
+  let srcObject: SrcObj = {
+    url,
+    name,
+    language,
+  };
 
-//   return srcObject;
-// };
+  return srcObject;
+};
 
-// let src: SrcObj = transformInitSourceText(
-//   'figaro',
-//   'https://www.lefigaro.fr/',
-//   'french'
-// );
+let src: SrcObj = transformInitSourceText(
+  'figaro',
+  'https://www.lefigaro.fr/',
+  'french'
+);
 
 // src = transformInitSourceText('monde', 'https://www.lemonde.fr/', 'french');
 // src = transformInitSourceText('twenty', 'https://www.20minutes.fr/', 'french');
@@ -50,15 +50,28 @@ initializeDatabase();
 //   'spanish'
 // );
 
-// let getText = async function (src: SrcObj) {
-//   try {
-//     return await crawl(src);
-//   } catch (err) {
-//     return { message: err.message };
-//   }
-// };
+const sourceArray: SrcObj[] = [
+  { name: 'twenty', url: 'https://www.20minutes.fr/', language: 'french' },
+  { name: 'monde', url: 'https://www.lemonde.fr/', language: 'french' },
+  { name: 'figaro', url: 'https://www.lefigaro.fr/', language: 'french' },
+  { name: 'veinte', url: 'https://www.20minutos.com/', language: 'spanish' },
+  { name: 'pais', url: 'https://elpais.com/america/', language: 'spanish' },
+];
 
-// let text = getText(src);
+async function testCrawler(src: SrcObj) {
+  try {
+    const testCrawlResult = await crawl(src);
+    console.log(testCrawlResult);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function getFreshArticles(sources: SrcObj[]) {
+  return await Promise.all(
+    sources.map(async (source: SrcObj) => await crawl(source))
+  );
+}
 
 export default function initializeServer(router: Router) {
   const app = express();
@@ -70,6 +83,15 @@ export default function initializeServer(router: Router) {
     windowMs: 1 * 60 * 1000,
     max: 50,
   });
+
+  (async function initializeData() {
+    await initializeDatabase();
+    if (test) {
+      await testCrawler(src);
+    } else {
+      await getFreshArticles(sourceArray);
+    }
+  })();
 
   app.use(bodyParser.json());
   app.use(

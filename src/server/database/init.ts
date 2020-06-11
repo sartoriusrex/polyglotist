@@ -11,9 +11,10 @@ const clean_database = `
   DROP TABLE IF EXISTS users_words;
   DROP TABLE IF EXISTS sources CASCADE;
   DROP TABLE IF EXISTS users_sources;
+  DROP TABLE IF EXISTS users_articles;
 `;
 
-const create_users = `
+const create_users_table = `
   CREATE TABLE users (
     ID SERIAL PRIMARY KEY,
     username TEXT NOT NULL UNIQUE,
@@ -28,7 +29,7 @@ const create_users = `
   );
 `;
 
-const create_sources = `
+const create_sources_table = `
   CREATE TABLE sources (
     ID SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
@@ -73,7 +74,7 @@ const update_user_five_settings = `
   (4, 8)
 `;
 
-const create_articles = `
+const create_articles_table = `
   CREATE TABLE articles (
     ID SERIAL PRIMARY KEY,
     created TIMESTAMP DEFAULT NOW(),
@@ -84,7 +85,7 @@ const create_articles = `
   );
 `;
 
-const create_words = `
+const create_words_table = `
   CREATE TABLE words (
     ID SERIAL PRIMARY KEY,
     created TIMESTAMP DEFAULT NOW(),
@@ -95,7 +96,7 @@ const create_words = `
   );
 `;
 
-const create_users_words = `
+const create_users_words_table = `
   CREATE TABLE users_words (
     ID SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
@@ -105,7 +106,7 @@ const create_users_words = `
   );
 `;
 
-const create_users_articles = `
+const create_users_articles_table = `
   CREATE TABLE users_articles (
     ID SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
@@ -115,7 +116,7 @@ const create_users_articles = `
   );
 `;
 
-const create_users_sources = `
+const create_users_sources_table = `
   CREATE TABLE users_sources (
     ID SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
@@ -134,9 +135,9 @@ async function init() {
   try {
     await db.query(clean_database);
     console.log('=======\nCleaned Database.\n=======\n');
-    await db.query(create_users);
+    await db.query(create_users_table);
     console.log('=======\nCreated Users.\n=======\n');
-    await db.query(create_sources);
+    await db.query(create_sources_table);
     console.log('=======\nCreated sources.\n=======\n');
     await db.query(populate_users, [pw1, pw2, pw3]);
     console.log('=======\nPopulated Users.\n=======\n');
@@ -144,13 +145,15 @@ async function init() {
     console.log('=======\nPopulated Sources.\n=======\n');
     await db.query(create_user_five, [pw5]);
     console.log('=======\nCreated User 5.\n=======\n');
-    await db.query(create_articles);
+    await db.query(create_articles_table);
     console.log('=======\nCreated articles.\n=======\n');
-    await db.query(create_words);
+    await db.query(create_words_table);
     console.log('=======\nCreated words.\n=======\n');
-    await db.query(create_users_words);
+    await db.query(create_users_articles_table);
+    console.log('=======\nCreated users_articles.\n=======\n');
+    await db.query(create_users_words_table);
     console.log('=======\nCreated users_words.\n=======\n');
-    await db.query(create_users_sources);
+    await db.query(create_users_sources_table);
     console.log('=======\nCreated users_sources.\n=======\n');
     await db.query(update_user_five_settings);
     console.log('=======\nUpdated settings for username5.\n=======\n');

@@ -16,14 +16,13 @@ const crawlSource = async function (src: {
   language: string;
   name: string;
 }) {
-  const crawlers: any = { figaro, twenty, monde, veinte, pais };
-  // const crawlers: { [key: string]: Crawler } = {
-  //   figaro,
-  //   twenty,
-  //   monde,
-  //   veinte,
-  //   pais,
-  // };
+  const crawlers: { [key: string]: Crawler } = {
+    figaro,
+    twenty,
+    monde,
+    veinte,
+    pais,
+  };
   const { url, language, name } = src;
 
   try {
@@ -43,8 +42,6 @@ const crawlSource = async function (src: {
       url,
       language
     );
-
-    console.log(`\n=+=+=+=\n Crawled ${name} \n=+=+=+=\n`);
 
     await browser.close();
 
