@@ -89,7 +89,7 @@ export default function initializeServer(router: Router) {
     if (test) {
       await testCrawler(src);
     } else {
-      await getFreshArticles(sourceArray);
+      const newArticles = await getFreshArticles(sourceArray);
     }
   })();
 
