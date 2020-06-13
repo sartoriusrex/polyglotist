@@ -3,9 +3,8 @@ import crawlSource from '../crawler';
 import { SrcObj, CrawlResult, Error, SourceText } from '../crawler/interfaces';
 import sources from '../crawler/all_sources';
 
-// test crawl functions
+// test crawl functions; declare test to be true and if true, make sure to correctly reference the source to test in crawlers/all_sources.ts, referenced as sources variable.
 const test = false;
-
 let src: SrcObj;
 
 async function testCrawler(src: SrcObj) {
