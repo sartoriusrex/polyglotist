@@ -144,6 +144,7 @@ async function init() {
     // Clean Database
     await db.query(clean_database);
     console.log('=======\nCleaned Database.\n=======\n');
+
     // Create Tables
     await db.query(create_users_table);
     console.log('=======\nCreated Users.\n=======\n');

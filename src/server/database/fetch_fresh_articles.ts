@@ -1,6 +1,4 @@
 import db from './index';
-
-import initializeDatabase from './init';
 import crawlSource from '../crawler';
 import { SrcObj, CrawlResult, Error, SourceText } from '../crawler/interfaces';
 import sources from '../crawler/all_sources';
@@ -34,7 +32,6 @@ const insert_bodies = `
 `;
 
 const fetchFreshArticles = async function () {
-  await initializeDatabase();
   if (test) {
     return await testCrawler(src);
   } else {
@@ -53,33 +50,56 @@ const fetchFreshArticles = async function () {
     return await Promise.all(
       newArticles.map(async (src: SourceText) => {
         let { source, articles, error } = src;
+        let id: string;
 
-        if (error) return;
+        if (error)
+          return {
+            error: `Crawler failed to find articles for ${source.name}`,
+          };
 
-        let id: string = await db.query(find_source_id, source.name);
+        try {
+          id = await db.query(find_source_id, source.name);
+        } catch (err) {
+          console.log(err);
+          return { error: `Failed to find source_id for ${source.name}` };
+        }
 
         if (Array.isArray(articles)) {
           await Promise.all(
             articles.map(async (article: CrawlResult) => {
-              let { title, date, url, body } = article;
+              const { title, date, url, body } = article;
 
-              let article_id: string = await db.query(insert_article, [
-                title,
-                date,
-                id,
-                url,
-              ]);
+              try {
+                let article_id: string = await db.query(insert_article, [
+                  title,
+                  date,
+                  id,
+                  url,
+                ]);
 
-              await Promise.all(
-                body.map(async (bodyText: string[], idx: number) => {
-                  await db.query(insert_bodies, [
-                    article_id,
-                    idx,
-                    bodyText[0],
-                    bodyText[1],
-                  ]);
-                })
-              );
+                await Promise.all(
+                  body.map(async (bodyText: string[], idx: number) => {
+                    try {
+                      await db.query(insert_bodies, [
+                        article_id,
+                        idx,
+                        bodyText[0],
+                        bodyText[1],
+                      ]);
+                    } catch (err) {
+                      console.log(err);
+                      return {
+                        error: `Failed to insert article bodies for ${article_id}`,
+                      };
+                    }
+                  })
+                );
+              } catch (err) {
+                console.log(err);
+                return {
+                  error: `Failed to correctly return article_id or insert article for ${title} from ${url}`,
+                };
+              }
             })
           );
         } else {
