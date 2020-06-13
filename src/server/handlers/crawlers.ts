@@ -1,6 +1,11 @@
 import { Request, Response } from 'express';
 
-import { DatabaseSource, CrawlResult, SourceText } from './interfaces';
+import {
+  DatabaseSource,
+  CrawlResult,
+  SourceText,
+  Error,
+} from '../crawler/interfaces';
 import db from '../database';
 import crawlSource from '../crawler/index';
 
@@ -39,9 +44,7 @@ export default {
       databaseSources.map(async (source: DatabaseSource) => {
         try {
           if (source.hasOwnProperty('error')) return { source };
-          const articles: CrawlResult[] | { error: string } = await crawlSource(
-            source
-          ); //return text and info for each source given name and url
+          const articles: CrawlResult[] | Error = await crawlSource(source); //return text and info for each source given name and url
           // returns the text data, the source (url), and the language
           return { source, articles };
         } catch (err) {

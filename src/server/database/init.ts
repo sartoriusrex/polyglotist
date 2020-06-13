@@ -1,6 +1,7 @@
 import * as bcrypt from 'bcryptjs';
 
 import db from './index';
+import sources from '../crawler/all_sources';
 
 const salt = 10;
 
@@ -117,18 +118,7 @@ const populate_users = `
 
 const populate_sources = `
   INSERT INTO sources (name, url, language) VALUES
-  ('twenty', 'https://www.20minutes.fr/', 'french'),
-  ('monde', 'https://www.lemonde.fr/', 'french'),
-  ('figaro', 'https://www.lefigaro.fr/', 'french'),
-  ('parisien', 'http://www.leparisien.fr/', 'french'),
-  ('veinte', 'https://www.20minutos.com/', 'spanish'),
-  ('bbc', 'https://www.bbc.com/mundo', 'spanish'),
-  ('mundo', 'https://www.elmundo.es/', 'spanish'),
-  ('pais', 'https://elpais.com/america/', 'spanish'),
-  ('welt', 'https://www.welt.de/', 'german'),
-  ('faz', 'https://www.faz.net/aktuell/', 'german'),
-  ('sz', 'https://www.sueddeutsche.de/', 'german'),
-  ('spiegel', 'https://www.spiegel.de/', 'german');
+  ($1, $2, $3);
 `;
 
 const create_user_five = `
@@ -175,7 +165,16 @@ async function init() {
     // Populate Tables
     await db.query(populate_users, [pw1, pw2, pw3]);
     console.log('=======\nPopulated Users.\n=======\n');
-    await db.query(populate_sources);
+    await Promise.all(
+      sources.map(
+        async (source: { name: string; url: string; language: string }) =>
+          await db.query(populate_sources, [
+            source.name,
+            source.url,
+            source.language,
+          ])
+      )
+    );
     console.log('=======\nPopulated Sources.\n=======\n');
     await db.query(create_user_five, [pw5]);
     console.log('=======\nCreated User 5.\n=======\n');
