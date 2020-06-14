@@ -22,7 +22,7 @@ const find_source_id = `
 
 const insert_article = `
   INSERT INTO articles (title, article_date, source_id, url) VALUES
-  ($1, $2, $3, $4) returning id;
+  ($1, $2, $3, $4) RETURNING id;
 `;
 
 const insert_bodies = `
@@ -57,7 +57,8 @@ const fetchFreshArticles = async function () {
           };
 
         try {
-          id = await db.query(find_source_id, source.name);
+          let result = await db.query(find_source_id, [source.name]);
+          id = result.rows[0].id;
         } catch (err) {
           console.log(err);
           return { error: `Failed to find source_id for ${source.name}` };
@@ -69,12 +70,14 @@ const fetchFreshArticles = async function () {
               const { title, date, url, body } = article;
 
               try {
-                let article_id: string = await db.query(insert_article, [
+                let article_id_query = await db.query(insert_article, [
                   title,
                   date,
                   id,
                   url,
                 ]);
+
+                let article_id = article_id_query.rows[0].id;
 
                 await Promise.all(
                   body.map(async (bodyText: string[], idx: number) => {

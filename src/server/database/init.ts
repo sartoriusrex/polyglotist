@@ -118,20 +118,16 @@ const populate_users = `
 
 const populate_sources = `
   INSERT INTO sources (name, url, language) VALUES
-  ($1, $2, $3);
+  ($1, $2, $3) RETURNING id;
 `;
 
 const create_user_five = `
   INSERT INTO users (username, email, password, theme_preference, reading_speed, practice_mode, notification_method, languages_learning) VALUES ('username5', 'test5@test.com', $1, 'dark', 'fast', FALSE, 'push', ARRAY['spanish','french']);
 `;
 
-const update_user_five_settings = `
+const add_users_five_sources = `
   INSERT INTO users_sources (user_id, source_id) VALUES
-  (4, 1),
-  (4, 2),
-  (4, 3),
-  (4, 5),
-  (4, 8)
+  ($1, $2);
 `;
 
 async function init() {
@@ -166,21 +162,28 @@ async function init() {
     // Populate Tables
     await db.query(populate_users, [pw1, pw2, pw3]);
     console.log('=======\nPopulated Users.\n=======\n');
-    await Promise.all(
+    await db.query(create_user_five, [pw5]);
+    console.log('=======\nCreated User 5.\n=======\n');
+    let source_ids = await Promise.all(
       sources.map(
-        async (source: { name: string; url: string; language: string }) =>
-          await db.query(populate_sources, [
+        async (source: { name: string; url: string; language: string }) => {
+          let result = await db.query(populate_sources, [
             source.name,
             source.url,
             source.language,
-          ])
+          ]);
+          return result.rows[0].id;
+        }
       )
     );
     console.log('=======\nPopulated Sources.\n=======\n');
-    await db.query(create_user_five, [pw5]);
-    console.log('=======\nCreated User 5.\n=======\n');
-    await db.query(update_user_five_settings);
-    console.log('=======\nUpdated settings for username5.\n=======\n');
+
+    await Promise.all(
+      source_ids.map(async (id: string) => {
+        await db.query(add_users_five_sources, [4, id]);
+      })
+    );
+    console.log('=======\nAdded sources for username5.\n=======\n');
     console.log('=+=+=+=\nSuccessfully initialized db.\n=+=+=+=\n');
   } catch (err) {
     console.log(err);
