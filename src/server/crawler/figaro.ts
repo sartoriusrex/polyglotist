@@ -12,7 +12,8 @@ const figaroCrawler: Crawler = {
             .filter(
               (tag: any) =>
                 tag.hostname === 'www.lefigaro.fr' &&
-                tag.pathname.slice(0, 7) !== '/photos'
+                tag.pathname.slice(0, 7) !== '/photos' &&
+                !tag.pathname.includes('/story/')
             )
             .map((tag: any) => tag.href);
 
