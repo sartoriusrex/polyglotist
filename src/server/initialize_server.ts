@@ -6,6 +6,7 @@ import compression from 'compression';
 import helmet from 'helmet';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
+import cron from 'node-cron';
 
 import initializeDatabase from './database/init';
 import fetchFreshArticles from './database/fetch_fresh_articles';
@@ -25,6 +26,9 @@ export default function initializeServer(router: Router) {
     await initializeDatabase();
     await fetchFreshArticles();
   })();
+
+  // after initializing Data, fetch fresh articles at 600 and 1800 every day using node-cron
+  cron.schedule('* 6,18 * * *', async () => await fetchFreshArticles());
 
   app.use(bodyParser.json());
   app.use(

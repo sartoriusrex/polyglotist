@@ -12,7 +12,7 @@ async function testCrawler(src: SrcObj) {
     const testCrawlResult: CrawlResult[] | Error = await crawlSource(src);
     console.log(testCrawlResult);
   } catch (err) {
-    console.log(err);
+    console.log(err, '\nfetch_fresh_articles.ts line 15 in testCrawler fxn.\n');
   }
 }
 
@@ -40,7 +40,10 @@ const fetchFreshArticles = async function () {
           let articles: CrawlResult[] | Error = await crawlSource(source);
           return { source, articles };
         } catch (err) {
-          console.log(err);
+          console.log(
+            err,
+            '\nfetch_fresh_articles.ts in fetchFreshArticles function line 43.\n'
+          );
           return { source, error: `failed to crawl ${source}` };
         }
       })
@@ -60,7 +63,7 @@ const fetchFreshArticles = async function () {
           let result = await db.query(find_source_id, [source.name]);
           id = result.rows[0].id;
         } catch (err) {
-          console.log(err);
+          console.log(err, '\nfetch_fresh_articles.ts line 66.\n');
           return { error: `Failed to find source_id for ${source.name}` };
         }
 
@@ -89,7 +92,7 @@ const fetchFreshArticles = async function () {
                         bodyText[1],
                       ]);
                     } catch (err) {
-                      console.log(err);
+                      console.log(err, '\nfetch_fresh_articles line 95\n');
                       return {
                         error: `Failed to insert article bodies for ${article_id}`,
                       };
@@ -103,6 +106,14 @@ const fetchFreshArticles = async function () {
                 };
               }
             })
+          );
+
+          console.log(
+            `\n
+            =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=++=+=+=
+            +=// inserted articles for ${source.name} into db. //=+
+            =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+            `
           );
         } else {
           return { error: 'There are no articles to put into the db.' };
