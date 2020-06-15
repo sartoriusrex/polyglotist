@@ -38,7 +38,10 @@ const veinteCrawler: Crawler = {
     let title;
 
     try {
-      title = await page.$eval('h1', (title: HTMLElement) => title.innerText);
+      title = await page.$eval(
+        'h1.article-title',
+        (title: HTMLElement) => title.innerText
+      );
     } catch (err) {
       console.log(err);
       console.log(`\n\n${url}\n\n`);

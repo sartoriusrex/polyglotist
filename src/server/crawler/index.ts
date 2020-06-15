@@ -46,48 +46,45 @@ const crawlSource = async function (src: {
     await browser.close();
 
     // Testing the articles crawled
+
     // 1. Check that the articleArray is in fact an array
     if (Array.isArray(articleArray)) {
+      console.log('\n=+=+=+=+=+=+=++=+=+=+=+=+\n');
       let count: number = 0;
+
       // Loop through each Article in the array
       articleArray.forEach((article: CrawlResult) => {
-        // console.log('\n===\n');
-        // console.log(article.title + '\n');
+        if (article.title == 'No Title Found') {
+          console.log(`No title found from ${article.url}`);
+        }
+
         if (
           article.date === 'No Date Found' ||
           article.date === 'Invalid Date'
         ) {
           console.log(`Bad Date at ${article.url}`);
-        } else {
-          console.log(article.date);
         }
 
         // Check that the body is also an array
         if (Array.isArray(article.body)) {
-          // if (article.body.length <= 2) {
-          //   console.log(article.url + '\n');
-          //   article.body.forEach((bodyArray: string[]) => {
-          //     console.log(bodyArray + '\n');
-          //   });
-          // }
-          // console.log('\n===\n');
-          // console.log(article.title);
-          // console.log(article.url);
-          // console.log('\n');
-          // article.body.forEach((bd: any) => console.log(bd));
-          if (article.body.length > 2) {
+          if (article.body.length <= 1) {
             count++;
-          } else {
-            console.log(article.url);
+            console.log(
+              `\nProblem getting article body from ${article.url} \n`
+            );
           }
         } else {
-          console.log(article.body);
+          console.log('\nArticle is not an array : ' + article.body + '\n');
         }
       });
-      console.log(
-        `\n====\nArticles with body count greater than 2: ${count} / ${articleArray.length}\n====\n`
-      );
-      console.log(`All Done scraping ${name}\n`);
+      console.log(`
+        ---------------------------------
+        Problem Articles: ${count} / ${articleArray.length}
+        ---------------------------------`);
+      console.log(`
+        =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+        =+=+=// All Done scraping ${name} //=+=+=+=+=
+        =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=`);
     } else {
       console.log(`\nArticle array is not an array: ${articleArray}\n`);
     }

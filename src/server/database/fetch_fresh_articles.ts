@@ -30,6 +30,11 @@ const insert_bodies = `
   ($1, $2, $3, $4);
 `;
 
+// REMOVE ARTICLES THAT HAVE NOT BEEN SAVED AND HAVE NO REFERENCES AND WERE SCRAPED MORE THAN 12 HOURS AGO
+const removeUnusedArticles = `
+  DELETE FROM articles WHERE referenced = FALSE and AGE(NOW(), scraped_date) > '12 hours';
+`;
+
 const fetchFreshArticles = async function () {
   if (test) {
     return await testCrawler(src);
@@ -42,12 +47,26 @@ const fetchFreshArticles = async function () {
         } catch (err) {
           console.log(
             err,
-            '\nfetch_fresh_articles.ts in fetchFreshArticles function line 43.\n'
+            '\nfetch_fresh_articles.ts in fetchFreshArticles function line 50 crawling sources.\n'
           );
+
           return { source, error: `failed to crawl ${source}` };
         }
       })
     );
+
+    if (Array.isArray(newArticles) && !newArticles.hasOwnProperty('error')) {
+      try {
+        await db.query(removeUnusedArticles);
+      } catch (err) {
+        console.log(
+          err,
+          '\nfetch_fresh_articles line 64, removeUnusedArticles fn.\n'
+        );
+
+        return { error: 'Failed to remove unused Articles' };
+      }
+    }
 
     return await Promise.all(
       newArticles.map(async (src: SourceText) => {
@@ -63,7 +82,11 @@ const fetchFreshArticles = async function () {
           let result = await db.query(find_source_id, [source.name]);
           id = result.rows[0].id;
         } catch (err) {
-          console.log(err, '\nfetch_fresh_articles.ts line 66.\n');
+          console.log(
+            err,
+            `\nfetch_fresh_articles.ts line 87, find_source_id for ${source.name}.\n`
+          );
+
           return { error: `Failed to find source_id for ${source.name}` };
         }
 
@@ -92,7 +115,11 @@ const fetchFreshArticles = async function () {
                         bodyText[1],
                       ]);
                     } catch (err) {
-                      console.log(err, '\nfetch_fresh_articles line 95\n');
+                      console.log(
+                        err,
+                        `\nfetch_fresh_articles line 120, insert_bodies for ${article_id}.\n`
+                      );
+
                       return {
                         error: `Failed to insert article bodies for ${article_id}`,
                       };
@@ -100,7 +127,11 @@ const fetchFreshArticles = async function () {
                   })
                 );
               } catch (err) {
-                console.log(err);
+                console.log(
+                  err,
+                  `fetch_fresh_articles line 132, inserting ${title} from ${url} `
+                );
+
                 return {
                   error: `Failed to correctly return article_id or insert article for ${title} from ${url}`,
                 };
