@@ -11,6 +11,7 @@ export interface DatabaseSource {
   name: string;
   url: string;
   language: string;
+  id?: string;
   error?: string;
 }
 

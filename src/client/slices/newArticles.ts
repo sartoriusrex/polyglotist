@@ -78,7 +78,7 @@ export function fetchNewArticles(sources: string[]) {
     dispatch(fetchArticles());
 
     try {
-      const response = await fetch('/api/crawl/', {
+      const response = await fetch('/api/articles/fresh_articles/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
