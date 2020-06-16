@@ -49,14 +49,16 @@ export default {
     // get the articles that are fresh from their source ids, and get those articles' bodies from the articles_bodies table
     const articles: SourceText[] = await Promise.all(
       databaseSources.map(async (src: DatabaseSource) => {
-        if (src.hasOwnProperty('error')) return { source: src };
+        if (src.hasOwnProperty('error')) {
+          return { source: src };
+        }
 
         const freshArticlesQuery = `
-          SELECT * FROM articles WHERE AGE(NOW(), article_date) < '6 hours' AND source_id = $1;
+          SELECT * FROM articles WHERE AGE(NOW(), scraped_date) < '12 hours' AND source_id = $1;
         `;
 
         try {
-          let srcArticles = await db.query(freshArticlesQuery, [src]);
+          let srcArticles = await db.query(freshArticlesQuery, [src.id]);
 
           const freshArticleBodiesQuery = `
             SELECT tag, text FROM article_bodies WHERE article_id = $1 ORDER BY tag_order;
