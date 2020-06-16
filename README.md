@@ -2,7 +2,7 @@
 
 A Language Learning App for intermediate learners, where users can read foreign language newspapers without fluff, look up word and phrase definitions without leaving the articles, and save words for review or reference.
 
-last update: May 15, 2020
+last update: June 16, 2020
 
 This is a full-stack monolithic project using Typescript, React, Redux, Node.js, Express, Webpack, Babel, & PostgresQL. It was built with input from the [simple-react-full-stack](https://github.com/crsandeep/simple-react-full-stack) repo and inspiration from [Tania Rascia's](https://www.taniarascia.com/) blog and her [post on authentication](https://www.taniarascia.com/).
 
@@ -20,7 +20,7 @@ As of the last update, the application only currently supports French And Spanis
 
 ## Development
 
-Implementation of development can be found at the repo [simple-react-full-stack](https://github.com/crsandeep/simple-react-full-stack).
+Implementation of development can be found at the repo [simple-react-full-stack](https://github.com/crsandeep/simple-react-full-stack). To start, clone the repo and run the following commands:
 
 ```bash
 #run development servers
@@ -29,5 +29,7 @@ npm run dev
 #run typechecking before compiling
 npm run typecheck
 ```
+
+Currently, Figma is used to prototype and mockup the frontend. One can view mockups from [here:](https://www.figma.com/file/E1SqSr0kkhiWNjqTokBLUw/Polyglotist-v1?node-id=0%3A1)
 
 Contributions with constructive feedback are welcome.

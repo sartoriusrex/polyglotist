@@ -4,9 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { settingsSelector, updateSettings } from '../../../slices/settings';
 import { authSelector } from '../../../slices/auth';
 
-import SourceList, {
-  sources as sourcesObject,
-} from '../../AuthComponents/SourceList';
+import SourceList, { sources as sourcesObject } from '../../SourceList';
 import LoadingIndicator from '../../../common/components/LoadingIndicator';
 
 import styles from './settingsPage.module.scss';

@@ -4,7 +4,7 @@ const router = express.Router();
 import articleHandlers from '../handlers/articles';
 
 router.post('/fresh_articles', articleHandlers.fetchFreshArticles);
-router.get('/user_articles', articleHandlers.fetchArticles);
-router.get('/user_one_article', articleHandlers.fetchOneArticle);
+router.post('/user_articles', articleHandlers.fetchArticles);
+router.post('/user_one_article', articleHandlers.fetchOneArticle);
 
 export default router;

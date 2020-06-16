@@ -5,7 +5,7 @@ import { settingsSelector, updateSettings } from '../../../slices/settings';
 import { authSelector } from '../../../slices/auth';
 
 import styles from './createAccountPage.module.scss';
-import SourceList, { sources } from '../../AuthComponents/SourceList';
+import SourceList, { sources } from '../../SourceList';
 
 import LoadingIndicator from '../../../common/components/LoadingIndicator';
 
