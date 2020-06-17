@@ -79,7 +79,7 @@ module.exports = (env) => {
       },
       historyApiFallback: true,
       watchOptions: {
-        aggregateTimeout: 1000,
+        aggregateTimeout: 3000,
       }
     },
     plugins: [

@@ -1,18 +1,21 @@
 @import '../../../styles/variables';
 
 #articlesSection {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 .625rem;
+
   h2 {
     margin-bottom: .625rem;
   }
-  
-  padding: 0 .625rem;
 }
 
 .ArticleCard {
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-bottom: .625rem;
+  margin-bottom: .9375rem;
   box-shadow: $box-shadow;
 
   div {
@@ -24,6 +27,11 @@
   p {
     font-size: .75rem;
   }
+}
+
+.ArticleCardHidden {
+  @extend .ArticleCard;
+  display: none;
 }
 
 .ArticleCardHeader {
@@ -52,4 +60,15 @@
 .ArticleCardTitle {
   background-color: $light-gray;
   padding: .3125rem;
+}
+
+.MoreButton {
+  padding: 10px 20px;
+  border: 2px solid $dark-purple;
+  color: $dark-purple;
+  background-color: $white;
+  box-shadow: 0px 4px 2px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+  font-family: 'Lato';
+  align-self: center;
 }
