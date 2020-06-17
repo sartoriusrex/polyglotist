@@ -14,9 +14,9 @@ This is a full-stack monolithic project using Typescript, React, Redux, Node.js,
 
 The application's purpose is to improve reading comprehension and vocabulary for intermediate foreign language learners by reading current events articles from foreign language magazines and newspapers. The problem this application solves is allowing users to continue their flow of reading while learning new words. The application integrates foreign language newspapers with dictionaries and flash-card style reviews.
 
-Users can look up word or phrase definitions by highlighting them using the cursor. Once looked up, users can save the word for review later. Saving a word saves the word or phrase itself, its definition(s), a reference to the article the word was looked up from. Saved words can be reviewed using a spaced-reptition algorithm which tracks definition and use recall of the word.
+Users can look up word or phrase definitions by highlighting them using the cursor. Once looked up, users can save the word for review later. Saving a word inserts the word or phrase itself, its definition(s), and a reference to the article the word was looked up from into the database. Saved words can be reviewed using a spaced-reptition algorithm which tracks the word and the stregth of the users recall of the word.
 
-As of the last update, the application only currently supports French And Spanish, with plans to adopt German and other languages after initial release.
+As of the last update, the application only supports French and Spanish, with plans to adopt German and other languages after initial release.
 
 ## Development
 
