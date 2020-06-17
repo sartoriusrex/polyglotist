@@ -78,6 +78,9 @@ module.exports = (env) => {
         '/api': 'http://localhost:8080',
       },
       historyApiFallback: true,
+      watchOptions: {
+        aggregateTimeout: 1000,
+      }
     },
     plugins: [
       new CleanWebpackPlugin([outputDirectory]),

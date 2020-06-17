@@ -25,14 +25,14 @@ interface SourceText {
 interface newArticlesStateInterface {
   loading: boolean;
   hasErrors: boolean;
-  newArticles: SourceText[] | null;
+  articles: SourceText[] | null;
   // Need to add date and date read in state, as well as update backend to get this data
 }
 
 export const initialState: newArticlesStateInterface = {
   loading: false,
   hasErrors: false,
-  newArticles: null,
+  articles: null,
 };
 
 const newArticlesSlice = createSlice({
@@ -48,7 +48,7 @@ const newArticlesSlice = createSlice({
     fetchArticlesSuccess: (state: newArticlesStateInterface, { payload }) => {
       const newState = { ...state };
 
-      newState.newArticles = payload;
+      newState.articles = payload;
       newState.loading = false;
       newState.hasErrors = false;
       return newState;

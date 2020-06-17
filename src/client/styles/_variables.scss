@@ -2,6 +2,7 @@
 $white: #FFFFFF;
 $light-gray: #F0F4F8;
 $light-blue-gray: #9FB3C8;
+$lighter-blue-gray: #D9E2EC;
 $blue-gray: #627D98;
 
 // purples
@@ -34,3 +35,8 @@ $tan-value-section: 0.17863279495;
 $content-width: 100vw;
 $skew-padding: $content-width*$tan-value-content;
 $skew-padding-section: ($content-width*$tan-value-section)-$skew-padding+1;
+$box-shadow: 0 1px 1px rgba(0,0,0,0.11), 
+0 2px 2px rgba(0,0,0,0.11), 
+0 4px 4px rgba(0,0,0,0.11), 
+0 6px 8px rgba(0,0,0,0.11),
+0 8px 16px rgba(0,0,0,0.11);
