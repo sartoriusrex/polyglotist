@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { newArticlesSelector } from '../../../slices/newArticles';
 import { authSelector } from '../../../slices/auth';
+import { sources as sourcesList } from '../../SourceList';
 import ChevronDown from '../../../images/ChevronDown';
 
 import styles from './dashboard.module.scss';
@@ -64,7 +65,7 @@ const Dashboard = () => {
         <Link
           to={{
             pathname: `/${user.username}/articles/${title}`,
-            state: { article: article.title },
+            state: { article, sourceName: source },
           }}
         >
           <div className={styles.ArticleCardHeader}>
@@ -115,6 +116,16 @@ const Dashboard = () => {
       <ul>
         {articles.map((articleObject: ArticleObject, idx: number) => {
           const { source, articles } = articleObject;
+          const sourceObjects = Object.values(sourcesList).flat();
+          let sourceName: string;
+
+          sourceObjects.forEach(
+            (src: { name: string; id: string; desc: string }) => {
+              if (src.id === source.name) {
+                sourceName = src.name;
+              }
+            }
+          );
 
           return articles.map((article, index) => {
             const { body } = article;
@@ -128,7 +139,7 @@ const Dashboard = () => {
               <ArticleCard
                 key={article.title}
                 article={article}
-                source={source.url}
+                source={sourceName}
                 count={count}
                 bodyLength={bodyLength}
               />
