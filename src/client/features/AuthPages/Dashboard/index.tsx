@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { newArticlesSelector } from '../../../slices/newArticles';
+import ChevronDown from '../../../images/ChevronDown';
 
 import styles from './dashboard.module.scss';
 
@@ -84,11 +85,19 @@ const Dashboard = () => {
     return (
       <button className={styles.MoreButton} onClick={onMoreClick}>
         More
+        <ChevronDown />
       </button>
     );
   };
 
   function renderArticleCards(articles: ArticleObject[]) {
+    if (!articles)
+      return (
+        <div>
+          <p>Loading...</p>
+        </div>
+      );
+
     let count: number = 0;
 
     return (
@@ -122,7 +131,7 @@ const Dashboard = () => {
   return (
     <section id={styles.articlesSection}>
       <h2>New Articles</h2>
-      {articles && renderArticleCards(articles)}
+      {renderArticleCards(articles)}
       {numArticles !== showNumber && <MoreButton />}
     </section>
   );
