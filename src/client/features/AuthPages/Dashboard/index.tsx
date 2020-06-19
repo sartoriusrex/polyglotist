@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { newArticlesSelector } from '../../../slices/newArticles';
+import { authSelector } from '../../../slices/auth';
 import ChevronDown from '../../../images/ChevronDown';
 
 import styles from './dashboard.module.scss';
 
 const Dashboard = () => {
   const { articles } = useSelector(newArticlesSelector);
+  const { user } = useSelector(authSelector);
   const startingShow: number = 3;
   const [showNumber, setShowNumber] = useState(startingShow);
   const numArticles: number = articles
@@ -49,6 +52,7 @@ const Dashboard = () => {
     );
     const day = date.getDate();
     const year = date.getFullYear();
+    const title = article.title.replace(/[\W_]+/g, '-');
 
     return (
       <li
@@ -57,18 +61,25 @@ const Dashboard = () => {
         }
         key={article.title}
       >
-        <div className={styles.ArticleCardHeader}>
-          <p className={styles.date}>
-            {day} {month.slice(0, 3)} '{year.toString().slice(2, 4)}
-          </p>
-          <p className={styles.source}>{source}</p>
-          <p className={styles.language}>
-            {article.language.charAt(0).toUpperCase() +
-              article.language.slice(1)}
-          </p>
-          <p className={styles.wordCount}>{bodyLength} Words</p>
-        </div>
-        <p className={styles.ArticleCardTitle}>{article.title}</p>
+        <Link
+          to={{
+            pathname: `/${user.username}/articles/${title}`,
+            state: { article: article.title },
+          }}
+        >
+          <div className={styles.ArticleCardHeader}>
+            <p className={styles.date}>
+              {day} {month.slice(0, 3)} '{year.toString().slice(2, 4)}
+            </p>
+            <p className={styles.source}>{source}</p>
+            <p className={styles.language}>
+              {article.language.charAt(0).toUpperCase() +
+                article.language.slice(1)}
+            </p>
+            <p className={styles.wordCount}>{bodyLength} Words</p>
+          </div>
+          <p className={styles.ArticleCardTitle}>{article.title}</p>
+        </Link>
       </li>
     );
   };

@@ -11,6 +11,7 @@ import BottomNavbar from '../../features/BottomNavbar';
 import Dashboard from '../../features/AuthPages/Dashboard';
 import CreateAccountPage from '../../features/AuthPages/CreateAccountPage';
 import ArticlesPage from '../../features/AuthPages/ArticlesPage';
+import ArticleDetailPage from '../../features/AuthPages/ArticleDetailPage';
 import WordsPage from '../../features/AuthPages/WordsPage';
 import SettingsPage from '../../features/AuthPages/SettingsPage';
 import PracticePage from '../../features/AuthPages/PracticePage';
@@ -58,6 +59,9 @@ const AuthenticatedApp = () => {
           </Route>
           <Route exact path='/:username/articles'>
             <ArticlesPage />
+          </Route>
+          <Route exact path='/:username/articles/:article'>
+            <ArticleDetailPage />
           </Route>
           <Route exact path='/:username/words'>
             <WordsPage />
