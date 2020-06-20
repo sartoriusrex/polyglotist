@@ -2,10 +2,15 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
+import { Article } from '../../../interfaces';
 import styles from './articleDetail.module.scss';
 
+import GoBackButton from '../../../common/components/GoBack';
+
 const ArticleDetailPage = () => {
-  const location = useLocation();
+  const location: {
+    state: { article: Article; sourceName: string };
+  } = useLocation();
   const { article, sourceName } = location.state;
   const articleDate = new Date(article.date).toLocaleDateString();
 
@@ -23,11 +28,12 @@ const ArticleDetailPage = () => {
 
   return (
     <article className={styles.article}>
-      <div>
-        <p>{articleDate}</p>
+      <div className={styles.articleHeader}>
+        <GoBackButton text='<' />
+        <p className={styles.articleDate}>{articleDate}</p>
         <p>{sourceName}</p>
+        <h1>{article.title}</h1>
       </div>
-      <h1>{article.title}</h1>
       {renderBody(article.body)}
     </article>
   );

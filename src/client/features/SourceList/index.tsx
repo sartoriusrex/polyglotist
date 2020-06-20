@@ -1,12 +1,7 @@
 import React from 'react';
 
+import { sourceArrayInterface } from '../../interfaces';
 import styles from './sourceList.module.scss';
-
-interface sourceArrayInterface {
-  name: string;
-  id: string;
-  desc: string;
-}
 
 export const sources: {
   [key: string]: sourceArrayInterface[];

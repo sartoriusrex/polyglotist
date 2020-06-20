@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { newArticlesSelector } from '../../../slices/newArticles';
 import { authSelector } from '../../../slices/auth';
 import { sources as sourcesList } from '../../SourceList';
+import { Source, Article, ArticleObject } from '../../../interfaces';
 import ChevronDown from '../../../images/ChevronDown';
 
 import styles from './dashboard.module.scss';
@@ -19,26 +20,6 @@ const Dashboard = () => {
         .map((articleObject: ArticleObject) => articleObject.articles)
         .flat().length
     : 0;
-
-  interface Source {
-    name: string;
-    url: string;
-    language: string;
-    id?: string;
-  }
-
-  interface Article {
-    title: string;
-    date: string;
-    url: string;
-    language: string;
-    body: string[][];
-  }
-
-  interface ArticleObject {
-    source: Source;
-    articles: Article[];
-  }
 
   const ArticleCard = (props: {
     article: Article;
