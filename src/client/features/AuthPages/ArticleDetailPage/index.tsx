@@ -22,7 +22,6 @@ const ArticleDetailPage = () => {
   function renderBody(bodyArray: string[][]) {
     return bodyArray.map((bodyElement: string[]) => {
       let element = bodyElement[0].toLowerCase();
-      console.log(element);
 
       return React.createElement(
         element,
@@ -32,10 +31,22 @@ const ArticleDetailPage = () => {
     });
   }
 
-  // Scroll to top on render
-  useEffect(() => {
+  function handleDefineClick() {
+    let word = window.getSelection().toString();
 
-  });
+    console.log(word);
+  }
+
+  const DefineWordButton = () => {
+    return (
+      <button onClick={handleDefineClick} className={styles.defineWordButton}>
+        Define Word
+      </button>
+    );
+  };
+
+  // Scroll to top on render
+  useEffect(() => {});
 
   return (
     <article className={styles.article}>
@@ -57,6 +68,7 @@ const ArticleDetailPage = () => {
       <div className={styles.articleBodyContainer}>
         {renderBody(article.body)}
       </div>
+      <DefineWordButton />
     </article>
   );
 };

@@ -6,6 +6,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+  position: relative;
 }
 
 .articleHeader {
@@ -94,4 +95,15 @@
     font-style: italic;
     color: $darkest-blue;
   }
+}
+
+.defineWordButton {
+  position: sticky;
+  bottom: 25%;
+  width: 50%;
+  left: 25%;
+  padding: .3125rem .625rem;
+  border: 1px solid $dark-purple;
+  background-color: $white;
+  color: $dark-purple;
 }
