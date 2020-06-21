@@ -46,7 +46,7 @@ const Dashboard = () => {
         <Link
           to={{
             pathname: `/${user.username}/articles/${title}`,
-            state: { article, sourceName: source },
+            state: { article, sourceName: source, wordCount: bodyLength },
           }}
         >
           <div className={styles.ArticleCardHeader}>

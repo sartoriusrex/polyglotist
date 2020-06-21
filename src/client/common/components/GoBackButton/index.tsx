@@ -2,9 +2,10 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import styles from './goBack.module.scss';
+import ChevronBoxLeft from '../../../images/ChevronBoxLeft';
 
-const GoBackButton = ({ text }: { text: string }) => {
-  const history = useLocation();
+const GoBackButton = () => {
+  const history = useHistory();
 
   function handleClick() {
     history.go(-1);
@@ -12,7 +13,9 @@ const GoBackButton = ({ text }: { text: string }) => {
 
   return (
     <button className={styles.goBackButton} onClick={handleClick}>
-      {text}
+      <ChevronBoxLeft />
     </button>
   );
 };
+
+export default GoBackButton;

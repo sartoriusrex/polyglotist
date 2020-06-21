@@ -1,13 +1,97 @@
 @import '../../../styles/variables';
 
 .article {
-  padding: 0 .625rem;
+  padding: 0 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.articleHeader {
+  width: 100%;
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.articleTopBar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  align-items: center;
+  position: relative;
+
+  button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+
+  p {
+    font-style: italic;
+    font-size: 1.125rem;
+  }
+}
+
+.articleHeaderContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   h1 {
+    font-size: 1.125rem;
+    text-align: center;
+    width: 100%;
     margin-bottom: 1.25rem;
+    color: $dark-purple;
+  }
+
+  .articleHeaderContentDetail {
+    width: 75%;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 1.25rem;
+
+    p {
+      color: $dark-purple;
+      font-size: 0.75rem;
+    }
+  }
+
+  &::before,
+  &::after {
+    content: '';
+    width: 100%;
+    display: block;
+    border-top: 1px solid $dark-purple;
+    transform: scaleX(0.9);
+  }
+
+  &::before {
+    padding-top: 1.25rem;
   }
 }
 
 .bodyElement {
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
+  width: 100%;
+}
+
+.articleBodyContainer {
+  padding: 0 1.25rem;
+  width: 100%;
+
+  h2 {
+    font-size: 1rem;
+    font-style: italic;
+    color: $darkest-blue;
+  }
 }
