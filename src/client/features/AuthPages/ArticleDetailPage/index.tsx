@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -18,6 +18,9 @@ const ArticleDetailPage = () => {
   );
   const day = date.getDate();
   const year = date.getFullYear();
+  const [highlightedWord, setHighlightedWord] = useState<HighlightedWord>(null);
+
+  type HighlightedWord = null | string;
 
   function renderBody(bodyArray: string[][]) {
     return bodyArray.map((bodyElement: string[]) => {
@@ -32,12 +35,12 @@ const ArticleDetailPage = () => {
   }
 
   function handleDefineClick() {
-    let word = window.getSelection().toString();
-
-    console.log(word);
+    console.log(highlightedWord);
   }
 
   const DefineWordButton = () => {
+    if (highlightedWord === null || highlightedWord === '') return <></>;
+
     return (
       <button onClick={handleDefineClick} className={styles.defineWordButton}>
         Define Word
@@ -46,7 +49,26 @@ const ArticleDetailPage = () => {
   };
 
   // Scroll to top on render
-  useEffect(() => {});
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  // add event listener for when user selects text
+  useEffect(() => {
+    function handleSelect() {
+      let word: string | undefined = window.getSelection()?.toString();
+
+      if (word === null || word === undefined) {
+        return;
+      } else {
+        setHighlightedWord(word);
+      }
+    }
+
+    document.addEventListener('selectionchange', handleSelect);
+
+    return () => document.removeEventListener('selectionchange', handleSelect);
+  }, []);
 
   return (
     <article className={styles.article}>
