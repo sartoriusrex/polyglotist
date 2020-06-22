@@ -7,12 +7,27 @@ const paisCrawler: Crawler = {
       const randomArticleUrls = await page.$$eval(
         'article',
         (articles: any, url: string) => {
+          // function checkParent used to check if parent meets the el-pais-in-english query, because they are not accessible
+          // Function comes from https://www.geeksforgeeks.org/how-to-check-if-an-element-is-a-child-of-a-parent-using-javascript/
+          function checkParent(parent: HTMLElement, child: HTMLElement) {
+            let node = child.parentNode;
+
+            // keep iterating unless null
+            while (node != null) {
+              if (node == parent) {
+                return true;
+              }
+              node = node.parentNode;
+            }
+            return false;
+          }
           // filter out articles 'en vivo' since they're a bit complicated for scraping (iframe with another url - may do these later)
 
           const articlesNoVivo = articles.filter(
             (element: any) =>
               !element.querySelector('.kicker span') &&
-              element.querySelector('h2 a')
+              element.querySelector('h2 a') &&
+              !checkParent(element.closest('#el-pais-in-english'), element)
           );
 
           let urls = articlesNoVivo
