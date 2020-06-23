@@ -53,7 +53,7 @@ const creationQueries: Query = {
       source_id INT NOT NULL,
       url TEXT NOT NULL,
       referenced BOOLEAN DEFAULT FALSE,
-      FOREIGN KEY (source_id) REFERENCES sources(id)
+      FOREIGN KEY (source_id) REFERENCES sources(id) ON DELETE CASCADE
     );
   `,
   create_article_bodies_table: `
@@ -63,7 +63,7 @@ const creationQueries: Query = {
       tag_order INT NOT NULL,
       tag TEXT NOT NULL,
       text TEXT NOT NULL,
-      FOREIGN KEY (article_id) REFERENCES articles(id)
+      FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
     );
   `,
   create_words_table: `
@@ -82,9 +82,9 @@ const creationQueries: Query = {
       strength INT DEFAULT 0,
       article_id INT NOT NULL,
       context_sentence TEXT NOT NULL,
-      FOREIGN KEY (user_id) REFERENCES users(id),
-      FOREIGN KEY (word_id) REFERENCES words(id),
-      FOREIGN KEY (article_id) REFERENCES articles(id)
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+      FOREIGN KEY (word_id) REFERENCES words(id) ON DELETE CASCADE,
+      FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
     );
   `,
   create_users_articles_table: `
@@ -92,8 +92,8 @@ const creationQueries: Query = {
       ID SERIAL PRIMARY KEY,
       user_id INT NOT NULL,
       article_id INT NOT NULL,
-      FOREIGN KEY (user_id) REFERENCES users(id),
-      FOREIGN KEY (article_id) REFERENCES articles(id)
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+      FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
     );
   `,
   create_users_sources_table: `
@@ -101,8 +101,8 @@ const creationQueries: Query = {
       ID SERIAL PRIMARY KEY,
       user_id INT NOT NULL,
       source_id INT NOT NULL,
-      FOREIGN KEY (user_id) REFERENCES users(id),
-      FOREIGN KEY (source_id) REFERENCES sources(id)
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+      FOREIGN KEY (source_id) REFERENCES sources(id) ON DELETE CASCADE
     );
   `,
 };

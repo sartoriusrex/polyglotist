@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -6,6 +6,7 @@ import { Article } from '../../../interfaces';
 import styles from './articleDetail.module.scss';
 
 import GoBackButton from '../../../common/components/GoBackButton';
+import DefinePhraseButton from '../../DefinePhraseButton';
 
 const ArticleDetailPage = () => {
   const location: {
@@ -18,9 +19,6 @@ const ArticleDetailPage = () => {
   );
   const day = date.getDate();
   const year = date.getFullYear();
-  const [highlightedWord, setHighlightedWord] = useState<HighlightedWord>(null);
-
-  type HighlightedWord = null | string;
 
   function renderBody(bodyArray: string[][]) {
     return bodyArray.map((bodyElement: string[]) => {
@@ -34,40 +32,9 @@ const ArticleDetailPage = () => {
     });
   }
 
-  function handleDefineClick() {
-    console.log(highlightedWord);
-  }
-
-  const DefineWordButton = () => {
-    if (highlightedWord === null || highlightedWord === '') return <></>;
-
-    return (
-      <button onClick={handleDefineClick} className={styles.defineWordButton}>
-        Define Word
-      </button>
-    );
-  };
-
   // Scroll to top on render
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
-
-  // add event listener for when user selects text
-  useEffect(() => {
-    function handleSelect() {
-      let word: string | undefined = window.getSelection()?.toString();
-
-      if (word === null || word === undefined) {
-        return;
-      } else {
-        setHighlightedWord(word);
-      }
-    }
-
-    document.addEventListener('selectionchange', handleSelect);
-
-    return () => document.removeEventListener('selectionchange', handleSelect);
   }, []);
 
   return (
@@ -90,7 +57,7 @@ const ArticleDetailPage = () => {
       <div className={styles.articleBodyContainer}>
         {renderBody(article.body)}
       </div>
-      <DefineWordButton />
+      <DefinePhraseButton />
     </article>
   );
 };

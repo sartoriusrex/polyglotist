@@ -77,10 +77,12 @@ module.exports = (env) => {
       proxy: {
         '/api': 'http://localhost:8080',
       },
+      compress: true,
+      hot: true,
       historyApiFallback: true,
-      watchOptions: {
-        aggregateTimeout: 5000,
-      }
+    },
+    watchOptions: {
+      aggregateTimeout: 5000,
     },
     plugins: [
       new CleanWebpackPlugin([outputDirectory]),

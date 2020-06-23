@@ -8,6 +8,7 @@ import { authSelector } from '../../slices/auth';
 
 import Navbar from '../../features/Navbar';
 import BottomNavbar from '../../features/BottomNavbar';
+import DefinePhraseButton from '../../features/DefinePhraseButton';
 import Dashboard from '../../features/AuthPages/Dashboard';
 import CreateAccountPage from '../../features/AuthPages/CreateAccountPage';
 import ArticlesPage from '../../features/AuthPages/ArticlesPage';
@@ -79,6 +80,7 @@ const AuthenticatedApp = () => {
           <Route component={NoMatchPage} />
         </Switch>
 
+        <DefinePhraseButton />
         <BottomNavbar />
       </Router>
     </main>
