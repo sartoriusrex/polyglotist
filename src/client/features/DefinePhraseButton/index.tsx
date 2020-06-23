@@ -10,7 +10,8 @@ const DefinePhraseButton = () => {
 
   type HighlightedWord = null | string;
 
-  function handleDefineClick() {
+  function handleDefineClick(e) {
+    e.stopPropagation();
     setDefBoxOpen(true);
     // This block of commented replaces the anchornode text with the same text, but with the highlighted word in mark tags. Until I think of a solution to handle this in the db and clientside, this is not yet a feasible feature
 
@@ -25,6 +26,11 @@ const DefinePhraseButton = () => {
     // console.log(newText);
 
     console.log(highlightedWord);
+  }
+
+  function handleModalClick() {
+    setDefBoxOpen(false);
+    console.log('this better fucking work');
   }
 
   // add event listener for when user selects text
@@ -44,33 +50,50 @@ const DefinePhraseButton = () => {
     return () => document.removeEventListener('selectionchange', handleSelect);
   }, []);
 
-  // Because this is rendered the Authapp/index, higher up, only render the component if the location state contains an article (in articledetailpage), and also only render if there is something highlighted
-  if (
-    highlightedWord === null ||
-    highlightedWord === '' ||
-    location.state === undefined ||
-    location.state.article === undefined
-  )
+  // Because this is rendered the Authapp/index, higher up, only render the component if the location state contains an article (in articledetailpage)
+  if (location.state === undefined || location.state.article === undefined)
     return <></>;
 
   return (
-    <div className={styles.defContainer}>
-      <button onClick={handleDefineClick} className={styles.definePhraseButton}>
-        Define Phrase
-      </button>
-      {defBoxOpen && (
-        <section className={styles.definitionContainer}>
-          <em>{highlightedWord}</em>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui et,
-            minima necessitatibus quisquam culpa laborum nihil suscipit, beatae
-            explicabo in veniam quod soluta, ratione corrupti iure nisi labore
-            debitis adipisci?
-          </p>
-        </section>
-      )}
-      {defBoxOpen && <div className={styles.grayOverlay}></div>}
-    </div>
+    <>
+      <div
+        className={
+          !defBoxOpen ||
+          !highlightedWord ||
+          highlightedWord === null ||
+          highlightedWord === ''
+            ? styles.grayOverlay
+            : `${styles.grayOverlay} ${styles.grayOverlayOpen}`
+        }
+        onClick={() => handleModalClick()}
+      ></div>
+      <div
+        className={
+          highlightedWord === null || highlightedWord === ''
+            ? `${styles.defContainer} ${styles.defContainerHidden}`
+            : styles.defContainer
+        }
+        onClick={() => setDefBoxOpen(false)}
+      >
+        <button
+          onClick={(e) => handleDefineClick(e)}
+          className={styles.definePhraseButton}
+        >
+          Define Phrase
+        </button>
+        {defBoxOpen && (
+          <section className={styles.definitionContainer}>
+            <em>{highlightedWord}</em>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui et,
+              minima necessitatibus quisquam culpa laborum nihil suscipit,
+              beatae explicabo in veniam quod soluta, ratione corrupti iure nisi
+              labore debitis adipisci?
+            </p>
+          </section>
+        )}
+      </div>
+    </>
   );
 };
 

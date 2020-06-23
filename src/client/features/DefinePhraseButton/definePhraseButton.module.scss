@@ -2,17 +2,22 @@
 
 .defContainer {
   position: fixed;
-  bottom: 3.4rem;
+  bottom: 3.3rem;
   width: 100%;
   z-index: 100;
   border-top: 2px solid $dark-purple;
   border-bottom: 2px solid $dark-purple;
   transition: 100ms ease-in-out height;
   background-color: $white;
+  opacity: 1;
+  transform: translateY(0);
+  transition: 150ms ease-in-out transform, 150ms ease-in-out opacity;
+}
 
-  summary {
-    list-style: none;
-  }
+.defContainerHidden {
+  z-index: -10;
+  opacity: 0;
+  transform: translateY(10rem);
 }
 
 .definePhraseButton {
@@ -36,11 +41,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-height: 60vh;
+  overflow-y: scroll;
 
   em {
     margin-bottom: 1.25rem;
     color: $darkest-blue;
     font-style: italic;
+    line-height: 1.4;
   }
 }
 
@@ -49,6 +57,16 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background-color: rgba(0,0,0,.7);
+  transform: translateY(100%);
+  display: none;
+  opacity: 0;
+  transition: 150ms ease-in-out transform, 150ms ease-in-out opacity;
+}
+
+.grayOverlayOpen {
+  transform: translateY(0);
+  display: block;
+  opacity: 1;
 }
