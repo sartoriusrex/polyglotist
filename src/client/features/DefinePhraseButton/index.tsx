@@ -30,6 +30,16 @@ const DefinePhraseButton = () => {
     // console.log(newText);
   }
 
+  function handlePhraseSave() {
+    console.log(highlightedWord);
+  }
+
+  function handleCancelSave() {
+    console.log('Canceling Save');
+    setDefBoxOpen(false);
+    setHighlightedWord('');
+  }
+
   function closeDefinitionModal(e: React.MouseEvent) {
     setDefBoxOpen(false);
     e.stopPropagation();
@@ -92,6 +102,24 @@ const DefinePhraseButton = () => {
         >
           Define Phrase
         </button>
+        <div
+          className={
+            !defBoxOpen ? styles.saveContainerHidden : styles.saveContainerOpen
+          }
+        >
+          <button
+            className={styles.savePhraseButton}
+            onClick={handlePhraseSave}
+          >
+            Save
+          </button>
+          <button
+            className={styles.cancelSaveButton}
+            onClick={handleCancelSave}
+          >
+            X
+          </button>
+        </div>
       </div>
 
       <section
@@ -100,7 +128,6 @@ const DefinePhraseButton = () => {
             ? styles.definitionContainerOpen
             : styles.definitionContainer
         }
-        onClick={(e) => closeDefinitionModal(e)}
         aria-hidden={
           defBoxOpen && highlightedWord !== null && highlightedWord !== ''
             ? false
