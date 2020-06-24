@@ -6,7 +6,6 @@ import { Article } from '../../../interfaces';
 import styles from './articleDetail.module.scss';
 
 import GoBackButton from '../../../common/components/GoBackButton';
-import DefinePhraseButton from '../../DefinePhraseButton';
 
 const ArticleDetailPage = () => {
   const location: {
@@ -57,7 +56,6 @@ const ArticleDetailPage = () => {
       <div className={styles.articleBodyContainer}>
         {renderBody(article.body)}
       </div>
-      <DefinePhraseButton />
     </article>
   );
 };

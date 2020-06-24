@@ -1,23 +1,29 @@
 @import '../../styles/variables';
 
-.defContainer {
+.defineButtonContainer {
   position: fixed;
   bottom: 3.3rem;
   width: 100%;
   z-index: 100;
   border-top: 2px solid $dark-purple;
   border-bottom: 2px solid $dark-purple;
-  transition: 100ms ease-in-out height;
   background-color: $white;
   opacity: 1;
-  transform: translateY(0);
-  transition: 150ms ease-in-out transform, 150ms ease-in-out opacity;
+  transform: translateY(-45vh);
+  transition: 150ms ease-in-out transform, 150ms ease-in-out opacity,
+    150ms ease-in-out height;
 }
 
-.defContainerHidden {
+.defineButtonContainerHidden {
+  @extend .defineButtonContainer;
   z-index: -10;
   opacity: 0;
   transform: translateY(10rem);
+}
+
+.defineButtonContainerClosed {
+  @extend .defineButtonContainer;
+  transform: translateY(0);
 }
 
 .definePhraseButton {
@@ -37,12 +43,16 @@
 }
 
 .definitionContainer {
-  padding: 1.25rem;
+  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-height: 60vh;
   overflow-y: scroll;
+  opacity: 0;
+  height: 0;
+  transform: translateY(2rem);
+  transition: 150ms ease-in-out transform, 150ms ease-in-out opacity,
+    150ms ease-in-out height;
 
   em {
     margin-bottom: 1.25rem;
@@ -52,21 +62,34 @@
   }
 }
 
-.grayOverlay{
+.definitionContainerOpen {
+  @extend .definitionContainer;
+  opacity: 1;
+  position: fixed;
+  bottom: 5.4rem;
+  left: 0;
+  background-color: $white;
+  z-index: 1;
+  height: 45vh;
+  padding: 1.25rem;
+  border-bottom: 2px solid $dark-purple;
+}
+
+.grayOverlay {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   height: 100%;
-  background-color: rgba(0,0,0,.7);
-  transform: translateY(100%);
-  display: none;
+  z-index: -1;
   opacity: 0;
-  transition: 150ms ease-in-out transform, 150ms ease-in-out opacity;
+  background-color: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  transition: 150ms ease-in-out opacity;
 }
 
 .grayOverlayOpen {
-  transform: translateY(0);
-  display: block;
+  @extend .grayOverlay;
   opacity: 1;
+  z-index: 0;
 }

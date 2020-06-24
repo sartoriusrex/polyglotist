@@ -2,17 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import styles from './definePhraseButton.module.scss';
+import { Article } from '../../interfaces';
 
 const DefinePhraseButton = () => {
   const [highlightedWord, setHighlightedWord] = useState<HighlightedWord>(null);
   const [defBoxOpen, setDefBoxOpen] = useState<Boolean>(false);
-  const location = useLocation();
+  const location: {
+    state: null | undefined | { article: Article };
+  } = useLocation();
 
   type HighlightedWord = null | string;
 
-  function handleDefineClick(e) {
+  function handleDefineClick(e: React.MouseEvent) {
     e.stopPropagation();
     setDefBoxOpen(true);
+    console.log(highlightedWord);
     // This block of commented replaces the anchornode text with the same text, but with the highlighted word in mark tags. Until I think of a solution to handle this in the db and clientside, this is not yet a feasible feature
 
     // const selection = window.getSelection();
@@ -24,13 +28,11 @@ const DefinePhraseButton = () => {
     // );
     // const newText = `${newTextBefore} <mark>${highlightedWord}</mark> ${newTextAfter}`;
     // console.log(newText);
-
-    console.log(highlightedWord);
   }
 
-  function handleModalClick() {
+  function closeDefinitionModal(e: React.MouseEvent) {
     setDefBoxOpen(false);
-    console.log('this better fucking work');
+    e.stopPropagation();
   }
 
   // add event listener for when user selects text
@@ -51,29 +53,34 @@ const DefinePhraseButton = () => {
   }, []);
 
   // Because this is rendered the Authapp/index, higher up, only render the component if the location state contains an article (in articledetailpage)
-  if (location.state === undefined || location.state.article === undefined)
+  if (
+    location.state === null ||
+    location.state === undefined ||
+    location.state.article === undefined
+  )
     return <></>;
 
   return (
     <>
       <div
+        aria-hidden={defBoxOpen ? false : true}
         className={
-          !defBoxOpen ||
-          !highlightedWord ||
-          highlightedWord === null ||
-          highlightedWord === ''
-            ? styles.grayOverlay
-            : `${styles.grayOverlay} ${styles.grayOverlayOpen}`
+          defBoxOpen
+            ? `${styles.grayOverlay} ${styles.grayOverlayOpen}`
+            : styles.grayOverlay
         }
-        onClick={() => handleModalClick()}
+        onClick={(e) => closeDefinitionModal(e)}
       ></div>
+
       <div
         className={
-          highlightedWord === null || highlightedWord === ''
-            ? `${styles.defContainer} ${styles.defContainerHidden}`
-            : styles.defContainer
+          highlightedWord === null || highlightedWord === '' //no word highlighted, don't show anything
+            ? styles.defineButtonContainerHidden
+            : !defBoxOpen //user highlighted word, but has not clicked define phrase yet, show button only
+            ? styles.defineButtonContainerClosed
+            : // show the entire box if defBox is open and there is a word highlighted
+              styles.defineButtonContainer
         }
-        onClick={() => setDefBoxOpen(false)}
       >
         <button
           onClick={(e) => handleDefineClick(e)}
@@ -81,18 +88,24 @@ const DefinePhraseButton = () => {
         >
           Define Phrase
         </button>
-        {defBoxOpen && (
-          <section className={styles.definitionContainer}>
-            <em>{highlightedWord}</em>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui et,
-              minima necessitatibus quisquam culpa laborum nihil suscipit,
-              beatae explicabo in veniam quod soluta, ratione corrupti iure nisi
-              labore debitis adipisci?
-            </p>
-          </section>
-        )}
       </div>
+
+      <section
+        className={
+          defBoxOpen
+            ? styles.definitionContainerOpen
+            : styles.definitionContainer
+        }
+        onClick={(e) => closeDefinitionModal(e)}
+      >
+        <em>{highlightedWord}</em>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui et,
+          minima necessitatibus quisquam culpa laborum nihil suscipit, beatae
+          explicabo in veniam quod soluta, ratione corrupti iure nisi labore
+          debitis adipisci?
+        </p>
+      </section>
     </>
   );
 };
