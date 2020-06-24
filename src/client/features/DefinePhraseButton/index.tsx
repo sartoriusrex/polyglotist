@@ -97,7 +97,9 @@ const DefinePhraseButton = () => {
           onClick={(e) => handleDefineClick(e)}
           className={styles.definePhraseButton}
           aria-hidden={
-            highlightedWord === null || highlightedWord === '' ? true : false
+            highlightedWord === null || highlightedWord === '' || defBoxOpen
+              ? true
+              : false
           }
         >
           Define Phrase
@@ -106,6 +108,7 @@ const DefinePhraseButton = () => {
           className={
             !defBoxOpen ? styles.saveContainerHidden : styles.saveContainerOpen
           }
+          aria-hidden={!defBoxOpen ? true : false}
         >
           <button
             className={styles.savePhraseButton}
