@@ -43,6 +43,7 @@ const DefinePhraseButton = () => {
       if (word === null || word === undefined) {
         return;
       } else {
+        if (word === '') setDefBoxOpen(false);
         setHighlightedWord(word);
       }
     }
@@ -92,7 +93,7 @@ const DefinePhraseButton = () => {
 
       <section
         className={
-          defBoxOpen
+          defBoxOpen && highlightedWord !== null && highlightedWord !== ''
             ? styles.definitionContainerOpen
             : styles.definitionContainer
         }

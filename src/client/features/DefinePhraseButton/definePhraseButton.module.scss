@@ -12,6 +12,8 @@
   transform: translateY(-45vh);
   transition: 150ms ease-in-out transform, 150ms ease-in-out opacity,
     150ms ease-in-out height;
+  box-shadow: 0 -5px 5px 5px rgba(0, 0, 0, 0.1),
+    0 -2px 2px 2px rgba(0, 0, 0, 0.1);
 }
 
 .defineButtonContainerHidden {
@@ -40,6 +42,8 @@
   border-radius: 0.3125rem 0.3125rem 0 0;
   letter-spacing: 0.01rem;
   word-spacing: 0.3rem;
+  box-shadow: 2px -5px 5px 5px rgba(0, 0, 0, 0.1),
+    1px -2px 2px 2px rgba(0, 0, 0, 0.1);
 }
 
 .definitionContainer {
