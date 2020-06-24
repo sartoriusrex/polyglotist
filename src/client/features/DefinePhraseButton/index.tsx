@@ -86,6 +86,9 @@ const DefinePhraseButton = () => {
         <button
           onClick={(e) => handleDefineClick(e)}
           className={styles.definePhraseButton}
+          aria-hidden={
+            highlightedWord === null || highlightedWord === '' ? true : false
+          }
         >
           Define Phrase
         </button>
@@ -98,6 +101,11 @@ const DefinePhraseButton = () => {
             : styles.definitionContainer
         }
         onClick={(e) => closeDefinitionModal(e)}
+        aria-hidden={
+          defBoxOpen && highlightedWord !== null && highlightedWord !== ''
+            ? false
+            : true
+        }
       >
         <em>{highlightedWord}</em>
         <p>
