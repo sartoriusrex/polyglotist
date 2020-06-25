@@ -23,3 +23,24 @@ export interface ArticleObject {
   source: Source;
   articles: Article[];
 }
+
+export type HighlightedPhrase = null | string;
+
+export interface DefinitionState {
+  fetching: boolean;
+  error: string;
+  definitionObject: {};
+}
+
+export type DefinitionAction =
+  | {
+      type: 'fetching';
+    }
+  | {
+      type: 'fetchError';
+      error: string;
+    }
+  | {
+      type: 'fetchSuccess';
+      definitionObject: {};
+    };

@@ -1,22 +1,78 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import styles from './definePhraseButton.module.scss';
-import { Article } from '../../interfaces';
+import {
+  Article,
+  HighlightedPhrase,
+  DefinitionState,
+  DefinitionAction,
+} from '../../interfaces';
 
 const DefinePhraseButton = () => {
-  const [highlightedWord, setHighlightedWord] = useState<HighlightedWord>(null);
+  const [highlightedPhrase, sethighlightedPhrase] = useState<HighlightedPhrase>(
+    null
+  );
   const [defBoxOpen, setDefBoxOpen] = useState<Boolean>(false);
   const location: {
     state: null | undefined | { article: Article };
   } = useLocation();
 
-  type HighlightedWord = null | string;
+  const defInitState: DefinitionState = {
+    fetching: false,
+    error: '',
+    definitionObject: {},
+  };
 
-  function handleDefineClick(e: React.MouseEvent) {
+  function defReducer(state: DefinitionState, action: DefinitionAction) {
+    switch (action.type) {
+      case 'fetching':
+        return {
+          ...state,
+          fetching: true,
+        };
+      case 'fetchSuccess':
+        return {
+          fetching: false,
+          error: '',
+          definitionObject: action.definitionObject,
+        };
+      default:
+        return {
+          fetching: false,
+          error: action.error,
+          definitionObject: {},
+        };
+    }
+  }
+
+  const [defState, defDispatch] = useReducer(defReducer, defInitState);
+
+  async function handleDefineClick(e: React.MouseEvent) {
     e.stopPropagation();
     setDefBoxOpen(true);
-    console.log(highlightedWord);
+    defDispatch({ type: 'fetching' });
+
+    let lang = location.state?.article?.language;
+
+    let definitionObject: any = await fetch(
+      `/api/words/${lang}/${highlightedPhrase}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (definitionObject.error)
+      return defDispatch({
+        type: 'fetchError',
+        error: definitionObject.error,
+      });
+
+    defDispatch({ type: 'fetchSuccess', definitionObject });
+
     // This block of commented replaces the anchornode text with the same text, but with the highlighted word in mark tags. Until I think of a solution to handle this in the db and clientside, this is not yet a feasible feature
 
     // const selection = window.getSelection();
@@ -24,20 +80,20 @@ const DefinePhraseButton = () => {
     // const anchorNodeText = anchorNode.textContent;
     // const newTextBefore = anchorNodeText.slice(0, anchorOffset);
     // const newTextAfter = anchorNodeText.slice(
-    //   anchorOffset + highlightedWord.length
+    //   anchorOffset + highlightedPhrase.length
     // );
-    // const newText = `${newTextBefore} <mark>${highlightedWord}</mark> ${newTextAfter}`;
+    // const newText = `${newTextBefore} <mark>${highlightedPhrase}</mark> ${newTextAfter}`;
     // console.log(newText);
   }
 
   function handlePhraseSave() {
-    console.log(highlightedWord);
+    console.log(highlightedPhrase);
   }
 
   function handleCancelSave() {
     console.log('Canceling Save');
     setDefBoxOpen(false);
-    setHighlightedWord('');
+    sethighlightedPhrase('');
   }
 
   function closeDefinitionModal(e: React.MouseEvent) {
@@ -48,13 +104,13 @@ const DefinePhraseButton = () => {
   // add event listener for when user selects text
   useEffect(() => {
     function handleSelect() {
-      let word: string | undefined = window.getSelection()?.toString();
+      let phrase: string | undefined = window.getSelection()?.toString();
 
-      if (word === null || word === undefined) {
+      if (phrase === null || phrase === undefined) {
         return;
       } else {
-        if (word === '') setDefBoxOpen(false);
-        setHighlightedWord(word);
+        if (phrase === '') setDefBoxOpen(false);
+        sethighlightedPhrase(phrase);
       }
     }
 
@@ -85,7 +141,7 @@ const DefinePhraseButton = () => {
 
       <div
         className={
-          highlightedWord === null || highlightedWord === '' //no word highlighted, don't show anything
+          highlightedPhrase === null || highlightedPhrase === '' //no word highlighted, don't show anything
             ? styles.defineButtonContainerHidden
             : !defBoxOpen //user highlighted word, but has not clicked define phrase yet, show button only
             ? styles.defineButtonContainerClosed
@@ -97,7 +153,7 @@ const DefinePhraseButton = () => {
           onClick={(e) => handleDefineClick(e)}
           className={styles.definePhraseButton}
           aria-hidden={
-            highlightedWord === null || highlightedWord === '' || defBoxOpen
+            highlightedPhrase === null || highlightedPhrase === '' || defBoxOpen
               ? true
               : false
           }
@@ -127,17 +183,17 @@ const DefinePhraseButton = () => {
 
       <section
         className={
-          defBoxOpen && highlightedWord !== null && highlightedWord !== ''
+          defBoxOpen && highlightedPhrase !== null && highlightedPhrase !== ''
             ? styles.definitionContainerOpen
             : styles.definitionContainer
         }
         aria-hidden={
-          defBoxOpen && highlightedWord !== null && highlightedWord !== ''
+          defBoxOpen && highlightedPhrase !== null && highlightedPhrase !== ''
             ? false
             : true
         }
       >
-        <em>{highlightedWord}</em>
+        <em>{highlightedPhrase}</em>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui et,
           minima necessitatibus quisquam culpa laborum nihil suscipit, beatae
