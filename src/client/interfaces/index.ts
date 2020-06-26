@@ -42,5 +42,5 @@ export type DefinitionAction =
     }
   | {
       type: 'fetchSuccess';
-      definitionObject: {};
+      definitionObject: { language?: string; phrase?: string };
     };

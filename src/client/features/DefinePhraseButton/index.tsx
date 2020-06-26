@@ -9,6 +9,8 @@ import {
   DefinitionAction,
 } from '../../interfaces';
 
+import GoogleAttribution from '../../images/GoogleAttr';
+
 const DefinePhraseButton = () => {
   const [highlightedPhrase, sethighlightedPhrase] = useState<HighlightedPhrase>(
     null
@@ -55,23 +57,38 @@ const DefinePhraseButton = () => {
 
     let lang = location.state?.article?.language;
 
-    let definitionObject: any = await fetch(
-      `/api/words/${lang}/${highlightedPhrase}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    try {
+      let response: any = await fetch(
+        `/api/words/${lang}/${highlightedPhrase}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
-    if (definitionObject.error)
+      let definitionObject = await response.json();
+
+      if (definitionObject.error) {
+        return defDispatch({
+          type: 'fetchError',
+          error: definitionObject.error,
+        });
+      }
+
+      return defDispatch({
+        type: 'fetchSuccess',
+        definitionObject,
+      });
+    } catch (err) {
       return defDispatch({
         type: 'fetchError',
-        error: definitionObject.error,
+        error:
+          'There was a problem grabbing the translation. Please try again.',
       });
-
-    defDispatch({ type: 'fetchSuccess', definitionObject });
+    }
+    // defDispatch({ type: 'fetchSuccess', definitionObject });
 
     // This block of commented replaces the anchornode text with the same text, but with the highlighted word in mark tags. Until I think of a solution to handle this in the db and clientside, this is not yet a feasible feature
 
@@ -86,12 +103,35 @@ const DefinePhraseButton = () => {
     // console.log(newText);
   }
 
+  const TranslationResults = () => {
+    const languageCodes = {
+      french: 'fr',
+      spanish: 'es',
+    };
+
+    if (defState.fetching) return <p>...Fetching the Data...</p>;
+    if (defState.error.length > 0) return <p>{defState.error}</p>;
+    if (Object.values(defState.definitionObject).length > 0)
+      return (
+        <>
+          <p
+            lang={`en-x-mtfrom-${
+              languageCodes[defState.definitionObject.language]
+            }`}
+          >
+            {defState.definitionObject.phrase}
+          </p>
+          <GoogleAttribution />
+        </>
+      );
+    return null;
+  };
+
   function handlePhraseSave() {
-    console.log(highlightedPhrase);
+    console.log(`saving ${highlightedPhrase}...`);
   }
 
   function handleCancelSave() {
-    console.log('Canceling Save');
     setDefBoxOpen(false);
     sethighlightedPhrase('');
   }
@@ -158,7 +198,7 @@ const DefinePhraseButton = () => {
               : false
           }
         >
-          Define Phrase
+          Translate with Google
         </button>
         <div
           className={
@@ -194,12 +234,7 @@ const DefinePhraseButton = () => {
         }
       >
         <em>{highlightedPhrase}</em>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui et,
-          minima necessitatibus quisquam culpa laborum nihil suscipit, beatae
-          explicabo in veniam quod soluta, ratione corrupti iure nisi labore
-          debitis adipisci?
-        </p>
+        <TranslationResults />
       </section>
     </>
   );
