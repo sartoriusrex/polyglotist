@@ -26,13 +26,13 @@ export interface ArticleObject {
 
 export type HighlightedPhrase = null | string;
 
-export interface DefinitionState {
+export interface TranslationState {
   fetching: boolean;
   error: string;
-  definitionObject: {};
+  translation: string;
 }
 
-export type DefinitionAction =
+export type TranslationAction =
   | {
       type: 'fetching';
     }
@@ -42,5 +42,5 @@ export type DefinitionAction =
     }
   | {
       type: 'fetchSuccess';
-      definitionObject: { language?: string; phrase?: string };
+      translation: string;
     };

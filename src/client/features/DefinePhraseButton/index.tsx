@@ -5,8 +5,8 @@ import styles from './definePhraseButton.module.scss';
 import {
   Article,
   HighlightedPhrase,
-  DefinitionState,
-  DefinitionAction,
+  TranslationState,
+  TranslationAction,
 } from '../../interfaces';
 
 import GoogleAttribution from '../../images/GoogleAttr';
@@ -20,13 +20,13 @@ const DefinePhraseButton = () => {
     state: null | undefined | { article: Article };
   } = useLocation();
 
-  const defInitState: DefinitionState = {
+  const translationInitState: TranslationState = {
     fetching: false,
     error: '',
-    definitionObject: {},
+    translation: '',
   };
 
-  function defReducer(state: DefinitionState, action: DefinitionAction) {
+  function transReducer(state: TranslationState, action: TranslationAction) {
     switch (action.type) {
       case 'fetching':
         return {
@@ -37,18 +37,21 @@ const DefinePhraseButton = () => {
         return {
           fetching: false,
           error: '',
-          definitionObject: action.definitionObject,
+          translation: action.translation,
         };
       default:
         return {
           fetching: false,
           error: action.error,
-          definitionObject: {},
+          translation: '',
         };
     }
   }
 
-  const [defState, defDispatch] = useReducer(defReducer, defInitState);
+  const [defState, defDispatch] = useReducer(
+    transReducer,
+    translationInitState
+  );
 
   async function handleDefineClick(e: React.MouseEvent) {
     e.stopPropagation();
@@ -58,28 +61,25 @@ const DefinePhraseButton = () => {
     let lang = location.state?.article?.language;
 
     try {
-      let response: any = await fetch(
-        `/api/words/${lang}/${highlightedPhrase}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      let response = await fetch(`/api/words/${lang}/${highlightedPhrase}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-      let definitionObject = await response.json();
+      let serverTranslationResponse = await response.json();
 
-      if (definitionObject.error) {
+      if (serverTranslationResponse.error) {
         return defDispatch({
           type: 'fetchError',
-          error: definitionObject.error,
+          error: serverTranslationResponse.error,
         });
       }
 
       return defDispatch({
         type: 'fetchSuccess',
-        definitionObject,
+        translation: serverTranslationResponse,
       });
     } catch (err) {
       return defDispatch({
@@ -88,7 +88,7 @@ const DefinePhraseButton = () => {
           'There was a problem grabbing the translation. Please try again.',
       });
     }
-    // defDispatch({ type: 'fetchSuccess', definitionObject });
+    // defDispatch({ type: 'fetchSuccess', translation });
 
     // This block of commented replaces the anchornode text with the same text, but with the highlighted word in mark tags. Until I think of a solution to handle this in the db and clientside, this is not yet a feasible feature
 
@@ -104,23 +104,21 @@ const DefinePhraseButton = () => {
   }
 
   const TranslationResults = () => {
-    const languageCodes = {
+    const languageCodes: { [language: string]: string } = {
       french: 'fr',
       spanish: 'es',
+      und: 'und',
     };
+
+    const codeResult =
+      languageCodes[location.state?.article?.language || 'und'];
 
     if (defState.fetching) return <p>...Fetching the Data...</p>;
     if (defState.error.length > 0) return <p>{defState.error}</p>;
-    if (Object.values(defState.definitionObject).length > 0)
+    if (defState.translation.length > 0)
       return (
         <>
-          <p
-            lang={`en-x-mtfrom-${
-              languageCodes[defState.definitionObject.language]
-            }`}
-          >
-            {defState.definitionObject.phrase}
-          </p>
+          <p lang={`en-x-mtfrom-${codeResult}`}>{defState.translation}</p>
           <GoogleAttribution />
         </>
       );
