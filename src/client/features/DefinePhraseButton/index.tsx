@@ -71,17 +71,21 @@ const DefinePhraseButton = () => {
       let serverTranslationResponse = await response.json();
 
       if (serverTranslationResponse.error) {
+        console.log('actual error');
         return defDispatch({
           type: 'fetchError',
           error: serverTranslationResponse.error,
         });
       }
-
+      console.log('this should be a success');
       return defDispatch({
         type: 'fetchSuccess',
-        translation: serverTranslationResponse,
+        translation: serverTranslationResponse.translation,
       });
     } catch (err) {
+      console.log('there is an error here.\n');
+      console.log(err);
+
       return defDispatch({
         type: 'fetchError',
         error:

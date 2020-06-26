@@ -15,16 +15,16 @@ export default {
   fetchPhraseDefinition: async (req: Request, res: Response) => {
     const { language, phrase } = req.params;
     // const key = process.env.GOOGLE_APPLICATION_CREDENTIALS;
-    const languageCodes: { [language: string]: string } = {
-      french: 'fr',
-      spanish: 'es',
-    };
-    const langCode = languageCodes[language];
+    // const languageCodes: { [language: string]: string } = {
+    //   french: 'fr',
+    //   spanish: 'es',
+    // };
+    // const langCode = languageCodes[language];
 
     try {
-      let translatedText = await translateText(phrase, langCode);
+      let translatedText = await translateText(phrase, 'en');
 
-      return res.status(200).send(translatedText);
+      return res.status(200).send({ translation: translatedText });
     } catch (err) {
       console.log(err);
 
