@@ -21,7 +21,7 @@ const DefinePhraseButton = () => {
   } = useLocation();
 
   const translationInitState: TranslationState = {
-    fetching: false,
+    status: 'idle',
     error: '',
     translation: '',
   };
@@ -31,20 +31,25 @@ const DefinePhraseButton = () => {
       case 'fetching':
         return {
           ...state,
-          fetching: true,
+          status: 'fetching',
         };
+        break;
       case 'fetchSuccess':
         return {
-          fetching: false,
-          error: '',
+          ...state,
+          status: 'success',
           translation: action.translation,
         };
-      default:
+        break;
+      case 'fetchError':
         return {
-          fetching: false,
+          ...state,
+          status: 'error',
           error: action.error,
-          translation: '',
         };
+        break;
+      default:
+        return { ...state };
     }
   }
 
@@ -71,19 +76,17 @@ const DefinePhraseButton = () => {
       let serverTranslationResponse = await response.json();
 
       if (serverTranslationResponse.error) {
-        console.log('actual error');
         return defDispatch({
           type: 'fetchError',
           error: serverTranslationResponse.error,
         });
       }
-      console.log('this should be a success');
+
       return defDispatch({
         type: 'fetchSuccess',
         translation: serverTranslationResponse.translation,
       });
     } catch (err) {
-      console.log('there is an error here.\n');
       console.log(err);
 
       return defDispatch({
@@ -108,25 +111,34 @@ const DefinePhraseButton = () => {
   }
 
   const TranslationResults = () => {
-    const languageCodes: { [language: string]: string } = {
+    const langCodes: { [language: string]: string } = {
       french: 'fr',
       spanish: 'es',
       und: 'und',
     };
 
-    const codeResult =
-      languageCodes[location.state?.article?.language || 'und'];
+    const codeResult = langCodes[location.state?.article?.language || 'und'];
 
-    if (defState.fetching) return <p>...Fetching the Data...</p>;
-    if (defState.error.length > 0) return <p>{defState.error}</p>;
-    if (defState.translation.length > 0)
-      return (
-        <>
-          <p lang={`en-x-mtfrom-${codeResult}`}>{defState.translation}</p>
-          <GoogleAttribution />
-        </>
-      );
-    return null;
+    switch (defState.status) {
+      case 'idle':
+        return null;
+        break;
+      case 'fetching':
+        return <p>...Translating Text</p>;
+        break;
+      case 'error':
+        return <p>{defState.error}</p>;
+      case 'success':
+        return (
+          <>
+            <p lang={`en-x-mtfrom-${codeResult}`}>{defState.translation}</p>
+            <GoogleAttribution />
+          </>
+        );
+        break;
+      default:
+        return null;
+    }
   };
 
   function handlePhraseSave() {

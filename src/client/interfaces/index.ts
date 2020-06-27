@@ -27,7 +27,7 @@ export interface ArticleObject {
 export type HighlightedPhrase = null | string;
 
 export interface TranslationState {
-  fetching: boolean;
+  status: string;
   error: string;
   translation: string;
 }
