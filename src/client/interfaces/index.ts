@@ -24,7 +24,7 @@ export interface ArticleObject {
   articles: Article[];
 }
 
-export type HighlightedPhrase = null | string;
+export type HighlightedPhrase = string;
 
 export interface TranslationState {
   status: string;

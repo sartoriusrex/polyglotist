@@ -12,8 +12,8 @@ import {
 import GoogleAttribution from '../../images/GoogleAttr';
 
 const DefinePhraseButton = () => {
-  const [highlightedPhrase, sethighlightedPhrase] = useState<HighlightedPhrase>(
-    null
+  const [highlightedPhrase, setHighlightedPhrase] = useState<HighlightedPhrase>(
+    ''
   );
   const [defBoxOpen, setDefBoxOpen] = useState<Boolean>(false);
   const location: {
@@ -65,6 +65,8 @@ const DefinePhraseButton = () => {
 
     let lang = location.state?.article?.language;
 
+    if (highlightedPhrase === '') return;
+
     try {
       let response = await fetch(`/api/words/${lang}/${highlightedPhrase}`, {
         method: 'GET',
@@ -87,7 +89,7 @@ const DefinePhraseButton = () => {
         translation: serverTranslationResponse.translation,
       });
     } catch (err) {
-      console.log(err);
+      console.warn(err);
 
       return defDispatch({
         type: 'fetchError',
@@ -147,7 +149,7 @@ const DefinePhraseButton = () => {
 
   function handleCancelSave() {
     setDefBoxOpen(false);
-    sethighlightedPhrase('');
+    setHighlightedPhrase('');
   }
 
   function closeDefinitionModal(e: React.MouseEvent) {
@@ -164,7 +166,7 @@ const DefinePhraseButton = () => {
         return;
       } else {
         if (phrase === '') setDefBoxOpen(false);
-        sethighlightedPhrase(phrase);
+        setHighlightedPhrase(phrase);
       }
     }
 
@@ -195,7 +197,7 @@ const DefinePhraseButton = () => {
 
       <div
         className={
-          highlightedPhrase === null || highlightedPhrase === '' //no word highlighted, don't show anything
+          highlightedPhrase === '' //no word highlighted, don't show anything
             ? styles.defineButtonContainerHidden
             : !defBoxOpen //user highlighted word, but has not clicked define phrase yet, show button only
             ? styles.defineButtonContainerClosed
@@ -206,11 +208,7 @@ const DefinePhraseButton = () => {
         <button
           onClick={(e) => handleDefineClick(e)}
           className={styles.definePhraseButton}
-          aria-hidden={
-            highlightedPhrase === null || highlightedPhrase === '' || defBoxOpen
-              ? true
-              : false
-          }
+          aria-hidden={highlightedPhrase === '' || defBoxOpen ? true : false}
         >
           Translate with Google
         </button>
@@ -237,15 +235,11 @@ const DefinePhraseButton = () => {
 
       <section
         className={
-          defBoxOpen && highlightedPhrase !== null && highlightedPhrase !== ''
+          defBoxOpen && highlightedPhrase !== ''
             ? styles.definitionContainerOpen
             : styles.definitionContainer
         }
-        aria-hidden={
-          defBoxOpen && highlightedPhrase !== null && highlightedPhrase !== ''
-            ? false
-            : true
-        }
+        aria-hidden={defBoxOpen && highlightedPhrase !== '' ? false : true}
       >
         <em>{highlightedPhrase}</em>
         <TranslationResults />
