@@ -214,9 +214,9 @@ const DefinePhraseButton = () => {
         </button>
         <div
           className={
-            !defBoxOpen ? styles.saveContainerHidden : styles.saveContainerOpen
+            defBoxOpen ? styles.saveContainerOpen : styles.saveContainerHidden
           }
-          aria-hidden={!defBoxOpen ? true : false}
+          aria-hidden={defBoxOpen ? false : true}
         >
           <button
             className={styles.savePhraseButton}
