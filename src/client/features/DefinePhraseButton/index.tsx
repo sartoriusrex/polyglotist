@@ -206,10 +206,10 @@ const DefinePhraseButton = () => {
   const SaveButtonGroup = () => {
     switch (saveState) {
       case 'saving':
-        return <div>...Saving</div>;
+        return <div className={styles.savingState}>Saving</div>;
         break;
       case 'success':
-        return <div>success</div>;
+        return <div className={styles.savingState}>Saved!</div>;
         break;
       case 'error':
         return <div>error</div>;
