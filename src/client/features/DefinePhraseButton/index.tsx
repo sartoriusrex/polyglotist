@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useReducer } from 'react';
+import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
 import styles from './definePhraseButton.module.scss';
@@ -7,7 +8,9 @@ import {
   HighlightedPhrase,
   TranslationState,
   TranslationAction,
+  SaveState,
 } from '../../interfaces';
+import { authSelector } from '../../slices/auth';
 
 import GoogleAttribution from '../../images/GoogleAttr';
 
@@ -19,6 +22,8 @@ const DefinePhraseButton = () => {
   const location: {
     state: null | undefined | { article: Article };
   } = useLocation();
+  const { user } = useSelector(authSelector);
+  const lang = location.state?.article?.language;
 
   const translationInitState: TranslationState = {
     status: 'idle',
@@ -62,8 +67,6 @@ const DefinePhraseButton = () => {
     e.stopPropagation();
     setDefBoxOpen(true);
     defDispatch({ type: 'fetching' });
-
-    let lang = location.state?.article?.language;
 
     if (highlightedPhrase === '') return;
 
@@ -143,8 +146,60 @@ const DefinePhraseButton = () => {
     }
   };
 
-  function handlePhraseSave() {
-    console.log(`saving ${highlightedPhrase}...`);
+  const [saveState, setSaveState] = useState<SaveState>('idle');
+
+  async function handlePhraseSave() {
+    const url = location.state?.article?.url;
+
+    // Grab the entire phrase.
+    const selection = window.getSelection();
+    const { anchorNode, anchorOffset } = selection;
+    const { textContent } = anchorNode;
+
+    // Start at the beginning and loop through each character until reading the anchorOffset (start of selection text). If a period is found, the starting index is at the first period + 1
+    let start = 0;
+    for (let i = 0; i < anchorOffset; i++) {
+      if (textContent[i] === '.') start = i + 1;
+    }
+
+    // Start at the selection and look for a period. If there is no period AFTER the selection, the end is the end of the textContent, otherwise it is the index of that period + 1 (because slice is exclusive)
+    const end =
+      textContent.indexOf('.', anchorOffset) === -1
+        ? textContent.length - 1
+        : textContent.indexOf('.', anchorOffset) + 1;
+
+    const context = textContent.slice(start, end);
+
+    console.log(`start: ${start} \n end: ${end} \n context: ${context}`);
+
+    if (!highlightedPhrase || !url || defState.translation === '') return;
+
+    setSaveState('saving');
+
+    const body = {
+      username: user.username,
+      articleURL: url,
+      translation: defState.translation,
+      context,
+    };
+
+    // console.log(body);
+
+    // try {
+    //   const response = await fetch(`/api/words/${lang}/${highlightedPhrase}`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(body),
+    //   });
+
+    //   const saveSuccess = await response.json();
+
+    //   setSaveState('success');
+    // } catch (err) {
+    //   setSaveState('error');
+    // }
   }
 
   function handleCancelSave() {

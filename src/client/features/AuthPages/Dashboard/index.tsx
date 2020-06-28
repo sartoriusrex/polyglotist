@@ -41,12 +41,16 @@ const Dashboard = () => {
         className={
           count <= showNumber ? styles.ArticleCard : styles.ArticleCardHidden
         }
-        key={article.title}
+        key={article.url}
       >
         <Link
           to={{
             pathname: `/${user.username}/articles/${title}`,
-            state: { article, sourceName: source, wordCount: bodyLength },
+            state: {
+              article,
+              sourceName: source,
+              wordCount: bodyLength,
+            },
           }}
         >
           <div className={styles.ArticleCardHeader}>
@@ -118,7 +122,7 @@ const Dashboard = () => {
 
             return (
               <ArticleCard
-                key={article.title}
+                key={article.url}
                 article={article}
                 source={sourceName}
                 count={count}

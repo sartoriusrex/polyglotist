@@ -44,3 +44,5 @@ export type TranslationAction =
       type: 'fetchSuccess';
       translation: string;
     };
+
+export type SaveState = 'idle' | 'saving' | 'success' | 'error';

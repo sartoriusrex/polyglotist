@@ -81,7 +81,7 @@ const creationQueries: Query = {
       word_id INT NOT NULL,
       strength INT DEFAULT 0,
       article_id INT NOT NULL,
-      context_sentence TEXT NOT NULL,
+      context_phrase TEXT NOT NULL,
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
       FOREIGN KEY (word_id) REFERENCES words(id) ON DELETE CASCADE,
       FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE

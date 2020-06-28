@@ -33,4 +33,15 @@ export default {
       return res.status(502).send({ error });
     }
   },
+  savePhrase: async (req: Request, res: Response) => {
+    const username: string = req.body.username;
+    const articleURL: string = req.body.articleURL;
+    const translation: string = req.body.translation;
+    const context: string = req.body.context;
+    const language: string = req.params.language;
+    const phrase: string = req.params.phrase;
+
+    console.log(username, articleURL, translation, language, phrase, context);
+    return res.status(200).send({ translationStatus: 'success' });
+  },
 };
