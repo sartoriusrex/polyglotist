@@ -150,11 +150,20 @@ const DefinePhraseButton = () => {
 
   async function handlePhraseSave() {
     const url = location.state?.article?.url;
-
     // Grab the entire phrase.
-    const selection = window.getSelection();
+    const selection = window.getSelection() as Selection;
     const { anchorNode, anchorOffset } = selection;
-    const { textContent } = anchorNode;
+    const { textContent } = anchorNode as Node;
+
+    if (
+      !highlightedPhrase ||
+      !url ||
+      defState.translation === '' ||
+      textContent === null
+    )
+      return;
+
+    setSaveState('saving');
 
     // Start at the beginning and loop through each character until reading the anchorOffset (start of selection text). If a period is found, the starting index is at the first period + 1
     let start = 0;
@@ -170,20 +179,12 @@ const DefinePhraseButton = () => {
 
     const context = textContent.slice(start, end);
 
-    console.log(`start: ${start} \n end: ${end} \n context: ${context}`);
-
-    if (!highlightedPhrase || !url || defState.translation === '') return;
-
-    setSaveState('saving');
-
     const body = {
       username: user.username,
       articleURL: url,
       translation: defState.translation,
       context,
     };
-
-    // console.log(body);
 
     // try {
     //   const response = await fetch(`/api/words/${lang}/${highlightedPhrase}`, {
@@ -201,6 +202,38 @@ const DefinePhraseButton = () => {
     //   setSaveState('error');
     // }
   }
+
+  const SaveButtonGroup = () => {
+    switch (saveState) {
+      case 'saving':
+        return <div>...Saving</div>;
+        break;
+      case 'success':
+        return <div>success</div>;
+        break;
+      case 'error':
+        return <div>error</div>;
+        break;
+      default:
+        return (
+          <>
+            <button
+              className={styles.savePhraseButton}
+              onClick={handlePhraseSave}
+            >
+              Save
+            </button>
+            <button
+              className={styles.cancelSaveButton}
+              onClick={handleCancelSave}
+            >
+              X
+            </button>
+          </>
+        );
+        break;
+    }
+  };
 
   function handleCancelSave() {
     setDefBoxOpen(false);
@@ -273,18 +306,7 @@ const DefinePhraseButton = () => {
           }
           aria-hidden={defBoxOpen ? false : true}
         >
-          <button
-            className={styles.savePhraseButton}
-            onClick={handlePhraseSave}
-          >
-            Save
-          </button>
-          <button
-            className={styles.cancelSaveButton}
-            onClick={handleCancelSave}
-          >
-            X
-          </button>
+          <SaveButtonGroup />
         </div>
       </div>
 
