@@ -12,7 +12,7 @@ const LoadingIndicator = () => {
           viewBox='0 0 13.229166 2.6458334'
           height='10'
           width='50'
-          class={styles.svg}
+          className={styles.svg}
         >
           <defs id='defs2' />
           <metadata id='metadata5'></metadata>

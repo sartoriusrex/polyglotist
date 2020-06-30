@@ -13,6 +13,7 @@ import {
 import { authSelector } from '../../slices/auth';
 
 import GoogleAttribution from '../../images/GoogleAttr';
+import Check from '../../images/Check';
 
 const DefinePhraseButton = () => {
   const [highlightedPhrase, setHighlightedPhrase] = useState<HighlightedPhrase>(
@@ -165,6 +166,19 @@ const DefinePhraseButton = () => {
 
     setSaveState('saving');
 
+    // setTimeout(() => {
+    //   setSaveState('success');
+    // }, 5000);
+
+    // setTimeout(() => {
+    //   setSaveState('error');
+    // }, 7000);
+
+    // setTimeout(() => {
+    //   setHighlightedPhrase('');
+    //   setDefBoxOpen(false);
+    // }, 10000);
+
     // Start at the beginning and loop through each character until reading the anchorOffset (start of selection text). If a period is found, the starting index is at the first period + 1
     let start = 0;
     for (let i = 0; i < anchorOffset; i++) {
@@ -209,10 +223,14 @@ const DefinePhraseButton = () => {
         return <div className={styles.savingState}>Saving</div>;
         break;
       case 'success':
-        return <div className={styles.savingState}>Saved!</div>;
+        return (
+          <div className={styles.savingState}>
+            Saved <Check />
+          </div>
+        );
         break;
       case 'error':
-        return <div>error</div>;
+        return <div className={styles.savingState}>Oops..</div>;
         break;
       default:
         return (
@@ -319,6 +337,7 @@ const DefinePhraseButton = () => {
         aria-hidden={defBoxOpen && highlightedPhrase !== '' ? false : true}
       >
         <em>{highlightedPhrase}</em>
+        {saveState === 'error' && <p>Error Saving!</p>}
         <TranslationResults />
       </section>
     </>

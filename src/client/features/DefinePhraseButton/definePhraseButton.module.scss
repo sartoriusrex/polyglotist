@@ -89,12 +89,27 @@
   }
 }
 
+@keyframes appearSave {
+  0% {
+    opacity: 0;
+    transform: translateX(50%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .savingState {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: appearSave 150ms ease-in-out 50ms 1 normal forwards;
+  opacity: 0;
+  transform: translateX(50%);
 }
 
 .definitionContainer {
