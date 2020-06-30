@@ -162,8 +162,7 @@ const DefinePhraseButton = () => {
       defState.translation === '' ||
       textContent === null
     )
-      return;
-
+      return console.log('returning early from handlePhraseSave');
     setSaveState('saving');
 
     // Start at the beginning and loop through each character until reading the anchorOffset (start of selection text). If a period is found, the starting index is at the first period + 1
@@ -253,11 +252,10 @@ const DefinePhraseButton = () => {
     if (saveState !== 'idle') setSaveState('idle');
   }
 
-  function closeDefinitionModal(e: React.MouseEvent) {
+  function closeDefinitionModal(e?: React.MouseEvent) {
     setDefBoxOpen(false);
-    console.log(saveState);
     if (saveState !== 'idle') setSaveState('idle');
-    e.stopPropagation();
+    e?.stopPropagation();
   }
 
   // add event listener for when user selects text
@@ -266,9 +264,9 @@ const DefinePhraseButton = () => {
       let phrase: string | undefined = window.getSelection()?.toString();
 
       if (phrase === null || phrase === undefined) {
-        return;
+        if (saveState !== 'idle') closeDefinitionModal();
       } else {
-        if (phrase === '') setDefBoxOpen(false);
+        if (phrase === '') closeDefinitionModal();
         setHighlightedPhrase(phrase);
       }
     }
@@ -276,7 +274,7 @@ const DefinePhraseButton = () => {
     document.addEventListener('selectionchange', handleSelect);
 
     return () => document.removeEventListener('selectionchange', handleSelect);
-  }, []);
+  }, [saveState, closeDefinitionModal]);
 
   // Because this is rendered the Authapp/index, higher up, only render the component if the location state contains an article (in articledetailpage)
   if (
