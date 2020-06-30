@@ -166,19 +166,6 @@ const DefinePhraseButton = () => {
 
     setSaveState('saving');
 
-    // setTimeout(() => {
-    //   setSaveState('success');
-    // }, 5000);
-
-    // setTimeout(() => {
-    //   setSaveState('error');
-    // }, 7000);
-
-    // setTimeout(() => {
-    //   setHighlightedPhrase('');
-    //   setDefBoxOpen(false);
-    // }, 10000);
-
     // Start at the beginning and loop through each character until reading the anchorOffset (start of selection text). If a period is found, the starting index is at the first period + 1
     let start = 0;
     for (let i = 0; i < anchorOffset; i++) {
@@ -200,21 +187,28 @@ const DefinePhraseButton = () => {
       context,
     };
 
-    // try {
-    //   const response = await fetch(`/api/words/${lang}/${highlightedPhrase}`, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(body),
-    //   });
+    try {
+      const response = await fetch(`/api/words/${lang}/${highlightedPhrase}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      }).then((response) => response.json());
 
-    //   const saveSuccess = await response.json();
-
-    //   setSaveState('success');
-    // } catch (err) {
-    //   setSaveState('error');
-    // }
+      if (response.translationStatus === 'success') {
+        setSaveState('success');
+        setTimeout(() => {
+          setHighlightedPhrase('');
+          setDefBoxOpen(false);
+          setSaveState('idle');
+        }, 550);
+      } else {
+        setSaveState('error');
+      }
+    } catch (err) {
+      setSaveState('error');
+    }
   }
 
   const SaveButtonGroup = () => {
@@ -256,10 +250,13 @@ const DefinePhraseButton = () => {
   function handleCancelSave() {
     setDefBoxOpen(false);
     setHighlightedPhrase('');
+    if (saveState !== 'idle') setSaveState('idle');
   }
 
   function closeDefinitionModal(e: React.MouseEvent) {
     setDefBoxOpen(false);
+    console.log(saveState);
+    if (saveState !== 'idle') setSaveState('idle');
     e.stopPropagation();
   }
 
@@ -337,7 +334,12 @@ const DefinePhraseButton = () => {
         aria-hidden={defBoxOpen && highlightedPhrase !== '' ? false : true}
       >
         <em>{highlightedPhrase}</em>
-        {saveState === 'error' && <p>Error Saving!</p>}
+        {saveState === 'error' && (
+          <p className={styles.errorSaving}>
+            Sorry, we couldn't save that. There may be something wrong with the
+            server. Try again in a few minutes.
+          </p>
+        )}
         <TranslationResults />
       </section>
     </>

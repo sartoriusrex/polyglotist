@@ -42,6 +42,6 @@ export default {
     const phrase: string = req.params.phrase;
 
     console.log(username, articleURL, translation, language, phrase, context);
-    return res.status(200).send({ translationStatus: 'success' });
+    return res.status(500).send({ translationStatus: 'error' });
   },
 };

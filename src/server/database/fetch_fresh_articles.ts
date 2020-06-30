@@ -68,7 +68,7 @@ const fetchFreshArticles = async function () {
       }
     }
 
-    return await Promise.all(
+    await Promise.all(
       newArticles.map(async (src: SourceText) => {
         let { source, articles, error } = src;
         let id: string;
@@ -139,18 +139,21 @@ const fetchFreshArticles = async function () {
             })
           );
 
-          console.log(
-            `\n
-            =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=++=+=+=
-            +=// inserted articles for ${source.name} into db. //=+
-            =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-            `
-          );
+          console.log(`
+          +=// inserted articles for ${source.name} into db. //=+
+          `);
         } else {
           return { error: 'There are no articles to put into the db.' };
         }
       })
     );
+
+    let time = new Date();
+    console.log(`
+                ==============================
+                time: ${time}
+                ==============================
+      `);
   }
 };
 
