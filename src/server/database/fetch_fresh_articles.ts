@@ -150,9 +150,9 @@ const fetchFreshArticles = async function () {
 
     let time = new Date();
     console.log(`
-                ==============================
-                time: ${time}
-                ==============================
+          ==============================
+          time: ${time}
+          ==============================
       `);
   }
 };

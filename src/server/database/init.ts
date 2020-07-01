@@ -13,15 +13,15 @@ const creationQueries: Query = {
   clean_database: `
     DROP TABLE IF EXISTS users CASCADE;
     DROP TABLE IF EXISTS articles CASCADE;
-    DROP TABLE IF EXISTS words CASCADE;
+    DROP TABLE IF EXISTS phrases CASCADE;
     DROP TABLE IF EXISTS sources CASCADE;
-    DROP TABLE IF EXISTS users_words;
+    DROP TABLE IF EXISTS users_phrases;
     DROP TABLE IF EXISTS users_sources;
     DROP TABLE IF EXISTS users_articles;
     DROP TABLE IF EXISTS article_bodies;
   `,
 
-  // Create Tables: users, sources, articles, article_bodies, words, users_sources, users_articles, users_words,
+  // Create Tables: users, sources, articles, article_bodies, phrases, users_sources, users_articles, users_phrases,
   create_users_table: `
     CREATE TABLE users (
       ID SERIAL PRIMARY KEY,
@@ -66,24 +66,25 @@ const creationQueries: Query = {
       FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
     );
   `,
-  create_words_table: `
-    CREATE TABLE words (
+  create_phrases_table: `
+    CREATE TABLE phrases (
       ID SERIAL PRIMARY KEY,
       created TIMESTAMP DEFAULT NOW(),
-      word TEXT NOT NULL,
-      definition TEXT NOT NULL
+      phrase TEXT NOT NULL,
+      translation TEXT NOT NULL,
+      language TEXT NOT NULL
     );
   `,
-  create_users_words_table: `
-    CREATE TABLE users_words (
+  create_users_phrases_table: `
+    CREATE TABLE users_phrases (
       ID SERIAL PRIMARY KEY,
       user_id INT NOT NULL,
-      word_id INT NOT NULL,
+      phrase_id INT NOT NULL,
       strength INT DEFAULT 0,
       article_id INT NOT NULL,
       context_phrase TEXT NOT NULL,
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-      FOREIGN KEY (word_id) REFERENCES words(id) ON DELETE CASCADE,
+      FOREIGN KEY (phrase_id) REFERENCES phrases(id) ON DELETE CASCADE,
       FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
     );
   `,
