@@ -46,12 +46,12 @@ export default {
     const articleQuery = `SELECT id, referenced FROM articles WHERE url = $1;`;
     const updateArticleReferenced = `UPDATE articles SET referenced = $1 WHERE id = $2 RETURNING id;`;
     const usersArticlesQuery = `SELECT id FROM users_articles WHERE user_id = $1 AND article_id = $2;`;
-    const createUsersArticlesQuery = `INSERT INTO users_articles (user_id, article_id) VALUES $1, $2 RETURNING id;`;
+    const createUsersArticlesQuery = `INSERT INTO users_articles (user_id, article_id) VALUES ($1, $2) RETURNING id;`;
     const phraseQuery = `SELECT id FROM phrases WHERE phrase = $1 AND language = $2;`;
-    const createPhraseQuery = `INSERT INTO phrases (phrase, translation, language) VALUES $1, $2, $3 RETURNING id`;
+    const createPhraseQuery = `INSERT INTO phrases (phrase, translation, language) VALUES ($1, $2, $3) RETURNING id`;
     const usersPhrasesQuery = `SELECT id FROM users_phrases WHERE user_id = $1 AND phrase_id = $2;`;
     const usersPhrasesUpdateQuery = `UPDATE users_phrases SET strength = $1, article_id = $2, context_phrase = $3;`;
-    const usersPhrasesCreateQuery = `INSERT INTO users_phrases (user_id, phrase_id, strength, article_id, context_phrase) VALUES $1, $2, $3, $4, $5;`;
+    const usersPhrasesCreateQuery = `INSERT INTO users_phrases (user_id, phrase_id, strength, article_id, context_phrase) VALUES ($1, $2, $3, $4, $5);`;
 
     try {
       const userResult = await db.query(userIdQuery, [username]);
@@ -110,10 +110,11 @@ export default {
 
       try {
         const phraseResult = await db.query(phraseQuery, [phrase, language]);
-        phraseId = phraseResult.rows[0].id;
 
-        // The phrase is not in the db, so we create it in the db
-        if (!phraseId || phraseId === null) {
+        if (phraseResult.rows.length > 0) {
+          phraseId = phraseResult.rows[0].id;
+        } else {
+          // The phrase is not in the db, so we create it in the db
           try {
             const phraseCreationResult = await db.query(createPhraseQuery, [
               phrase,
@@ -140,10 +141,10 @@ export default {
         phraseId,
       ]);
 
-      const foundUsersPhrases = findUsersPhrases.rows[0];
+      const foundUsersPhrases = findUsersPhrases.rows;
 
       // We found the relationship, so we update it
-      if (foundUsersPhrases !== null) {
+      if (foundUsersPhrases.length > 0) {
         try {
           const updateUsersPhrasesRelationship = await db.query(
             usersPhrasesUpdateQuery,
