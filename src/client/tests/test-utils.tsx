@@ -3,8 +3,10 @@ import { render as rtlRender } from '@testing-library/react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { rootReducer as reducer } from '../reducers';
+import history from '../app/history';
+import { Router } from 'react-router-dom';
 
-function render(
+function customRender(
   ui: any,
   {
     initialState,
@@ -13,7 +15,11 @@ function render(
   }: { initialState?: any; store?: any } = {}
 ) {
   function Wrapper({ children }: { children?: any }) {
-    return <Provider store={store}>{children}</Provider>;
+    return (
+      <Provider store={store}>
+        <Router history={history}>{children}</Router>
+      </Provider>
+    );
   }
   return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });
 }
@@ -21,4 +27,4 @@ function render(
 // re-export everything
 export * from '@testing-library/react';
 // override render method
-export { render };
+export { customRender as render };

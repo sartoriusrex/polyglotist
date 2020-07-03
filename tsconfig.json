@@ -19,7 +19,12 @@
     "sourceMap": true,
     "noImplicitAny": true,
     "module": "commonjs",
-    "declaration": true
+    "declaration": true,
+    "baseUrl": "src",
+    "paths": {
+      "test-utils": ["./client/tests/test-utils"],
+      "test-router": ["./client/tests/test-router"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]

@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, fireEvent } from '@testing-library/react';
 import history from '../../../app/history';
-import { renderInRouter } from '../../../tests/testRouter';
+import { renderInRouter } from 'test-router';
 
 import GoBackButton from './index';
 
