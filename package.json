@@ -9,13 +9,18 @@
     "start": "npm run build && node src/server/index.ts",
     "client": "webpack-dev-server --mode development --env.NODE_ENV=development --devtool inline-source-map --hot",
     "server": "nodemon src/server/index.ts",
-    "dev": "export GOOGLE_APPLICATION_CREDENTIALS=\"/Users/Normal/Desktop/dev/per/polyglotist/google_api_key.json\" && concurrently \"npm run server\" \"npm run client\""
+    "dev": "export GOOGLE_APPLICATION_CREDENTIALS=\"/Users/Normal/Desktop/dev/per/polyglotist/google_api_key.json\" && concurrently \"npm run server\" \"npm run client\"",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "author": "Dennis Mai",
   "license": "ISC",
   "dependencies": {
     "@google-cloud/translate": "^6.0.0",
     "@reduxjs/toolkit": "^1.2.5",
+    "@testing-library/jest-dom": "^5.11.0",
+    "@testing-library/react": "^10.4.3",
+    "@types/jest": "^26.0.3",
     "babel-polyfill": "^6.26.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
@@ -30,6 +35,7 @@
     "express-validator": "^6.4.0",
     "helmet": "^3.22.0",
     "history": "^4.10.1",
+    "jest": "^26.1.0",
     "jsonwebtoken": "^8.5.1",
     "lodash.throttle": "^4.1.1",
     "node-cron": "^2.0.3",
@@ -39,7 +45,8 @@
     "react-dom": "^16.5.2",
     "react-redux": "^7.2.0",
     "react-router": "^5.1.2",
-    "react-router-dom": "^5.1.2"
+    "react-router-dom": "^5.1.2",
+    "ts-jest": "^26.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
