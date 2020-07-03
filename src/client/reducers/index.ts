@@ -6,7 +6,7 @@ import settingsReducer from '../slices/settings';
 import messageReducer from '../slices/messages';
 import newArticlesReducer from '../slices/newArticles';
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   users: usersReducer,
   auth: authReducer,
   settings: settingsReducer,

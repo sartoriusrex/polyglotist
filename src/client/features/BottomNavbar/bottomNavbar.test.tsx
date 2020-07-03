@@ -8,6 +8,6 @@ import BottomNavbar from './index';
 
 describe('Bottom Navbar', () => {
   test('Renders 4 links', () => {
-    render(<div>Hello World</div>);
+    render(<BottomNavbar />);
   });
 });
