@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { render, screen, fireEvent } from 'test-utils';
+import { render, screen, fireEvent, cleanup } from 'test-utils';
 import history from '../../app/history';
 import TestRouter from 'test-router';
 
@@ -18,14 +18,16 @@ const initialState = {
   },
 };
 
+afterEach(() => cleanup());
+
 describe('Bottom Navbar', () => {
-  test('Renders 4 links and properly navigates between them.', () => {
+  test('Renders 4 links and properly navigates between them.', async () => {
     const { container } = render(
       <TestRouter>
         <BottomNavbar />
       </TestRouter>,
       {
-        initialState: initialState,
+        initialState,
       }
     );
 
