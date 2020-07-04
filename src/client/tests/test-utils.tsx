@@ -4,7 +4,6 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { rootReducer as reducer } from '../reducers';
 import history from '../app/history';
-import { Router } from 'react-router-dom';
 
 function customRender(
   ui: any,
@@ -15,11 +14,7 @@ function customRender(
   }: { initialState?: any; store?: any } = {}
 ) {
   function Wrapper({ children }: { children?: any }) {
-    return (
-      <Provider store={store}>
-        <Router history={history}>{children}</Router>
-      </Provider>
-    );
+    return <Provider store={store}>{children}</Provider>;
   }
   return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });
 }

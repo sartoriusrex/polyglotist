@@ -1,17 +1,19 @@
 import React from 'react';
-import { screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import history from '../../../app/history';
-import { renderInRouter } from 'test-router';
+import TestRouter from 'test-router';
 
 import GoBackButton from './index';
-
-const render = () => renderInRouter(GoBackButton);
 
 describe('GoBack button', () => {
   test('Renders a button', async () => {
     history.push('/test');
 
-    render();
+    render(
+      <TestRouter>
+        <GoBackButton />
+      </TestRouter>
+    );
 
     const button = screen.getByRole('button');
 

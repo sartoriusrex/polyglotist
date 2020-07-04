@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { render, screen, fireEvent } from 'test-utils';
 import history from '../../app/history';
-// import { renderInRouter } from 'test-router';
+import TestRouter from 'test-router';
 
 import BottomNavbar from './index';
 
@@ -20,9 +20,14 @@ const initialState = {
 
 describe('Bottom Navbar', () => {
   test('Renders 4 links and properly navigates between them.', () => {
-    const { container } = render(<BottomNavbar />, {
-      initialState: initialState,
-    });
+    const { container } = render(
+      <TestRouter>
+        <BottomNavbar />
+      </TestRouter>,
+      {
+        initialState: initialState,
+      }
+    );
 
     const links: HTMLAnchorElement[] | null = Array.from(
       container.querySelectorAll('a')
