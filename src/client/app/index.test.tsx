@@ -2,6 +2,18 @@ import React from 'react';
 import { render, screen, cleanup } from 'test-utils';
 import App from './index';
 
+jest.mock('../slices/auth', () => {
+  const authSliceModule = jest.requireActual('../slices/auth');
+
+  return {
+    __esModule: true,
+    ...authSliceModule,
+    login: jest.fn().mockReturnValue({ type: null }),
+  };
+});
+
+import { login, authSelector } from '../slices/auth';
+
 const initialState = {
   auth: {
     loading: false,
@@ -18,14 +30,14 @@ afterEach(() => cleanup());
 
 describe('Top level Application, which renders Authenticated or Unauthenticated App', () => {
   test('Renders the AuthenticatedApp when initialState has a user', async () => {
-    render(<App />, { initialState });
+    const { container } = render(<App />, { initialState });
 
-    screen.debug();
+    expect(login).toHaveBeenCalled();
   });
 
   test('Renders the UnauthenticatedApp when no user state is present', async () => {
-    render(<App />, {});
+    const { container } = render(<App />, {});
 
-    screen.debug();
+    expect(login).toHaveBeenCalled();
   });
 });

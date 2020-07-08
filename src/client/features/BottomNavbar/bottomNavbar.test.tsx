@@ -1,5 +1,4 @@
 import React from 'react';
-import { Provider } from 'react-redux';
 import { render, screen, fireEvent, cleanup } from 'test-utils';
 import history from '../../app/history';
 import TestRouter from 'test-router';
