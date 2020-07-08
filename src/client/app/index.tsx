@@ -1,5 +1,7 @@
 import React, { useEffect, Suspense } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Router } from 'react-router-dom';
+import history from './history';
 
 import { login, authSelector } from '../slices/auth';
 import '../styles/index.scss';
@@ -17,14 +19,18 @@ const App = () => {
     dispatch(login());
   }, []);
 
-  return user ? (
-    <Suspense fallback={<LoadingIndicator />}>
-      <AuthenticatedApp />
-    </Suspense>
-  ) : (
-    <Suspense fallback={<LoadingIndicator />}>
-      <UnauthenticatedApp />
-    </Suspense>
+  return (
+    <Router history={history}>
+      {user ? (
+        <Suspense fallback={<LoadingIndicator />}>
+          <AuthenticatedApp />
+        </Suspense>
+      ) : (
+        <Suspense fallback={<LoadingIndicator />}>
+          <UnauthenticatedApp />
+        </Suspense>
+      )}
+    </Router>
   );
 };
 

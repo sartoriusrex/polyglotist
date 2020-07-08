@@ -197,6 +197,7 @@ const DefinePhraseButton = () => {
 
       if (response.translationStatus === 'success') {
         setSaveState('success');
+        
         setTimeout(() => {
           setHighlightedPhrase('');
           setDefBoxOpen(false);

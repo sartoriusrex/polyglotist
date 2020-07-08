@@ -29,60 +29,58 @@ const AuthenticatedApp = () => {
 
   return (
     <main>
-      <Router history={history}>
-        <Navbar
-          accountMenuOpen={accountMenuOpen}
-          setAccountMenuOpen={setAccountMenuOpen}
-        />
-        <ServerMessage />
-        <div
-          aria-hidden={accountMenuOpen ? false : true}
-          className={
-            accountMenuOpen ? styles.appOverlayOpen : styles.appOverlay
-          }
-          onClick={() => setAccountMenuOpen(!accountMenuOpen)}
-        ></div>
+      <Navbar
+        accountMenuOpen={accountMenuOpen}
+        setAccountMenuOpen={setAccountMenuOpen}
+      />
+      <ServerMessage />
+      <div
+        aria-hidden={accountMenuOpen ? false : true}
+        className={
+          accountMenuOpen ? styles.appOverlayOpen : styles.appOverlay
+        }
+        onClick={() => setAccountMenuOpen(!accountMenuOpen)}
+      ></div>
 
-        <Switch>
-          <Route exact path='/:username/dashboard'>
-            {settings.languagesLearning ? (
-              <Dashboard />
-            ) : (
-              <Redirect to={`/${username}/create_account`} />
-            )}
-          </Route>
-          <Route exact path='/:username/create_account'>
-            {settings.languagesLearning ? (
-              <Redirect to={`/${username}/settings`} />
-            ) : (
-              <CreateAccountPage />
-            )}
-          </Route>
-          <Route exact path='/:username/articles'>
-            <ArticlesPage />
-          </Route>
-          <Route exact path='/:username/articles/:article'>
-            <ArticleDetailPage />
-          </Route>
-          <Route exact path='/:username/words'>
-            <WordsPage />
-          </Route>
-          <Route exact path='/:username/practice'>
-            <PracticePage />
-          </Route>
-          <Route exact path='/:username/settings'>
-            {settings.languagesLearning ? (
-              <SettingsPage />
-            ) : (
-              <Redirect to={`/${username}/create_account`} />
-            )}
-          </Route>
-          <Route component={NoMatchPage} />
-        </Switch>
+      <Switch>
+        <Route exact path='/:username/dashboard'>
+          {settings.languagesLearning ? (
+            <Dashboard />
+          ) : (
+            <Redirect to={`/${username}/create_account`} />
+          )}
+        </Route>
+        <Route exact path='/:username/create_account'>
+          {settings.languagesLearning ? (
+            <Redirect to={`/${username}/settings`} />
+          ) : (
+            <CreateAccountPage />
+          )}
+        </Route>
+        <Route exact path='/:username/articles'>
+          <ArticlesPage />
+        </Route>
+        <Route exact path='/:username/articles/:article'>
+          <ArticleDetailPage />
+        </Route>
+        <Route exact path='/:username/words'>
+          <WordsPage />
+        </Route>
+        <Route exact path='/:username/practice'>
+          <PracticePage />
+        </Route>
+        <Route exact path='/:username/settings'>
+          {settings.languagesLearning ? (
+            <SettingsPage />
+          ) : (
+            <Redirect to={`/${username}/create_account`} />
+          )}
+        </Route>
+        <Route component={NoMatchPage} />
+      </Switch>
 
-        <DefinePhraseButton />
-        <BottomNavbar />
-      </Router>
+      <DefinePhraseButton />
+      <BottomNavbar />
     </main>
   );
 };
