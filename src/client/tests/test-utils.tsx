@@ -3,7 +3,6 @@ import { render as rtlRender } from '@testing-library/react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { rootReducer as reducer } from '../reducers';
-import history from '../app/history';
 
 function customRender(
   ui: any,
