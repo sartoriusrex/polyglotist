@@ -5,7 +5,7 @@ import styles from './brand.module.scss';
 const Brand = () => {
   return (
     <svg
-      id='svg2751'
+      id='brandSVG'
       version='1.1'
       fill='none'
       viewBox='0 0 60 16'
