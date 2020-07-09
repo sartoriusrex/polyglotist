@@ -24,7 +24,10 @@ const DefinePhraseButton = () => {
     state: null | undefined | { article: Article };
   } = useLocation();
   const { user } = useSelector(authSelector);
-  const lang = location.state?.article?.language;
+  let lang: string;
+
+  if (location.state !== null && location.state !== undefined)
+    lang = location.state.article.language;
 
   const translationInitState: TranslationState = {
     status: 'idle',
@@ -123,7 +126,12 @@ const DefinePhraseButton = () => {
       und: 'und',
     };
 
-    const codeResult = langCodes[location.state?.article?.language || 'und'];
+    let codeResult: string;
+    if (location.state !== null && location.state !== undefined) {
+      codeResult = langCodes[location.state.article.language];
+    } else {
+      codeResult = 'und';
+    }
 
     switch (defState.status) {
       case 'idle':
@@ -150,7 +158,12 @@ const DefinePhraseButton = () => {
   const [saveState, setSaveState] = useState<SaveState>('idle');
 
   async function handlePhraseSave() {
-    const url = location.state?.article?.url;
+    let url: string | null;
+    if (location.state !== null && location.state !== undefined) {
+      url = location.state.article.url;
+    } else {
+      url = null;
+    }
     // Grab the entire phrase.
     const selection = window.getSelection() as Selection;
     const { anchorNode, anchorOffset } = selection;
@@ -197,7 +210,6 @@ const DefinePhraseButton = () => {
 
       if (response.translationStatus === 'success') {
         setSaveState('success');
-        
         setTimeout(() => {
           setHighlightedPhrase('');
           setDefBoxOpen(false);
@@ -256,13 +268,20 @@ const DefinePhraseButton = () => {
   function closeDefinitionModal(e?: React.MouseEvent) {
     setDefBoxOpen(false);
     if (saveState !== 'idle') setSaveState('idle');
-    e?.stopPropagation();
+    if (e) e.stopPropagation();
   }
 
   // add event listener for when user selects text
   useEffect(() => {
     function handleSelect() {
-      let phrase: string | undefined = window.getSelection()?.toString();
+      let phrase: string | undefined;
+      const phraseSelection = window.getSelection();
+
+      if (phraseSelection !== null) {
+        phrase = phraseSelection.toString();
+      } else {
+        phrase = undefined;
+      }
 
       if (phrase === null || phrase === undefined) {
         if (saveState !== 'idle') closeDefinitionModal();

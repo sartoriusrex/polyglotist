@@ -36,9 +36,8 @@ const AuthenticatedApp = () => {
       <ServerMessage />
       <div
         aria-hidden={accountMenuOpen ? false : true}
-        className={
-          accountMenuOpen ? styles.appOverlayOpen : styles.appOverlay
-        }
+        role='dialog'
+        className={accountMenuOpen ? styles.appOverlayOpen : styles.appOverlay}
         onClick={() => setAccountMenuOpen(!accountMenuOpen)}
       ></div>
 

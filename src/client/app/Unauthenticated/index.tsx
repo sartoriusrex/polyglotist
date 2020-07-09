@@ -12,35 +12,33 @@ import LoadingIndicator from '../../common/components/LoadingIndicator';
 
 const UnauthenticatedApp = () => {
   return (
-    <>
+    <main className='unauth-main'>
       <NavBar />
-      <main className='unauth-main'>
-        <Switch>
-          <Route exact path='/' component={LandingPage}>
-            {/* <LandingPage /> */}
-          </Route>
-          <Route exact path='/login'>
-            <AuthPage newUser={false} />
-          </Route>
-          <Route exact path='/signup'>
-            <AuthPage newUser={true} />
-          </Route>
-          <Route exact path='/privacy'>
-            <PrivacyPage />
-          </Route>
-          <Route exact path='/contact'>
-            <ContactPage />
-          </Route>
-          <Redirect from='/:username/dashboard' to='/login' />
-          <Redirect from='/:username/articles' to='/login' />
-          <Redirect from='/:username/words' to='/login' />
-          <Redirect from='/:username/practice' to='/login' />
-          <Redirect from='/:username/settings' to='/login' />
-          <Redirect from='/:username/create_settings' to='/login' />
-          <Route component={NoMatchPage} />
-        </Switch>
-      </main>
-    </>
+      <Switch>
+        <Route exact path='/'>
+          <LandingPage />
+        </Route>
+        <Route exact path='/login'>
+          <AuthPage newUser={false} />
+        </Route>
+        <Route exact path='/signup'>
+          <AuthPage newUser={true} />
+        </Route>
+        <Route exact path='/privacy'>
+          <PrivacyPage />
+        </Route>
+        <Route exact path='/contact'>
+          <ContactPage />
+        </Route>
+        <Redirect from='/:username/dashboard' to='/login' />
+        <Redirect from='/:username/articles' to='/login' />
+        <Redirect from='/:username/words' to='/login' />
+        <Redirect from='/:username/practice' to='/login' />
+        <Redirect from='/:username/settings' to='/login' />
+        <Redirect from='/:username/create_settings' to='/login' />
+        <Route component={NoMatchPage} />
+      </Switch>
+    </main>
   );
 };
 
