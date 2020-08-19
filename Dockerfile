@@ -8,7 +8,7 @@ COPY . app/
 WORKDIR app/
 
 # Install dependencies (npm ci is similar to npm i, but for automated builds)
-RUN npm ci --only-production
+RUN npm i
 
 # Build production client side React application
 RUN npm run build
