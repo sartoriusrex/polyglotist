@@ -8,13 +8,14 @@ COPY . app/
 WORKDIR app/
 
 # Install dependencies (npm ci is similar to npm i, but for automated builds)
-RUN npm ci --only-production
+RUN npm i
 
 # Build production client side React application
 RUN npm run build
-
+    
 # Listen on the specified port
 EXPOSE 8080
 
 # Set Node server
 ENTRYPOINT npm run start
+
