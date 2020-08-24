@@ -12,9 +12,10 @@ RUN npm i
 
 # Build production client side React application
 RUN npm run build
-
+    
 # Listen on the specified port
 EXPOSE 8080
 
 # Set Node server
 ENTRYPOINT npm run start
+
