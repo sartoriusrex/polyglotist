@@ -186,7 +186,7 @@ export default {
               })
             );
           })
-          .then((ids: string[]) => {
+          .then((ids: any[]) => {
             // Convert newSourceIds back into their names
             return Promise.all(
               ids.map(async (id: any) => {

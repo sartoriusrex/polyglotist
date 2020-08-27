@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-const { Pool } = require('pg');
+import { Pool } from 'pg';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -12,9 +12,9 @@ const database = process.env.DB_DATABASE;
 
 const connectionString = `postgresql://${user}:${password}@${host}:${port}/${database}`;
 
-const pool = new Pool({
+const db = new Pool({
   connectionString: isProduction ? process.env.DATABASE_URL : connectionString,
   ssl: isProduction,
 });
 
-export default pool;
+export default db;
