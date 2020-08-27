@@ -23,8 +23,8 @@ export default function initializeServer(router: Router) {
   });
 
   (async function initializeData() {
-    await initializeDatabase();
-    await fetchFreshArticles();
+    // await initializeDatabase();
+    // await fetchFreshArticles();
   })();
 
   // after initializing Data, fetch fresh articles at 600 and 1800 every day using node-cron

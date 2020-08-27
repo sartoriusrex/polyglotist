@@ -9,7 +9,7 @@
     "start": "npm run build && node src/server/index.ts",
     "client": "webpack-dev-server --config webpack.config.cjs --mode development --env.NODE_ENV=development --devtool inline-source-map --hot",
     "server": "nodemon src/server/index.ts",
-    "dev": "export GOOGLE_APPLICATION_CREDENTIALS=\"/Users/Normal/Desktop/dev/per/polyglotist/google_api_key.json\" && concurrently \"npm run server\" \"npm run client\"",
+    "dev": "export GOOGLE_APPLICATION_CREDENTIALS=\"/home/dennismai/dper/polyglotist/gcred.json\" && concurrently \"npm run server\" \"npm run client\"",
     "test": "jest",
     "test:watch": "jest --watch"
   },
