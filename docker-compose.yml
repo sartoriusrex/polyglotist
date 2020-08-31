@@ -1,0 +1,12 @@
+version: "1"
+services:
+    application:
+        container_name: "Application"
+        build: /dist/
+        ports:
+            - "8080:3001"
+    database:
+        image: "postgres:12"
+        container_name: "postgres"
+        ports:
+            - "5432:5432"

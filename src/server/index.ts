@@ -1,4 +1,4 @@
-import * as dotenv from 'dotenv';
+import dotenv from 'dotenv';
 dotenv.config({ path: `${__dirname}/.env` });
 
 import initializeServer from './initialize_server';

@@ -5,8 +5,8 @@
   "main": "src/server/index.ts",
   "scripts": {
     "typecheck": "tsc --module esnext",
-    "build": "webpack --mode production --env.production",
-    "start": "npm run build && node src/server/index.ts",
+    "build": "webpack --mode production --env.NODE_ENV=production --config webpack.config.cjs",
+    "start": "npm run build && node -r ts-node/register/transpile-only src/server/index.ts",
     "client": "webpack-dev-server --config webpack.config.cjs --mode development --env.NODE_ENV=development --devtool inline-source-map --hot",
     "server": "nodemon src/server/index.ts",
     "dev": "export GOOGLE_APPLICATION_CREDENTIALS=\"/home/dennismai/dper/polyglotist/gcred.json\" && concurrently \"npm run server\" \"npm run client\"",
