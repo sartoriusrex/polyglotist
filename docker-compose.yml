@@ -4,7 +4,7 @@ services:
         container_name: "Application"
         build: /dist/
         ports:
-            - "8080:3001"
+            - "8080:8080"
     database:
         image: "postgres:12"
         container_name: "postgres"
