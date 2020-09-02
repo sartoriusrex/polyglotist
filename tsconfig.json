@@ -3,6 +3,9 @@
     "outDir": "./dist/",
     // Target latest version of ECMAScript.
     "target": "esnext",
+    // =============================
+    // Maybe correct target to current Node version if there are ts-jest errors
+    // =============================
     // Search under node_modules for non-relative imports.
     "moduleResolution": "node",
     // Process & infer types from .js files.
@@ -22,10 +25,18 @@
     "declaration": true,
     "baseUrl": "src",
     "paths": {
-      "test-utils": ["./client/tests/test-utils"],
-      "test-router": ["./client/tests/test-router"]
+      "test-utils": [
+        "./client/tests/test-utils"
+      ],
+      "test-router": [
+        "./client/tests/test-router"
+      ]
     }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": [
+    "./node_modules"
+  ]
 }

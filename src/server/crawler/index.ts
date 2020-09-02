@@ -1,3 +1,5 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 const puppeteer = require('puppeteer');
 
 import { Error, CrawlResult, Crawler } from './interfaces';
@@ -26,7 +28,10 @@ const crawlSource = async function (src: {
   const { url, language, name } = src;
 
   try {
-    const browser = await puppeteer.launch({ headless: headless });
+    const browser = await puppeteer.launch({
+      executablePath: 'google-chrome-unstable',
+      headless: headless
+    });
     const page = await browser.newPage();
     const { grabURLs, grabTitle, grabDate, grabBody } = crawlers[name];
 
