@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-const puppeteer = require('puppeteer');
-const fetch = require('node-fetch');
+import puppeteer from 'puppeteer';
+// import fetch from 'node-fetch';
 
 import getContainerIP from '../utils/getContainerIp';
 import { Error, CrawlResult, Crawler } from './interfaces';
@@ -27,23 +27,23 @@ const crawlSource = async function (src: {
   };
   const { url, language, name } = src;
 
-  const chrome = await getContainerIP('chrome');
+  // const chrome = await getContainerIP('chrome');
 
-  const options = {
-    uri: `http://${chrome}:9222/json/version`,
-    json: true,
-    resolveWithFullResponse: true
-  }
+  // const options = {
+  //   uri: `http://${chrome}:9222/json/version`,
+  //   json: true,
+  // }
 
   try {
-    const response = await fetch(options);
-    const webSocket = response.body.webSocketUrl;
+    // const response = await fetch(options);
+    // const webSocket = response.body.webSocketUrl;
 
     const browser = await puppeteer.connect({
-      browserWSEndpoint: webSocket
+      // browserWSEndpoint: webSocket
+      browserURL: 'http:localhost:9222'
     });
     const page = await browser.newPage();
-    page.setJavascriptEnabled(true);
+    page.setJavaScriptEnabled(true);
     const { grabURLs, grabTitle, grabDate, grabBody } = crawlers[name];
 
     await page.goto(url, { waitUntil: 'networkidle0', timeout: 0 });
