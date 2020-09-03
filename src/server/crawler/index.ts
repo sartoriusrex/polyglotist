@@ -3,7 +3,7 @@ dotenv.config();
 import puppeteer from 'puppeteer';
 // import fetch from 'node-fetch';
 
-import getContainerIP from '../utils/getContainerIp';
+// import getContainerIP from '../utils/getContainerIp';
 import { Error, CrawlResult, Crawler } from './interfaces';
 import crawlerFunction from './crawlerFunction';
 
@@ -40,7 +40,7 @@ const crawlSource = async function (src: {
 
     const browser = await puppeteer.connect({
       // browserWSEndpoint: webSocket
-      browserURL: 'http:localhost:9222'
+      browserURL: 'http://localhost:9222'
     });
     const page = await browser.newPage();
     page.setJavaScriptEnabled(true);
