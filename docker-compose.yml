@@ -7,6 +7,7 @@ services:
             - "8080:8080"
         links:
             - database #links database to app
+            - chrome #links to chrome instance
         volumes:
             - .:/dist
             - /dist/node_modules
@@ -23,5 +24,14 @@ services:
             POSTGRES_PASSWORD: ${DB_PASSWORD}
             POSTGRES_USER: ${DB_USER}
             POSTGRES_DB: ${DB_DATABASE}
+    chrome:
+        container_name: "chrome_browser"
+        build: ./chrome_browser
+        cap_add:
+            - SYS_ADMIN
+        shm_size: '1gb'
+        ports:
+            - "9222:9222"
 
-# to execuse docker-compose, execute docker-compose up        
+# to execuse docker-compose, execute sudo docker-compose -f docker/docker-compose.yml up
+# -f specifies the path to the docker-compose from root project folder where command should be executed        
