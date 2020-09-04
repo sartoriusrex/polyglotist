@@ -1,9 +1,5 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
 import puppeteer from 'puppeteer';
-// import fetch from 'node-fetch';
 
-// import getContainerIP from '../utils/getContainerIp';
 import { Error, CrawlResult, Crawler } from './interfaces';
 import crawlerFunction from './crawlerFunction';
 
@@ -12,6 +8,8 @@ import twenty from './twenty';
 import monde from './monde';
 import veinte from './veinte';
 import pais from './pais';
+
+const headless = true;
 
 const crawlSource = async function (src: {
   url: string;
@@ -27,20 +25,10 @@ const crawlSource = async function (src: {
   };
   const { url, language, name } = src;
 
-  // const chrome = await getContainerIP('chrome');
-
-  // const options = {
-  //   uri: `http://${chrome}:9222/json/version`,
-  //   json: true,
-  // }
-
   try {
-    // const response = await fetch(options);
-    // const webSocket = response.body.webSocketUrl;
-
-    const browser = await puppeteer.connect({
-      // browserWSEndpoint: webSocket
-      browserURL: 'http://localhost:9222'
+    const browser = await puppeteer.launch({
+      args: ['--disable-dev-shm-usage'],
+      headless
     });
     const page = await browser.newPage();
     page.setJavaScriptEnabled(true);
@@ -58,6 +46,8 @@ const crawlSource = async function (src: {
       url,
       language
     );
+
+    await page.close();
 
     await browser.close();
 
