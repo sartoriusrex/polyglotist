@@ -7,10 +7,10 @@
     "exportgoogle": "export GOOGLE_APPLICATION_CREDENTIALS=\"/app/gcred.json\"",
     "typecheck": "tsc --module esnext",
     "build": "webpack --mode production --env.NODE_ENV=production --config webpack.config.cjs",
-    "start": "npm run build && exportgoogle && node -r ts-node/register/transpile-only src/server/index.ts",
+    "start": "npm run build && npm run exportgoogle && node -r ts-node/register/transpile-only src/server/index.ts",
     "client": "webpack-dev-server --config webpack.config.cjs --mode development --env.NODE_ENV=development --devtool inline-source-map --hot",
     "server": "nodemon src/server/index.ts",
-    "dev": "exportgoogle && concurrently \"npm run server\" \"npm run client\"",
+    "dev": "npm run exportgoogle && concurrently \"npm run server\" \"npm run client\"",
     "test": "jest",
     "test:watch": "jest --watch"
   },

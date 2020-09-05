@@ -9,12 +9,16 @@ services:
             - database #links database to app
         volumes:
             - .:/dist
-            - /dist/node_modules
+            - /dist/node_modules # to access puppeteer
+            - $GOOGLE_APPLICATION_CREDENTIALS:/tmp/keys/gcred.json:ro # for GOOGLE CLOUD SERVICES -- TRANSLATION
         environment:
             DATABASE_URL: postgres://${DB_USER}:${DB_PASSWORD}@database:5432/api
             DB_HOST: database
+            GOOGLE_APPLICATION_CREDENTIALS: /tmp/keys/gcred.json # Set application credentials
+            K_SERVICE: dev
+            K_REVISION: dev-00001
         cap_add:
-            - SYS_ADMIN
+            - SYS_ADMIN # For puppeteer to have sys-admin access
     database:
         image: "postgres:12" #just pull image from docker hub
         container_name: "postgres-12"

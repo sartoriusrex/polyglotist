@@ -20,14 +20,15 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
 # Puppeteer v1.19.0 works with Chromium 77.
 RUN yarn add puppeteer@1.19.0
 
-# Add user so we don't need --no-sandbox.
-RUN addgroup -S pptruser && adduser -S -g pptruser pptruser \
-    && mkdir -p /home/pptruser/Downloads /app \
-    && chown -R pptruser:pptruser /home/pptruser \
-    && chown -R pptruser:pptruser /app
+# Comment out these lines and use --no-sandbox due to permissions with google cloud translation api and reading the api-key file.
+# # Add user so we don't need --no-sandbox.
+# RUN addgroup -S pptruser && adduser -S -g pptruser pptruser \
+#     && mkdir -p /home/pptruser/Downloads /app \
+#     && chown -R pptruser:pptruser /home/pptruser \
+#     && chown -R pptruser:pptruser /app
 
-# Run everything after as non-privileged user.
-USER pptruser
+# # Run everything after as non-privileged user.
+# USER pptruser
 
 # Copy the files from the current directory to app/
 COPY . app/

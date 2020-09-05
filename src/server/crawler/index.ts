@@ -27,7 +27,7 @@ const crawlSource = async function (src: {
 
   try {
     const browser = await puppeteer.launch({
-      args: ['--disable-dev-shm-usage'],
+      args: ['--disable-dev-shm-usage', '--no-sandbox'],
       headless
     });
     const page = await browser.newPage();
