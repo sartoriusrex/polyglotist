@@ -72,7 +72,9 @@ module.exports = (env) => {
       extensions: ['*', '.js', '.jsx', '.ts', '.tsx'],
     },
     devServer: {
+      host: '0.0.0.0',
       port: 3000,
+      disableHostCheck: true,
       open: true,
       proxy: {
         '/api': 'http://localhost:8080',
@@ -80,9 +82,10 @@ module.exports = (env) => {
       compress: true,
       hot: true,
       historyApiFallback: true,
-    },
-    watchOptions: {
-      aggregateTimeout: 5000,
+      watchOptions: {
+        aggregateTimeout: 1000,
+        poll: 1000
+      },
     },
     plugins: [
       new CleanWebpackPlugin([outputDirectory]),
