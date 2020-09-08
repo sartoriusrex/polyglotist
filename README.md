@@ -20,6 +20,8 @@ As of the last update, the application only supports French and Spanish, with pl
 
 ## Development
 
+The application makes user of environment variables, which will need to be created and linked on the developer's machine. Additionally, one will need one's own GOOGLE_CLOUD_API authentication key. See the [docs](https://cloud.google.com/translate/docs/) for more information. Once this is set up, one can develop locally.
+
 Originally, the development implementation could be found at the repo [simple-react-full-stack](https://github.com/crsandeep/simple-react-full-stack). Currently users need to have Docker installed. To start, clone the repo and run the following commands:
 
 ```bash
