@@ -75,7 +75,7 @@ const DefinePhraseButton = () => {
     if (highlightedPhrase === '') return;
 
     try {
-      let response = await fetch(`/api/words/${lang}/${highlightedPhrase}`, {
+      let response = await fetch(`/api/words/define/${lang}/${highlightedPhrase}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -321,8 +321,8 @@ const DefinePhraseButton = () => {
           highlightedPhrase === '' //no word highlighted, don't show anything
             ? styles.defineButtonContainerHidden
             : !defBoxOpen //user highlighted word, but has not clicked define phrase yet, show button only
-            ? styles.defineButtonContainerClosed
-            : // show the entire box if defBox is open and there is a word highlighted
+              ? styles.defineButtonContainerClosed
+              : // show the entire box if defBox is open and there is a word highlighted
               styles.defineButtonContainer
         }
       >

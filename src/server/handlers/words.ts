@@ -173,4 +173,10 @@ export default {
       return res.status(500).send({ translationStatus: 'error' });
     }
   },
+  fetchOnePhrase: async (req: Request, res: Response) => {
+    console.log('get one phrase');
+  },
+  fetchPhrases: async (req: Request, res: Response) => {
+    console.log('get phrases');
+  },
 };
