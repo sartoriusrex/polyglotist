@@ -37,13 +37,13 @@ describe('Bottom Navbar', () => {
     if (links !== null) {
       expect(links.length).toBe(4);
       expect(links[0].pathname).toBe('/username5/dashboard');
-      expect(links[1].pathname).toBe('/username5/words');
+      expect(links[1].pathname).toBe('/username5/phrases');
       expect(links[2].pathname).toBe('/username5/articles');
       expect(links[3].pathname).toBe('/username5/practice');
     }
 
     fireEvent.click(links[1]);
-    expect(history.location.pathname).toBe('/username5/words');
+    expect(history.location.pathname).toBe('/username5/phrases');
 
     fireEvent.click(links[2]);
     expect(history.location.pathname).toBe('/username5/articles');

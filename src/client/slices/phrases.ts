@@ -39,8 +39,12 @@ const phrasesSlice = createSlice({
       newState.hasErrors = true;
       return newState;
     },
-    fetchPhrasesSuccess: (state: phrasesStateInterface) => {
+    fetchPhrasesSuccess: (state: phrasesStateInterface, { payload }) => {
       const newState = { ...state };
+
+      newState.loading = false;
+      newState.hasErrors = false;
+      newState.phrases = payload;
 
       return newState;
     }
@@ -49,7 +53,7 @@ const phrasesSlice = createSlice({
 
 export const phrasesSelector = (state: any) => state.phrases;
 
-const { actions, reducer } = phrasesSelector;
+const { actions, reducer } = phrasesSlice;
 
 export const {
   fetchPhrases,
@@ -73,6 +77,7 @@ export function fetchAllPhrases() {
       )
 
       const data = await response.json();
+      console.log(data);
 
       dispatch(fetchPhrasesSuccess(data));
     } catch (err) {
