@@ -1,6 +1,7 @@
 import React from 'react';
+import { fetchAllPhrases } from 'client/slices/phrases';
 
-const WordsPage = () => {
+const PhrasesPage = () => {
   async function fetchOnePhrase(phrase: String) {
     try {
       const response = await fetch(
@@ -19,28 +20,17 @@ const WordsPage = () => {
   }
 
   async function fetchPhrases() {
-    try {
-      const response = await fetch(
-        '/api/words',
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        });
-      console.log(response);
-    } catch (err) {
-      console.log(err);
-    }
+    fetchAllPhrases();
   }
 
   return (
     <section>
-      <h1>Words Page</h1>
+      <h1>Phrases Page</h1>
       <button onClick={() => fetchOnePhrase('test')}>Fetch 1 phrase</button>
       <button onClick={() => fetchPhrases()}>Fetch phrases</button>
+      <h2>More Words</h2>
     </section>
   )
 }
 
-export default WordsPage;
+export default PhrasesPage;

@@ -13,7 +13,7 @@ import Dashboard from '../../features/AuthPages/Dashboard';
 import CreateAccountPage from '../../features/AuthPages/CreateAccountPage';
 import ArticlesPage from '../../features/AuthPages/ArticlesPage';
 import ArticleDetailPage from '../../features/AuthPages/ArticleDetailPage';
-import WordsPage from '../../features/AuthPages/WordsPage';
+import PhrasesPage from '../../features/AuthPages/PhrasesPage';
 import SettingsPage from '../../features/AuthPages/SettingsPage';
 import PracticePage from '../../features/AuthPages/PracticePage';
 import NoMatchPage from '../../common/components/NoMatchPage';
@@ -46,15 +46,15 @@ const AuthenticatedApp = () => {
           {settings.languagesLearning ? (
             <Dashboard />
           ) : (
-            <Redirect to={`/${username}/create_account`} />
-          )}
+              <Redirect to={`/${username}/create_account`} />
+            )}
         </Route>
         <Route exact path='/:username/create_account'>
           {settings.languagesLearning ? (
             <Redirect to={`/${username}/settings`} />
           ) : (
-            <CreateAccountPage />
-          )}
+              <CreateAccountPage />
+            )}
         </Route>
         <Route exact path='/:username/articles'>
           <ArticlesPage />
@@ -62,8 +62,8 @@ const AuthenticatedApp = () => {
         <Route exact path='/:username/articles/:article'>
           <ArticleDetailPage />
         </Route>
-        <Route exact path='/:username/words'>
-          <WordsPage />
+        <Route exact path='/:username/phrases'>
+          <PhrasesPage />
         </Route>
         <Route exact path='/:username/practice'>
           <PracticePage />
@@ -72,8 +72,8 @@ const AuthenticatedApp = () => {
           {settings.languagesLearning ? (
             <SettingsPage />
           ) : (
-            <Redirect to={`/${username}/create_account`} />
-          )}
+              <Redirect to={`/${username}/create_account`} />
+            )}
         </Route>
         <Route component={NoMatchPage} />
       </Switch>

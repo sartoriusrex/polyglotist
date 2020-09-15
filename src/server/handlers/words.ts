@@ -177,6 +177,17 @@ export default {
     console.log('get one phrase');
   },
   fetchPhrases: async (req: Request, res: Response) => {
-    console.log('get phrases');
+    try {
+      console.log(req.body);
+
+      const success = { test: 'test' }
+
+      return res.status(200).send(success);
+    } catch (err) {
+      console.log(err);
+
+      res.status(500).send({ error: err })
+    }
+
   },
 };

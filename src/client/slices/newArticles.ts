@@ -26,7 +26,6 @@ interface newArticlesStateInterface {
   loading: boolean;
   hasErrors: boolean;
   articles: SourceText[] | null;
-  // Need to add date and date read in state, as well as update backend to get this data
 }
 
 export const initialState: newArticlesStateInterface = {

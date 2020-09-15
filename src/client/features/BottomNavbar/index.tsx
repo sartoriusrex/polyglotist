@@ -34,8 +34,8 @@ const BottomNavbar = () => {
       <Link to={`/${username}/dashboard`}>
         <HomeIcon active={location === 'dashboard'} />
       </Link>
-      <Link to={`/${username}/words`}>
-        <WordsIcon active={location === 'words'} />
+      <Link to={`/${username}/phrases`}>
+        <WordsIcon active={location === 'phrases'} />
       </Link>
       <Link to={`/${username}/articles`}>
         <ArticlesIcon active={location === 'articles'} />
