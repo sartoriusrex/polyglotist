@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { json } from 'body-parser';
 
 interface phraseInterface {
   word_id: string;
@@ -61,7 +62,9 @@ export const {
   fetchPhrasesSuccess
 } = actions;
 
-export function fetchAllPhrases() {
+export function fetchAllPhrases(id: number) {
+  const body = { id };
+
   return async (dispatch: Function) => {
     dispatch(fetchPhrases());
 
@@ -69,14 +72,16 @@ export function fetchAllPhrases() {
       const response = await fetch(
         '/api/words',
         {
-          method: 'GET',
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-          }
+          },
+          body: JSON.stringify(body)
         }
       )
 
       const data = await response.json();
+
       console.log(data);
 
       dispatch(fetchPhrasesSuccess(data));
@@ -84,7 +89,7 @@ export function fetchAllPhrases() {
       console.log(err);
       dispatch(fetchPhrasesFailure());
     }
-  }
+  };
 }
 
 export default reducer;

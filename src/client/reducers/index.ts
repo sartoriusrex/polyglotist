@@ -5,6 +5,7 @@ import authReducer from '../slices/auth';
 import settingsReducer from '../slices/settings';
 import messageReducer from '../slices/messages';
 import newArticlesReducer from '../slices/newArticles';
+import phrasesReducer from '../slices/phrases';
 
 export const rootReducer = combineReducers({
   users: usersReducer,
@@ -12,6 +13,7 @@ export const rootReducer = combineReducers({
   settings: settingsReducer,
   message: messageReducer,
   newArticles: newArticlesReducer,
+  phrases: phrasesReducer,
 });
 
 const store = configureStore({
