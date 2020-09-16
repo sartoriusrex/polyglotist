@@ -8,7 +8,7 @@ import { authSelector } from '../../slices/auth';
 import ArticlesIcon from '../../images/Articles';
 import HomeIcon from '../../images/Home';
 import SandClockIcon from '../../images/SandClock';
-import WordsIcon from '../../images/Words';
+import PhrasesIcon from '../../images/Phrases';
 
 const BottomNavbar = () => {
   const { user } = useSelector(authSelector);
@@ -35,7 +35,7 @@ const BottomNavbar = () => {
         <HomeIcon active={location === 'dashboard'} />
       </Link>
       <Link to={`/${username}/phrases`}>
-        <WordsIcon active={location === 'phrases'} />
+        <PhrasesIcon active={location === 'phrases'} />
       </Link>
       <Link to={`/${username}/articles`}>
         <ArticlesIcon active={location === 'articles'} />

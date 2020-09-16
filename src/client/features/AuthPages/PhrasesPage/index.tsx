@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchAllPhrases } from '../../../slices/phrases';
@@ -11,6 +11,10 @@ const PhrasesPage = () => {
   function fetchPhrases() {
     dispatch(fetchAllPhrases(user.id));
   }
+
+  useEffect(() => {
+    dispatch(fetchAllPhrases(user.id))
+  }, [dispatch, fetchAllPhrases])
 
   return (
     <section>
