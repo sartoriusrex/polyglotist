@@ -1,5 +1,6 @@
 import db from '../database';
 import { Request, Response } from 'express';
+import { createDispatchHook } from 'react-redux';
 
 const { Translate } = require('@google-cloud/translate').v2;
 
@@ -177,17 +178,72 @@ export default {
     console.log('get one phrase');
   },
   fetchPhrases: async (req: Request, res: Response) => {
+    const { id } = req.body;
+
     try {
-      console.log(req.body);
+      const phraseQuery = `SELECT * FROM phrases WHERE id = $1`;
+      const usersPhraseQuery = `SELECT * FROM users_phrases WHERE user_id = $1`;
+      const articleQuery = `SELECT title FROM articles WHERE id = $1`;
 
-      const success = { test: 'test' }
+      const userPhraseResult = await db.query(usersPhraseQuery, [id]);
+      const uPhraseRows = userPhraseResult.rows;
 
-      return res.status(200).send(success);
+      interface IuPhraseRow {
+        id: Number;
+        user_id: Number;
+        phrase_id: Number;
+        strength: Number;
+        article_id: Number;
+        context_phrase: String;
+      }
+
+      interface Iphrase {
+        phrase_id: Number;
+        created_at: String;
+        phrase: String;
+        translation: String;
+        language: String;
+        article: String;
+        context_phrase: String;
+        strength: Number;
+      }
+
+      const phrasesArray: Iphrase[] = await Promise.all(uPhraseRows.map(async (phraseRow: IuPhraseRow) => {
+        const {
+          phrase_id,
+          article_id,
+          strength,
+          context_phrase
+        } = phraseRow;
+
+        const phraseResult = await db.query(phraseQuery, [phrase_id]);
+        const articleResult = await db.query(articleQuery, [article_id]);
+
+        const {
+          created,
+          phrase,
+          translation,
+          language
+        } = phraseResult.rows[0];
+        const { title } = articleResult.rows[0]
+
+        return {
+          phrase_id,
+          created_at: created,
+          phrase,
+          translation,
+          language,
+          article: title,
+          context_phrase,
+          strength,
+        }
+      }));
+
+      return res.status(200).send(phrasesArray);
     } catch (err) {
       console.log(err);
 
       res.status(500).send({ error: err })
     }
-
   },
 };
