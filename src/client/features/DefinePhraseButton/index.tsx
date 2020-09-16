@@ -75,7 +75,7 @@ const DefinePhraseButton = () => {
     if (highlightedPhrase === '') return;
 
     try {
-      let response = await fetch(`/api/words/define/${lang}/${highlightedPhrase}`, {
+      let response = await fetch(`/api/phrases/define/${lang}/${highlightedPhrase}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -200,7 +200,7 @@ const DefinePhraseButton = () => {
     };
 
     try {
-      const response = await fetch(`/api/words/${lang}/${highlightedPhrase}`, {
+      const response = await fetch(`/api/phrases/${lang}/${highlightedPhrase}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

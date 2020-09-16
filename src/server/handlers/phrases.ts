@@ -1,6 +1,5 @@
 import db from '../database';
 import { Request, Response } from 'express';
-import { createDispatchHook } from 'react-redux';
 
 const { Translate } = require('@google-cloud/translate').v2;
 

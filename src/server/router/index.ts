@@ -5,12 +5,12 @@ import userRoutes from './users';
 import authRoutes from './auth';
 import crawlerRoutes from './crawler';
 import articleRoutes from './articles';
-import wordRoutes from './words';
+import phraseRoutes from './phrases';
 
 router.use('/users', userRoutes);
 router.use('/auth', authRoutes);
 router.use('/crawl', crawlerRoutes);
 router.use('/articles', articleRoutes);
-router.use('/words', wordRoutes);
+router.use('/phrases', phraseRoutes);
 
 export default router;

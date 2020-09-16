@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { json } from 'body-parser';
 
 interface phraseInterface {
-  word_id: string;
+  phrase_id: string;
   created_at: string;
   phrase: string;
   translation: string;
@@ -70,7 +69,7 @@ export function fetchAllPhrases(id: number) {
 
     try {
       const response = await fetch(
-        '/api/words',
+        '/api/phrases',
         {
           method: 'POST',
           headers: {
