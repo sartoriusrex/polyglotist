@@ -100,9 +100,12 @@ const crawlSource = async function (src: {
 
     return { error: `Failed to scrape ${name}` };
   } finally {
-    console.log('===========\n===========\n====closing browser====\n===========\n===========');
+    console.log(`
+        ---------- Closing Browser and exiting Process --------
+    `);
 
     if (browser) await browser.close();
+    process.exit();
   }
 };
 
