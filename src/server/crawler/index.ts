@@ -24,9 +24,10 @@ const crawlSource = async function (src: {
     pais,
   };
   const { url, language, name } = src;
+  let browser;
 
   try {
-    const browser = await puppeteer.launch({
+    browser = await puppeteer.launch({
       args: ['--disable-dev-shm-usage', '--no-sandbox'],
       headless
     });
@@ -48,8 +49,6 @@ const crawlSource = async function (src: {
     );
 
     await page.close();
-
-    await browser.close();
 
     // Testing the articles crawled
 
@@ -100,6 +99,10 @@ const crawlSource = async function (src: {
     console.log(err);
 
     return { error: `Failed to scrape ${name}` };
+  } finally {
+    console.log('===========\n===========\n====closing browser====\n===========\n===========');
+
+    if (browser) await browser.close();
   }
 };
 
