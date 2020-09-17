@@ -14,13 +14,13 @@ interface phraseInterface {
 interface phrasesStateInterface {
   loading: boolean;
   hasErrors: boolean;
-  phrases: phraseInterface[] | null;
+  phrases: phraseInterface[] | [];
 }
 
 export const initialState: phrasesStateInterface = {
   loading: false,
   hasErrors: false,
-  phrases: null,
+  phrases: [],
 };
 
 const phrasesSlice = createSlice({
