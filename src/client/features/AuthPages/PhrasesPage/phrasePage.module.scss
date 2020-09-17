@@ -1,4 +1,37 @@
+@import '../../../styles/variables';
+
+.vocabPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .vocabTable {
-    padding: .25rem;
-    border: 1px solid blue;
+    width: 100%;
+    padding: 0 1.25rem;
+    font-size: .75rem;
+    color: $darkest-blue;
+    border: 1px solid $light-blue-gray;
+
+    th {
+        color: $darkest-blue;
+        background-color: $lighter-blue-gray;
+        font-weight: bold;
+    }
+
+    th, td {
+        border: 1px solid $light-blue-gray;
+    }
+    
+    tr * {
+        padding: .25rem;
+    }
+
+    tr td:last-child {
+        text-align: center;
+    }
+
+    tr td:first-child {
+        color: $dark-purple;
+    }
 }

@@ -50,7 +50,7 @@ const PhrasesPage = () => {
   }
 
   return (
-    <section>
+    <section className={styles.vocabPage}>
       <h1>Vocabulary</h1>
       <button onClick={() => fetchPhrases()}>Fetch phrases</button>
       <table className={styles.vocabTable}>
@@ -58,7 +58,6 @@ const PhrasesPage = () => {
           <tr>
             <th>Phrase</th>
             <th>Definition</th>
-            <th>Created</th>
             <th>Strength</th>
           </tr>
         </thead>

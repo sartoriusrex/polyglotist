@@ -105,7 +105,6 @@ const crawlSource = async function (src: {
     `);
 
     if (browser) await browser.close();
-    process.exit();
   }
 };
 
