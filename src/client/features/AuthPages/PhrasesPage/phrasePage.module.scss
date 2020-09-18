@@ -18,7 +18,7 @@
     font-size: .75rem;
     color: $darkest-blue;
 
-    tr * {
+    tr *:not(a) {
         padding: .25rem;
         border-bottom: 1px solid $light-blue-gray;
         line-height: 1.25;
@@ -51,7 +51,19 @@
     }
 
     tr td:first-child {
-        color: $dark-purple;
         border-right: 1px solid $light-blue-gray;
+
+        a {
+            color: $dark-purple;
+            text-decoration: none;
+        }
+    }
+
+    tr {
+        background-color: $light-gray;
+
+        &:nth-child(2n) {
+            background-color: $lighter-blue-gray;
+        }
     }
 }

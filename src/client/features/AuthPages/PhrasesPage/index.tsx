@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import styles from './phrasePage.module.scss';
 import { fetchAllPhrases, phrasesSelector } from '../../../slices/phrases';
@@ -15,6 +16,7 @@ const PhrasesPage = () => {
   }, [dispatch, fetchAllPhrases])
 
   interface IPhraseUnit {
+    phrase_id: string;
     phrase: string;
     created_at: string;
     translation: string;
@@ -25,14 +27,25 @@ const PhrasesPage = () => {
   }
 
   const PhraseUnit = ({ phraseObject }: { phraseObject: IPhraseUnit }) => {
-    const { phrase, translation, created_at, strength } = phraseObject;
+    const { phrase_id, phrase, translation, created_at, strength } = phraseObject;
     const ts = new Date(created_at)
     const createdDate = ts.toLocaleDateString();
     const createdTime = ts.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
     return (
       <tr>
-        <td>{phrase}</td>
+        <td>
+          <Link
+            to={{
+              pathname: `/${user.username}/phrases/${phrase_id}`,
+              state: {
+                phrase: phraseObject
+              }
+            }}
+          >
+            {phrase}
+          </Link>
+        </td>
         <td>{translation}</td>
         <td>{strength}</td>
       </tr>
