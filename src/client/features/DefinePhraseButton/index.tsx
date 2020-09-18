@@ -9,6 +9,7 @@ import {
   TranslationState,
   TranslationAction,
   SaveState,
+  IPhraseUnit
 } from '../../interfaces';
 import { authSelector } from '../../slices/auth';
 
@@ -20,14 +21,19 @@ const DefinePhraseButton = () => {
     ''
   );
   const [defBoxOpen, setDefBoxOpen] = useState<Boolean>(false);
+
+  type locationState = null | undefined | { phrase: IPhraseUnit; article?: Article } | { phrase?: IPhraseUnit; article: Article }
   const location: {
-    state: null | undefined | { article: Article };
+    state: locationState
   } = useLocation();
   const { user } = useSelector(authSelector);
   let lang: string;
 
-  if (location.state !== null && location.state !== undefined)
-    lang = location.state.article.language;
+  if (
+    location.state !== null &&
+    location.state !== undefined &&
+    location.state.article
+  ) lang = location.state.article.language;
 
   const translationInitState: TranslationState = {
     status: 'idle',
@@ -127,7 +133,7 @@ const DefinePhraseButton = () => {
     };
 
     let codeResult: string;
-    if (location.state !== null && location.state !== undefined) {
+    if (location.state !== null && location.state !== undefined && location.state.article) {
       codeResult = langCodes[location.state.article.language];
     } else {
       codeResult = 'und';
@@ -159,7 +165,7 @@ const DefinePhraseButton = () => {
 
   async function handlePhraseSave() {
     let url: string | null;
-    if (location.state !== null && location.state !== undefined) {
+    if (location.state !== null && location.state !== undefined && location.state.article) {
       url = location.state.article.url;
     } else {
       url = null;
@@ -227,17 +233,14 @@ const DefinePhraseButton = () => {
     switch (saveState) {
       case 'saving':
         return <div className={styles.savingState}>Saving</div>;
-        break;
       case 'success':
         return (
           <div className={styles.savingState}>
             Saved <Check />
           </div>
         );
-        break;
       case 'error':
         return <div className={styles.savingState}>Oops..</div>;
-        break;
       default:
         return (
           <>
@@ -255,7 +258,6 @@ const DefinePhraseButton = () => {
             </button>
           </>
         );
-        break;
     }
   };
 
@@ -300,7 +302,7 @@ const DefinePhraseButton = () => {
   if (
     location.state === null ||
     location.state === undefined ||
-    location.state.article === undefined
+    location.state.phrase
   )
     return <></>;
 

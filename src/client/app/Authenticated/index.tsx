@@ -14,6 +14,7 @@ import CreateAccountPage from '../../features/AuthPages/CreateAccountPage';
 import ArticlesPage from '../../features/AuthPages/ArticlesPage';
 import ArticleDetailPage from '../../features/AuthPages/ArticleDetailPage';
 import PhrasesPage from '../../features/AuthPages/PhrasesPage';
+import PhraseDetailPage from '../../features/AuthPages/PhraseDetailPage';
 import SettingsPage from '../../features/AuthPages/SettingsPage';
 import PracticePage from '../../features/AuthPages/PracticePage';
 import NoMatchPage from '../../common/components/NoMatchPage';
@@ -64,6 +65,9 @@ const AuthenticatedApp = () => {
         </Route>
         <Route exact path='/:username/phrases'>
           <PhrasesPage />
+        </Route>
+        <Route exact path='/:username/phrases/:phrase_id'>
+          <PhraseDetailPage />
         </Route>
         <Route exact path='/:username/practice'>
           <PracticePage />

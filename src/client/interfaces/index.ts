@@ -34,15 +34,26 @@ export interface TranslationState {
 
 export type TranslationAction =
   | {
-      type: 'fetching';
-    }
+    type: 'fetching';
+  }
   | {
-      type: 'fetchError';
-      error: string;
-    }
+    type: 'fetchError';
+    error: string;
+  }
   | {
-      type: 'fetchSuccess';
-      translation: string;
-    };
+    type: 'fetchSuccess';
+    translation: string;
+  };
 
 export type SaveState = 'idle' | 'saving' | 'success' | 'error';
+
+export interface IPhraseUnit {
+  phrase_id: string;
+  phrase: string;
+  created_at: string;
+  translation: string;
+  language: string;
+  article: string;
+  context_phrase: string;
+  strength: number;
+}
