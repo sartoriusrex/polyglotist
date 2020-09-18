@@ -17,8 +17,8 @@ const Dashboard = () => {
   const [showNumber, setShowNumber] = useState(startingShow);
   const numArticles: number = articles
     ? articles
-        .map((articleObject: ArticleObject) => articleObject.articles)
-        .flat().length
+      .map((articleObject: ArticleObject) => articleObject.articles)
+      .flat().length
     : 0;
 
   const ArticleCard = (props: {
@@ -141,7 +141,7 @@ const Dashboard = () => {
 
   return (
     <section id={styles.articlesSection}>
-      <h2>New Articles</h2>
+      <h1>New Articles</h1>
       {renderArticleCards(articles)}
       {numArticles !== showNumber && <MoreButton />}
     </section>

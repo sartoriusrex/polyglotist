@@ -4,6 +4,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    h1 {
+        margin: .625rem 0;
+        font-size: 1.25rem;
+        align-self: flex-start;
+    }
 }
 
 .vocabTable {
@@ -11,27 +17,40 @@
     padding: 0 1.25rem;
     font-size: .75rem;
     color: $darkest-blue;
-    border: 1px solid $light-blue-gray;
+
+    tr * {
+        padding: .25rem;
+        border-bottom: 1px solid $light-blue-gray;
+    }
 
     th {
         color: $darkest-blue;
         background-color: $lighter-blue-gray;
         font-weight: bold;
+
+        &:first-child {
+            border-top-left-radius: .25rem;
+            border-right: 1px solid $light-blue-gray;
+        }
+
+        &:last-child {
+            border-top-right-radius: .25rem;
+            border-left: 1px solid $light-blue-gray;
+        }
     }
 
-    th, td {
-        border: 1px solid $light-blue-gray;
-    }
+    // th, td {
+    //     border: 2px solid $light-blue-gray;
+    // }
     
-    tr * {
-        padding: .25rem;
-    }
 
     tr td:last-child {
         text-align: center;
+        border-left: 1px solid $light-blue-gray;
     }
 
     tr td:first-child {
         color: $dark-purple;
+        border-right: 1px solid $light-blue-gray;
     }
 }

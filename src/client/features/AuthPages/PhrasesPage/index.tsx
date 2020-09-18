@@ -10,10 +10,6 @@ const PhrasesPage = () => {
   const { user } = useSelector(authSelector);
   const { phrases } = useSelector(phrasesSelector);
 
-  function fetchPhrases() {
-    dispatch(fetchAllPhrases(user.id));
-  }
-
   useEffect(() => {
     dispatch(fetchAllPhrases(user.id))
   }, [dispatch, fetchAllPhrases])
@@ -52,7 +48,6 @@ const PhrasesPage = () => {
   return (
     <section className={styles.vocabPage}>
       <h1>Vocabulary</h1>
-      <button onClick={() => fetchPhrases()}>Fetch phrases</button>
       <table className={styles.vocabTable}>
         <thead>
           <tr>
