@@ -4,12 +4,11 @@ import { useLocation } from 'react-router-dom';
 
 import styles from './definePhraseButton.module.scss';
 import {
-  Article,
   HighlightedPhrase,
   TranslationState,
   TranslationAction,
   SaveState,
-  IPhraseUnit
+  LocationState
 } from '../../interfaces';
 import { authSelector } from '../../slices/auth';
 
@@ -22,9 +21,8 @@ const DefinePhraseButton = () => {
   );
   const [defBoxOpen, setDefBoxOpen] = useState<Boolean>(false);
 
-  type locationState = null | undefined | { phrase: IPhraseUnit; article?: Article } | { phrase?: IPhraseUnit; article: Article }
   const location: {
-    state: locationState
+    state: LocationState
   } = useLocation();
   const { user } = useSelector(authSelector);
   let lang: string;

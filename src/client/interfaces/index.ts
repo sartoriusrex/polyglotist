@@ -57,3 +57,5 @@ export interface IPhraseUnit {
   context_phrase: string;
   strength: number;
 }
+
+export type LocationState = null | undefined | { phrase: IPhraseUnit; article?: Article } | { phrase?: IPhraseUnit; article: Article }
