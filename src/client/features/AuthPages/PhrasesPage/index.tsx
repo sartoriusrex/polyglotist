@@ -18,10 +18,7 @@ const PhrasesPage = () => {
 
 
   const PhraseUnit = ({ phraseObject }: { phraseObject: IPhraseUnit }) => {
-    const { phrase_id, phrase, translation, created_at, language } = phraseObject;
-    const ts = new Date(created_at)
-    const createdDate = ts.toLocaleDateString();
-    const createdTime = ts.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const { phrase_id, phrase, translation, strength } = phraseObject;
 
     return (
       <tr>
@@ -38,7 +35,7 @@ const PhrasesPage = () => {
           </Link>
         </td>
         <td>{translation}</td>
-        <td>{language}</td>
+        <td>{strength}</td>
       </tr>
     )
   }
