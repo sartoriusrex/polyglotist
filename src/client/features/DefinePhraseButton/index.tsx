@@ -142,10 +142,8 @@ const DefinePhraseButton = () => {
     switch (defState.status) {
       case 'idle':
         return null;
-        break;
       case 'fetching':
         return <p>...Translating Text</p>;
-        break;
       case 'error':
         return <p>{defState.error}</p>;
       case 'success':
@@ -155,7 +153,6 @@ const DefinePhraseButton = () => {
             <GoogleAttribution />
           </>
         );
-        break;
       default:
         return null;
     }
