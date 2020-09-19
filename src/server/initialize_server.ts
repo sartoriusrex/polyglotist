@@ -28,7 +28,16 @@ export default function initializeServer(router: Router) {
   })();
 
   // after initializing Data, fetch fresh articles at 600 and 1800 every day using node-cron
-  cron.schedule('* * 6,18 * * *', async () => await fetchFreshArticles());
+  cron.schedule('* * 6,18 * * *', async () => {
+    try {
+      console.log(`-=-=-=-fetching new articles-=-=-=-`);
+
+      return await fetchFreshArticles()
+    } catch (err) {
+      console.log(`%+%+%+%+ Error %+%+%+%\n${err}`)
+    }
+
+  });
 
   app.use(bodyParser.json());
   app.use(

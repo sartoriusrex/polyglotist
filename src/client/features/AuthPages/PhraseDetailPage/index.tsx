@@ -19,7 +19,7 @@ const PhraseDetailPage = () => {
         const createdDate = timestamp.toLocaleDateString();
         const createdTime = timestamp.toLocaleTimeString([], {
             hour: '2-digit',
-            minute: '2digit',
+            minute: '2-digit',
         });
 
         phraseObject = {
