@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { fetchAllArticles } from './articles';
 
 interface phraseInterface {
   phrase_id: string;
@@ -82,6 +83,7 @@ export function fetchAllPhrases(id: number) {
       const data = await response.json();
 
       dispatch(fetchPhrasesSuccess(data));
+      dispatch(fetchAllArticles(id));
     } catch (err) {
       console.log(err);
       dispatch(fetchPhrasesFailure());
