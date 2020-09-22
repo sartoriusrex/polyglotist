@@ -5,6 +5,7 @@ import authReducer from '../slices/auth';
 import settingsReducer from '../slices/settings';
 import messageReducer from '../slices/messages';
 import newArticlesReducer from '../slices/newArticles';
+import articlesReducer from '../slices/articles';
 import phrasesReducer from '../slices/phrases';
 
 export const rootReducer = combineReducers({
@@ -13,6 +14,7 @@ export const rootReducer = combineReducers({
   settings: settingsReducer,
   message: messageReducer,
   newArticles: newArticlesReducer,
+  articles: articlesReducer,
   phrases: phrasesReducer,
 });
 

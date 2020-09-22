@@ -1,12 +1,22 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import { LocationState } from '../../../interfaces';
+import { LocationState, Article } from '../../../interfaces';
+import styles from './phrasesDetailPage.module.scss';
+import { authSelector } from '../../../slices/auth';
+import { newArticlesSelector } from '../../../slices/newArticles';
+import GoBackButton from '../../../common/components/GoBackButton';
 
 const PhraseDetailPage = () => {
     const location: {
         state: LocationState
     } = useLocation();
+
+    const { user } = useSelector(authSelector);
+    const { articles } = useSelector(newArticlesSelector);
+    // const selectedArticle = articles.filter((article: Article) => article.)
 
     let phraseObject;
 
@@ -38,32 +48,46 @@ const PhraseDetailPage = () => {
     }
 
     return (
-        <section>
-            <h1>{phraseObject.phrase}</h1>
+        <section className={styles.phraseDetailPageSection}>
+            <div>
+                <GoBackButton />
+                <h1>{phraseObject.phrase}</h1>
+            </div>
             <ul>
                 <li>
                     <span>Defintion</span>
-                    {phraseObject.translation}
+                    <p>{phraseObject.translation}</p>
                 </li>
                 <li>
                     <span>Language</span>
-                    {phraseObject.language}
+                    <p>{phraseObject.language.split('').map((el: string, idx: number) => idx === 0 ? el[idx].toUpperCase() : el).join('')}</p>
                 </li>
                 <li>
                     <span>Strength</span>
-                    {phraseObject.strength}
+                    <p>{phraseObject.strength}</p>
                 </li>
                 <li>
                     <span>Context Phrase</span>
-                    {phraseObject.context_phrase}
+                    <p>{phraseObject.context_phrase}</p>
                 </li>
                 <li>
                     <span>Article Source</span>
-                    {phraseObject.article}
+                    {/* <Link
+                        to={{
+                            pathname: `/${user.username}/articles/${article}`,
+                            state: {
+                                article: articles.article,
+                                sourceName: source,
+                                wordCount: bodyLength,
+                            }
+                        }
+                            >
+                            { phraseObject.article }
+                    </Link> */}
                 </li>
                 <li>
                     <span>Created</span>
-                    {phraseObject.createdDate}, {phraseObject.createdTime}
+                    <p>{phraseObject.createdDate}, {phraseObject.createdTime}</p>
                 </li>
             </ul>
         </section>

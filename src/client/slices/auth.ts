@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import { sendMessage, removeMessage } from './messages';
 import { fetchNewArticles } from './newArticles';
 import { loadSettings } from './settings';
+import { fetchAllPhrases } from './phrases';
+import { fetchAllArticles } from './articles';
 import history from '../app/history';
 
 interface authStateInterface {
@@ -162,6 +164,10 @@ export function login(username?: string, password?: string) {
           dispatch(fetchNewArticles(sources));
           history.push(`/${username}/dashboard`);
         }
+
+        // After navigation, can fetch all the user's phrases & articles
+        dispatch(fetchAllPhrases(user.id));
+        dispatch(fetchAllArticles(user.id));
 
         dispatch(sendMessage(data.message));
       } else if (response.status === 200 && data.user === null) {

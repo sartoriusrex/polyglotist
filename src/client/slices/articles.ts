@@ -1,16 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { Article } from '../interfaces';
+
 interface articlesStateInterface {
   loading: boolean;
   hasErrors: boolean;
-  articles: { title: string; url: string; body: string[] }[] | null;
+  articles: Article[] | [];
   // Need to add date and date read in state, as well as update backend to get this data
 }
 
 export const initialState: articlesStateInterface = {
   loading: false,
   hasErrors: false,
-  articles: null,
+  articles: [],
 };
 
 const articlesSlice = createSlice({
@@ -61,3 +63,46 @@ const articlesSlice = createSlice({
     },
   },
 });
+
+export const articlesSelector = (state: any) => state.articles;
+
+const { actions, reducer } = articlesSlice;
+
+export const {
+  fetchArticles,
+  fetchArticlesFailure,
+  fetchArticlesSuccess,
+  addArticle,
+  addArticleFailure,
+  addArticleSuccess
+} = actions;
+
+export function fetchAllArticles(id: number) {
+  const body = { id };
+
+  return async (dispatch: Function) => {
+    dispatch(fetchArticles());
+
+    try {
+      const response = await fetch(
+        '/api/articles',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body)
+        }
+      )
+
+      const data = await response.json();
+
+      dispatch(fetchArticlesSuccess(data));
+    } catch (err) {
+      console.log(err);
+      dispatch(fetchArticlesFailure());
+    }
+  };
+}
+
+export default reducer;

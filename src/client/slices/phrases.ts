@@ -81,8 +81,6 @@ export function fetchAllPhrases(id: number) {
 
       const data = await response.json();
 
-      console.log(data);
-
       dispatch(fetchPhrasesSuccess(data));
     } catch (err) {
       console.log(err);

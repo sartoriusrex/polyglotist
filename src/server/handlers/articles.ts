@@ -129,9 +129,59 @@ export default {
 
     return res.status(200).send(articles);
   },
-  fetchArticles: async (req: Request, res: Response) => {},
-  fetchOneArticle: async (req: Request, res: Response) => {},
-  addArticle: async (req: Request, res: Response) => {},
-  updateArticle: async (req: Request, res: Response) => {},
-  deleteArticle: async (req: Request, res: Response) => {},
+  fetchArticles: async (req: Request, res: Response) => {
+    const { id } = req.body;
+
+    interface IUsersArticles {
+      id: Number;
+      user_id: Number;
+      article_id: Number;
+    }
+
+    try {
+      const usersArticlesQuery = `SELECT * FROM users_articles WHERE user_id = $1`;
+      const articleQuery = `SELECT * FROM articles WHERE id = $1`;
+      const articleBodyQuery = `SELECT tag, text FROM article_bodies WHERE article_id = $1 ORDER BY tag_order;`;
+      const articleSourceQuery = `SELECT * FROM sources WHERE id = $1`;
+
+      const usersArticlesResult = await db.query(usersArticlesQuery, [id]);
+      const usersArticles: IUsersArticles[] = usersArticlesResult.rows;
+
+      const articles = await Promise.all(usersArticles.map(async (userArticle: IUsersArticles) => {
+        const { article_id } = userArticle;
+
+        const articleResult = await db.query(articleQuery, [article_id])
+        let article = articleResult.rows[0];
+        const articleBodyResult = await db.query(articleBodyQuery, [article_id]);
+        const articleBodies = articleBodyResult.rows.map((result: any) => [result.tag, result.text]);
+        const sourceResult = await db.query(articleSourceQuery, [source_id]);
+        const source = sourceResult.rows[0];
+
+        console.log(source);
+
+        article = {
+          title: article.title,
+          date: article.article_date,
+          // language: source.language,
+          url: article.url,
+          body: articleBodies,
+          // source: source.name,
+        }
+
+        return article;
+      }));
+
+      console.log(articles)
+
+      // res.status(200).send({ articles });
+    } catch (err) {
+      console.log(err);
+
+      res.status(500).send({ error: err });
+    }
+  },
+  fetchOneArticle: async (req: Request, res: Response) => { },
+  addArticle: async (req: Request, res: Response) => { },
+  updateArticle: async (req: Request, res: Response) => { },
+  deleteArticle: async (req: Request, res: Response) => { },
 };

@@ -23,11 +23,12 @@ export default function initializeServer(router: Router) {
   });
 
   (async function initializeData() {
-    await initializeDatabase();
-    await fetchFreshArticles();
+    // await initializeDatabase();
+    // await fetchFreshArticles();
   })();
 
   // after initializing Data, fetch fresh articles at 600 and 1800 every day using node-cron
+  //There seem to be issues with this task - it gets called in an endless loop for some reason, and at a time that does not seem to match the params
   cron.schedule('* * 6,18 * * *', async () => {
     try {
       console.log(`-=-=-=-fetching new articles-=-=-=-`);
