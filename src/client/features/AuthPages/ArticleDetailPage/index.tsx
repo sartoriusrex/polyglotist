@@ -1,13 +1,17 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { Article } from '../../../interfaces';
+import { authSelector } from '../../../slices/auth';
+import { addOneArticle } from '../../../slices/articles';
 import styles from './articleDetail.module.scss';
 
 import GoBackButton from '../../../common/components/GoBackButton';
 
 const ArticleDetailPage = () => {
+  const dispatch = useDispatch();
+  const { user } = useSelector(authSelector);
   const location: {
     state: { article: Article; sourceName: string; wordCount: number };
   } = useLocation();
@@ -34,6 +38,12 @@ const ArticleDetailPage = () => {
   // Scroll to top on render
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(addOneArticle(user.id, article.title))
+    }, 1000 * 60)
   }, []);
 
   return (

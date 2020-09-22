@@ -178,7 +178,17 @@ export default {
     }
   },
   fetchOneArticle: async (req: Request, res: Response) => { },
-  addArticle: async (req: Request, res: Response) => { },
+  addArticle: async (req: Request, res: Response) => {
+    console.log(req);
+    const article = {};
+
+    try {
+      res.status(200).send({ message: "Added Article", article })
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({ error: err })
+    }
+  },
   updateArticle: async (req: Request, res: Response) => { },
   deleteArticle: async (req: Request, res: Response) => { },
 };

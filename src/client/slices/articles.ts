@@ -107,4 +107,35 @@ export function fetchAllArticles(id: number) {
   };
 }
 
+export function addOneArticle(userId: number, articleTitle: string) {
+  const body = { userId, articleTitle };
+
+  return async (dispatch: Function) => {
+    dispatch(addArticle());
+
+    try {
+      const response = await fetch(
+        '/api/articles/add_article',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body)
+        }
+      )
+
+      const data = await response.json();
+
+      const { message, article } = data;
+
+      console.log(message, article);
+      // dispatch(addArticleSuccess(article));
+    } catch (err) {
+      console.log(err);
+      dispatch(addArticleFailure());
+    }
+  }
+}
+
 export default reducer;
