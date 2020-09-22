@@ -164,10 +164,10 @@ const figaroCrawler: Crawler = {
                 let username = comment.querySelector('.figc-comment__username');
                 username = username === null ? 'n-a' : username.innerText;
 
-                let date = comment.querySelector('.figc_comment__date');
+                let date = comment.querySelector('.figc-comment__date');
                 date = date === null ? 'n-a' : date.innerText;
 
-                let text = comment.querySelector('.figc_comment__text');
+                let text = comment.querySelector('.figc-comment__text');
                 text = text === null ? 'n-a' : text.innerText;
 
                 const returningArray: string[] = [username, date, text];
@@ -175,7 +175,7 @@ const figaroCrawler: Crawler = {
                 return returningArray.map((textData: string) => [
                   'P',
                   textData,
-                ]);
+                ]).flat(1);
               });
             } else {
               return {

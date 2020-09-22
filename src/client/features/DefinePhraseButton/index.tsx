@@ -46,21 +46,18 @@ const DefinePhraseButton = () => {
           ...state,
           status: 'fetching',
         };
-        break;
       case 'fetchSuccess':
         return {
           ...state,
           status: 'success',
           translation: action.translation,
         };
-        break;
       case 'fetchError':
         return {
           ...state,
           status: 'error',
           error: action.error,
         };
-        break;
       default:
         return { ...state };
     }
