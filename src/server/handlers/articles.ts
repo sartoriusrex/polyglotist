@@ -152,6 +152,7 @@ export default {
 
         const articleResult = await db.query(articleQuery, [article_id])
         let article = articleResult.rows[0];
+        const { source_id } = article;
         const articleBodyResult = await db.query(articleBodyQuery, [article_id]);
         const articleBodies = articleBodyResult.rows.map((result: any) => [result.tag, result.text]);
         const sourceResult = await db.query(articleSourceQuery, [source_id]);
@@ -162,18 +163,16 @@ export default {
         article = {
           title: article.title,
           date: article.article_date,
-          // language: source.language,
+          language: source.language,
           url: article.url,
           body: articleBodies,
-          // source: source.name,
+          source: source.name,
         }
 
         return article;
       }));
 
-      console.log(articles)
-
-      // res.status(200).send({ articles });
+      res.status(200).send({ articles });
     } catch (err) {
       console.log(err);
 

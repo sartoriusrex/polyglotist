@@ -97,7 +97,9 @@ export function fetchAllArticles(id: number) {
 
       const data = await response.json();
 
-      dispatch(fetchArticlesSuccess(data));
+      const { articles } = data;
+
+      dispatch(fetchArticlesSuccess(articles));
     } catch (err) {
       console.log(err);
       dispatch(fetchArticlesFailure());
