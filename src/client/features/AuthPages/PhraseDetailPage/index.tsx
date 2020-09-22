@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { LocationState, Article } from '../../../interfaces';
 import styles from './phrasesDetailPage.module.scss';
 import { authSelector } from '../../../slices/auth';
-import { newArticlesSelector } from '../../../slices/newArticles';
+import { articlesSelector } from '../../../slices/articles';
 import GoBackButton from '../../../common/components/GoBackButton';
 
 const PhraseDetailPage = () => {
@@ -15,10 +15,19 @@ const PhraseDetailPage = () => {
     } = useLocation();
 
     const { user } = useSelector(authSelector);
-    const { articles } = useSelector(newArticlesSelector);
-    // const selectedArticle = articles.filter((article: Article) => article.)
+    const { articles } = useSelector(articlesSelector);
 
-    let phraseObject;
+    let phraseObject: {
+        phrase_id: string;
+        phrase: string;
+        createdDate: string;
+        createdTime: string;
+        strength: number;
+        translation: string;
+        language: string;
+        article: string;
+        context_phrase: string;
+    };
 
     if (location.state !== null &&
         location.state !== undefined &&
@@ -47,6 +56,17 @@ const PhraseDetailPage = () => {
         return <></>
     }
 
+    let selectedArticle = articles.filter((storeArticle: Article) => storeArticle.title === phraseObject.article)[0];
+    selectedArticle = {
+        ...selectedArticle,
+        source: selectedArticle.source.split('').map((el: string, idx: number) => idx === 0 ? el[idx].toUpperCase() : el).join('')
+    }
+    const title = selectedArticle.title.replace(/[\W_]+/g, '-');
+    const bodyLength = selectedArticle.body
+        .map((bodyArray: string[]) => bodyArray[1])
+        .join()
+        .split(' ').length;
+
     return (
         <section className={styles.phraseDetailPageSection}>
             <div>
@@ -72,25 +92,25 @@ const PhraseDetailPage = () => {
                 </li>
                 <li>
                     <span>Article Source</span>
-                    {/* <Link
+                    <Link
                         to={{
-                            pathname: `/${user.username}/articles/${article}`,
+                            pathname: `/${user.username}/articles/${title}`,
                             state: {
-                                article: articles.article,
-                                sourceName: source,
+                                article: selectedArticle,
+                                sourceName: selectedArticle.source,
                                 wordCount: bodyLength,
                             }
-                        }
-                            >
-                            { phraseObject.article }
-                    </Link> */}
+                        }}
+                    >
+                        {phraseObject.article}
+                    </Link>
                 </li>
                 <li>
                     <span>Created</span>
                     <p>{phraseObject.createdDate}, {phraseObject.createdTime}</p>
                 </li>
             </ul>
-        </section>
+        </section >
     )
 }
 

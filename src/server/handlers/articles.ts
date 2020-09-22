@@ -158,8 +158,6 @@ export default {
         const sourceResult = await db.query(articleSourceQuery, [source_id]);
         const source = sourceResult.rows[0];
 
-        console.log(source);
-
         article = {
           title: article.title,
           date: article.article_date,

@@ -6,6 +6,7 @@
         width: 100%;
         align-items: center;
         position: relative;
+        margin-top: 1rem;
 
         button {
             display: flex;
@@ -19,7 +20,7 @@
     }
 
     h1 {
-        margin: 0 0 .625rem 2rem;
+        margin: 0 0 1.5rem 3rem;
         font-size: 1.25rem;
     }
 
@@ -45,6 +46,10 @@
 
         p, a {
             padding: .75rem;
+        }
+
+        a {
+            color: $dark-purple;
             text-decoration: none;
         }
     }
