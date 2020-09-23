@@ -162,21 +162,20 @@ const figaroCrawler: Crawler = {
 
               return commentsContainer.map((comment: any) => {
                 let username = comment.querySelector('.figc-comment__username');
-                username = username === null ? 'n-a' : username.innerText;
+                username ? username.innerText : 'n-a';
 
                 let date = comment.querySelector('.figc-comment__date');
-                date = date === null ? 'n-a' : date.innerText;
+                date ? date.innerText : 'n-a';
 
                 let text = comment.querySelector('.figc-comment__text');
-                text = text === null ? 'n-a' : text.innerText;
+                text ? text.innerText : 'n-a';
 
                 const returningArray: string[] = [username, date, text];
 
-                return returningArray.map((textData: string) => [
-                  'P',
-                  textData,
-                ]).flat(1);
-              });
+                return returningArray.map((textData: string) => {
+                  return ['P', textData]
+                });
+              }).flat(1);
             } else {
               return {
                 error: `Failed to retreive article comments from ${url}.`,

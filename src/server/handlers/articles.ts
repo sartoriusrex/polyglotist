@@ -5,13 +5,7 @@ import {
   DatabaseSource,
   CrawlResult,
   SourceText,
-  Error,
 } from '../crawler/interfaces';
-
-interface Source {
-  name: string;
-  id: string;
-}
 
 export default {
   fetchFreshArticles: async (req: Request, res: Response) => {
@@ -179,10 +173,36 @@ export default {
   },
   fetchOneArticle: async (req: Request, res: Response) => { },
   addArticle: async (req: Request, res: Response) => {
-    console.log(req);
-    const article = {};
+    const { userId, articleTitle } = req.body;
+
+    const articleQuery = `SELECT * FROM articles WHERE title = $1`;
+    const userArticleQuery = `SELECT * FROM users_articles WHERE user_id = $1 AND article_id = $2`
+    const addUserArticleQuery = `INSERT INTO users_articles (user_id, article_id) VALUES ($1, $2) RETURNING id`;
+    const updateArticleReferencedQuery = `UPDATE articles SET referenced = $1 WHERE id = $2 RETURNING id;`;
 
     try {
+      // Check to see if relationship already exists between user and article, meaning if the user had already added it.
+      // If so, return 200 with the article, stating it already exists
+      // Otherwise, create the relationship;
+
+      const articleResult = await db.query(articleQuery, [articleTitle]);
+      const article = articleResult.rows[0];
+      const userArticleResult = await db.query(userArticleQuery, [userId, article.id])
+      const userArticle = userArticleResult.rows[0];
+
+      if (userArticle !== undefined) {
+        return res.status(200).send({ message: "Article already added", article })
+      }
+
+      // Update referenced field in Article
+      await db.query(updateArticleReferencedQuery, [true, article.id]);
+
+      const addUserArticleResult = await db.query(addUserArticleQuery, [userId, article.id])
+      const addUserArticle = addUserArticleResult.rows[0];
+
+      // If we failed to add relationship
+      if (addUserArticle.length <= 0) return res.status(500).send({ error: 'Failed to add article' });
+
       res.status(200).send({ message: "Added Article", article })
     } catch (err) {
       console.log(err);

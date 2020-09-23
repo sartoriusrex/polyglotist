@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { Article } from '../../../interfaces';
 import { authSelector } from '../../../slices/auth';
-import { addOneArticle } from '../../../slices/articles';
+import { addArticle, addOneArticle, articlesSelector } from '../../../slices/articles';
 import styles from './articleDetail.module.scss';
 
 import GoBackButton from '../../../common/components/GoBackButton';
@@ -12,6 +12,7 @@ import GoBackButton from '../../../common/components/GoBackButton';
 const ArticleDetailPage = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(authSelector);
+  const { articles } = useSelector(articlesSelector);
   const location: {
     state: { article: Article; sourceName: string; wordCount: number };
   } = useLocation();
@@ -40,11 +41,54 @@ const ArticleDetailPage = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  // Check to see if the article being viewed already exists in redux store (meaning it has been added) - if it is, do nothing. Otherwise, dispatch addOneArticle after 1 minute
   useEffect(() => {
-    setTimeout(() => {
-      dispatch(addOneArticle(user.id, article.title))
-    }, 1000 * 60)
+    let mounted = true;
+
+    function addArticle() {
+      const existingArticle = articles.some((storeArticle: Article) => {
+        return storeArticle.title === article.title
+      })
+
+      if (existingArticle === false) {
+        setTimeout(() => {
+          if (mounted) {
+            console.log('adding article');
+            dispatch(addOneArticle(user.id, article.title))
+          }
+        }, 1000 * 60)
+      } else {
+        return;
+      }
+    }
+
+    addArticle();
+
+    return function cleanup() {
+      mounted = false;
+    }
   }, []);
+
+  function AddArticleButton() {
+    function addArticle() {
+      const existingArticle = articles.some((storeArticle: Article) => {
+        return storeArticle.title === article.title
+      })
+
+      if (existingArticle === false) {
+        console.log('clicked and adding article');
+        dispatch(addOneArticle(user.id, article.title))
+      } else {
+        return;
+      }
+    }
+
+    return (
+      <button onClick={() => addArticle()}>
+        +
+      </button>
+    )
+  }
 
   return (
     <article className={styles.article}>
@@ -66,6 +110,7 @@ const ArticleDetailPage = () => {
       <div className={styles.articleBodyContainer}>
         {renderBody(article.body)}
       </div>
+      <AddArticleButton />
     </article>
   );
 };

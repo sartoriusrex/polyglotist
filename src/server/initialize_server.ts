@@ -28,7 +28,7 @@ export default function initializeServer(router: Router) {
   // })();
 
   // after initializing Data, fetch fresh articles every 12 hours. FYI time is 10 hours ahead of HST
-  cron.schedule("* * */12 * * *", async () => {
+  cron.schedule("0 0 */12 * * *", async () => {
     try {
       console.log(`-=-=-=-fetching new articles-=-=-=-`);
 
