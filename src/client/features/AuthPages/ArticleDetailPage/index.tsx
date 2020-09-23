@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { Article } from '../../../interfaces';
 import { authSelector } from '../../../slices/auth';
-import { addArticle, addOneArticle, articlesSelector } from '../../../slices/articles';
+import { addOneArticle, articlesSelector } from '../../../slices/articles';
 import styles from './articleDetail.module.scss';
 
 import GoBackButton from '../../../common/components/GoBackButton';
