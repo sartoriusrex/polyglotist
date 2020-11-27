@@ -25,8 +25,17 @@ The application makes user of environment variables, which will need to be creat
 Originally, the development implementation could be found at the repo [simple-react-full-stack](https://github.com/crsandeep/simple-react-full-stack). Currently users need to have Docker installed. To start, clone the repo and run the following commands:
 
 ```bash
+# if you already have postgresql installed, the service must be stopped.
+# On linux, one can achieve this by running the following command
+sudo service postgresql stop
+
+# confirm that postgresql has stopped
+service postgresql status
+
 #run development servers
-sudo docker-compose docker-compose.dev.yml up --build
+sudo docker-compose -f docker-compose.dev.yml up --build
+
+# if already built, you can just the above command without the --build flag
 
 #run typechecking before compiling
 npm run typecheck
