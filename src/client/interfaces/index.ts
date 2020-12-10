@@ -17,6 +17,7 @@ export interface Article {
   url: string;
   language: string;
   body: string[][];
+  source?: string;
 }
 
 export interface ArticleObject {

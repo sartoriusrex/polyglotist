@@ -22,10 +22,10 @@ export default function initializeServer(router: Router) {
     max: 50,
   });
 
-  // (async function initializeData() {
-  //   await initializeDatabase();
-  //   await fetchFreshArticles();
-  // })();
+  (async function initializeData() {
+    await initializeDatabase();
+    await fetchFreshArticles();
+  })();
 
   // after initializing Data, fetch fresh articles every 12 hours. FYI time is 10 hours ahead of HST
   cron.schedule("0 0 */12 * * *", async () => {

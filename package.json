@@ -1,6 +1,10 @@
 {
   "name": "polyglotist-v1",
   "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "github.com/sartoriusrex/polyglotist"
+  },
   "description": "PERN (PostgresQL, Express, React, Node) app that aids intermediate language learners in learning to read new languages and learn new vocabulary.",
   "main": "src/server/index.ts",
   "scripts": {

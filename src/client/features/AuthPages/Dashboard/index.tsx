@@ -26,8 +26,10 @@ const Dashboard = () => {
     count: number;
     bodyLength: number;
     source: string;
+    showNumber: number;
+    username: string;
   }) => {
-    const { article, count, source, bodyLength } = props;
+    const { article, count, source, bodyLength, showNumber, username } = props;
     const date = new Date(article.date);
     const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(
       date
@@ -45,7 +47,7 @@ const Dashboard = () => {
       >
         <Link
           to={{
-            pathname: `/${user.username}/articles/${title}`,
+            pathname: `/${username}/articles/${title}`,
             state: {
               article,
               sourceName: source,
@@ -127,6 +129,8 @@ const Dashboard = () => {
                 source={sourceName}
                 count={count}
                 bodyLength={bodyLength}
+                showNumber={showNumber}
+                username={user.username}
               />
             );
           });

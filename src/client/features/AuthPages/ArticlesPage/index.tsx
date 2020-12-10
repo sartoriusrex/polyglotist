@@ -6,6 +6,8 @@ import { authSelector } from '../../../slices/auth';
 
 import { Article } from '../../../interfaces';
 
+import styles from './articlePage.module.scss';
+
 const ArticlesPage = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(authSelector);
@@ -17,16 +19,22 @@ const ArticlesPage = () => {
 
   function renderArticlesList(articles: Article[]) {
     return articles.map((article: Article) => {
+      console.log(article);
       return (
         <li key={article.title}>
-          {article.title}
+          <h2>
+            {article.title}
+          </h2>
+          <time>{article.date}</time>
+          <p>{article.language}</p>
+          <p>{article.source}</p>
         </li>
       )
     })
   }
 
   return (
-    <section>
+    <section className={styles.articlePage}>
       <h1>Your Articles</h1>
       <ul>
         {renderArticlesList(articles)}

@@ -36,6 +36,8 @@ service postgresql status
 sudo docker-compose -f docker-compose.dev.yml up --build
 
 # if already built, you can just the above command without the --build flag
+# The backend serves from localhost:8080
+# You can access the frontend from localhost:3000
 
 #run typechecking before compiling
 npm run typecheck
