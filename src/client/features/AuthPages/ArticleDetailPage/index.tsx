@@ -24,6 +24,10 @@ const ArticleDetailPage = () => {
   const day = date.getDate();
   const year = date.getFullYear();
 
+  const existingArticle = articles.some((storeArticle: Article) => {
+    return storeArticle.title === article.title
+  })
+
   function renderBody(bodyArray: string[][]) {
     return bodyArray.map((bodyElement: string[]) => {
       let element = bodyElement[0].toLowerCase();
@@ -41,20 +45,19 @@ const ArticleDetailPage = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  function addArticle() {
+    return dispatch(addOneArticle(user.id, article.title));
+  }
+
   // Check to see if the article being viewed already exists in redux store (meaning it has been added) - if it is, do nothing. Otherwise, dispatch addOneArticle after 1 minute
   useEffect(() => {
     let mounted = true;
 
     function addArticle() {
-      const existingArticle = articles.some((storeArticle: Article) => {
-        return storeArticle.title === article.title
-      })
-
       if (existingArticle === false) {
         setTimeout(() => {
           if (mounted) {
-            console.log('adding article');
-            dispatch(addOneArticle(user.id, article.title))
+            addArticle();
           }
         }, 1000 * 60)
       } else {
@@ -69,23 +72,12 @@ const ArticleDetailPage = () => {
     }
   }, []);
 
-  function AddArticleButton() {
-    function addArticle() {
-      const existingArticle = articles.some((storeArticle: Article) => {
-        return storeArticle.title === article.title
-      })
-
-      if (existingArticle === false) {
-        console.log('clicked and adding article');
-        dispatch(addOneArticle(user.id, article.title))
-      } else {
-        return;
-      }
-    }
+  const AddArticleButton = () => {
+    if (existingArticle) return <></>;
 
     return (
-      <button onClick={() => addArticle()}>
-        +
+      <button className={styles.addArticleBtn} onClick={() => addArticle()}>
+        Save Article
       </button>
     )
   }
@@ -110,7 +102,7 @@ const ArticleDetailPage = () => {
       <div className={styles.articleBodyContainer}>
         {renderBody(article.body)}
       </div>
-      <AddArticleButton />
+      {!existingArticle && <AddArticleButton />}
     </article>
   );
 };

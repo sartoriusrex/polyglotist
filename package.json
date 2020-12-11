@@ -16,7 +16,10 @@
     "server": "nodemon src/server/index.ts",
     "dev": "npm run exportgoogle && concurrently \"npm run server\" \"npm run client\"",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "docker-build": "sudo docker-compose -f docker-compose.dev.yml up --build",
+    "docker-start": "sudo docker-compose -f docker-compose.dev.yml up",
+    "docker-prod": "sudo docker-compose up --build"
   },
   "author": "Dennis Mai",
   "license": "ISC",

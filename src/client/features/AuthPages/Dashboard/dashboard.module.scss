@@ -12,57 +12,6 @@
   }
 }
 
-.ArticleCard {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: .9375rem;
-  box-shadow: $box-shadow;
-
-  div {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  p {
-    font-size: .75rem;
-  }
-}
-
-.ArticleCardHidden {
-  @extend .ArticleCard;
-  display: none;
-}
-
-.ArticleCardHeader {
-  padding: .3125rem;
-  background-color: $lighter-blue-gray;
-}
-
-.date {
-  width: 18%;
-}
-
-.wordCount {
-  width: 23%;
-  text-align: right;
-}
-
-.source {
-  width: 42%;
-}
-
-.language {
-  width: 17%;
-  text-align: right;
-}
-
-.ArticleCardTitle {
-  background-color: $light-gray;
-  padding: .3125rem;
-}
-
 .MoreButton {
   padding: .625rem 1.25rem;
   padding-right: .625rem;

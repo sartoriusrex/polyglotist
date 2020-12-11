@@ -35,7 +35,15 @@ service postgresql status
 #run development servers
 sudo docker-compose -f docker-compose.dev.yml up --build
 
+# or the npm script provided to do the same thing
+npm run docker-build
+
 # if already built, you can just the above command without the --build flag
+sudo docker-compose -f docker-compose.dev.yml up
+
+# or the equivalent script
+npm run docker-start
+
 # The backend serves from localhost:8080
 # You can access the frontend from localhost:3000
 
@@ -50,6 +58,9 @@ Running the following code below will build a production-ready image, which is s
 ```bash
 # builds production application with postgres service
 sudo docker-compose up --build
+
+# or the equivalent npm script
+npm run docker-prod
 ```
 
 Currently, Figma is used to prototype and mockup the frontend. One can view mockups from [here:](https://www.figma.com/file/E1SqSr0kkhiWNjqTokBLUw/Polyglotist-v1?node-id=0%3A1)

@@ -6,6 +6,8 @@ import { authSelector } from '../../../slices/auth';
 
 import { Article } from '../../../interfaces';
 
+import ArticleCard from '../../ArticleCard';
+
 import styles from './articlePage.module.scss';
 
 const ArticlesPage = () => {
@@ -18,17 +20,23 @@ const ArticlesPage = () => {
   }, [])
 
   function renderArticlesList(articles: Article[]) {
+    if (articles.length === 0) {
+      return <h2>No saved articles.</h2>
+    }
+
+    let count = articles.length;
+    let showNumber = articles.length;
+
     return articles.map((article: Article) => {
-      console.log(article);
       return (
-        <li key={article.title}>
-          <h2>
-            {article.title}
-          </h2>
-          <time>{article.date}</time>
-          <p>{article.language}</p>
-          <p>{article.source}</p>
-        </li>
+        <ArticleCard
+          key={article.url}
+          article={article}
+          sourceId={article.source}
+          count={count}
+          showNumber={showNumber}
+          username={user.username}
+        />
       )
     })
   }
