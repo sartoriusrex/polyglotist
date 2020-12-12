@@ -58,25 +58,25 @@ const ArticleDetailPage = () => {
   }
 
   // Check to see if the article being viewed already exists in redux store (meaning it has been added) - if it is, do nothing. Otherwise, dispatch addOneArticle after 1 minute
-  // useEffect(() => {
-  //   let mounted = true;
+  useEffect(() => {
+    let mounted = true;
 
-  //   (() => {
-  //     if (existingArticle === false) {
-  //       setTimeout(() => {
-  //         if (mounted) {
-  //           addArticle();
-  //         }
-  //       }, 1000 * 60)
-  //     } else {
-  //       return;
-  //     }
-  //   })()
+    (() => {
+      if (existingArticle === false) {
+        setTimeout(() => {
+          if (mounted) {
+            addArticle();
+          }
+        }, 1000 * 60)
+      } else {
+        return;
+      }
+    })()
 
-  //   return function cleanup() {
-  //     mounted = false;
-  //   }
-  // }, []);
+    return function cleanup() {
+      mounted = false;
+    }
+  }, []);
 
   const AddArticleButton = () => {
     if (existingArticle) return <></>;
