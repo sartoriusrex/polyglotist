@@ -11,6 +11,8 @@ import cron from 'node-cron';
 import initializeDatabase from './database/init';
 import fetchFreshArticles from './database/fetch_fresh_articles';
 
+const needData = false;
+
 export default function initializeServer(router: Router) {
   const app = express();
   const isProduction = process.env.NODE_ENV === 'production';
@@ -23,8 +25,10 @@ export default function initializeServer(router: Router) {
   });
 
   (async function initializeData() {
-    await initializeDatabase();
-    await fetchFreshArticles();
+    if (needData) {
+      await initializeDatabase();
+      await fetchFreshArticles();
+    }
   })();
 
   // after initializing Data, fetch fresh articles every 12 hours. FYI time is 10 hours ahead of HST

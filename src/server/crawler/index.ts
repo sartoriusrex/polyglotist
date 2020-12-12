@@ -38,7 +38,7 @@ const crawlSource = async function (src: {
     await page.goto(url, { waitUntil: 'networkidle0', timeout: 0 });
     await page.waitFor(2000);
 
-    const articleArray: CrawlResult[] | Error = await crawlerFunction(
+    let articleArray: CrawlResult[] | Error = await crawlerFunction(
       grabURLs,
       grabTitle,
       grabDate,
@@ -90,6 +90,8 @@ const crawlSource = async function (src: {
         =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
         =+=+=// All Done scraping ${name} //=+=+=+=+=
         =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=`);
+
+      articleArray = Array.from(new Set(articleArray));
     } else {
       console.log(`\nArticle array is not an array: ${articleArray}\n`);
     }
