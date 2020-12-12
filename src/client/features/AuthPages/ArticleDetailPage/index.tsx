@@ -61,19 +61,18 @@ const ArticleDetailPage = () => {
   useEffect(() => {
     let mounted = true;
 
-    function addArticle() {
+    (() => {
       if (existingArticle === false) {
         setTimeout(() => {
           if (mounted) {
+            console.log('saving')
             addArticle();
           }
         }, 1000 * 60)
       } else {
         return;
       }
-    }
-
-    addArticle();
+    })()
 
     return function cleanup() {
       mounted = false;
