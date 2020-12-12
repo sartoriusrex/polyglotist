@@ -22,7 +22,7 @@ const ServerMessage = () => {
     setTimeout(() => {
       closeMessageBox();
     }, 1000 * 5);
-  }, [location]);
+  }, [location, message]);
 
   if (message) {
     return (
