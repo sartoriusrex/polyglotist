@@ -17,6 +17,7 @@ const ArticleDetailPage = () => {
     state: { article: Article; sourceName: string; wordCount: number };
   } = useLocation();
   const { article, sourceName, wordCount } = location.state;
+
   const date = new Date(article.date);
   const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(
     date
@@ -24,9 +25,16 @@ const ArticleDetailPage = () => {
   const day = date.getDate();
   const year = date.getFullYear();
 
-  const existingArticle = articles.some((storeArticle: Article) => {
+  let existingArticle: Boolean = articles.some((storeArticle: Article) => {
     return storeArticle.title === article.title
-  })
+  });
+
+  // Update existing article if it is added to the articles state
+  useEffect(() => {
+    existingArticle = articles.some((storeArticle: Article) => {
+      return storeArticle.title === article.title
+    });
+  }, [articles])
 
   function renderBody(bodyArray: string[][]) {
     return bodyArray.map((bodyElement: string[]) => {

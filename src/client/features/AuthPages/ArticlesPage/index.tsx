@@ -30,7 +30,7 @@ const ArticlesPage = () => {
     return articles.map((article: Article) => {
       return (
         <ArticleCard
-          key={article.url}
+          key={article.title}
           article={article}
           sourceId={article.source}
           count={count}

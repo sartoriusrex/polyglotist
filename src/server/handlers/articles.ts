@@ -179,6 +179,8 @@ export default {
     const userArticleQuery = `SELECT * FROM users_articles WHERE user_id = $1 AND article_id = $2`
     const addUserArticleQuery = `INSERT INTO users_articles (user_id, article_id) VALUES ($1, $2) RETURNING id`;
     const updateArticleReferencedQuery = `UPDATE articles SET referenced = $1 WHERE id = $2 RETURNING id;`;
+    const articleBodyQuery = `SELECT tag, text FROM article_bodies WHERE article_id = $1 ORDER BY tag_order;`;
+    const articleSourceQuery = `SELECT * FROM sources WHERE id = $1`;
 
     try {
       // Check to see if relationship already exists between user and article, meaning if the user had already added it.
@@ -190,8 +192,26 @@ export default {
       const userArticleResult = await db.query(userArticleQuery, [userId, article.id])
       const userArticle = userArticleResult.rows[0];
 
+      const { source_id } = article;
+      const articleBodyResult = await db.query(articleBodyQuery, [article.id]);
+      const articleBodies = articleBodyResult.rows.map((result: any) => [result.tag, result.text]);
+      const sourceResult = await db.query(articleSourceQuery, [source_id]);
+      const source = sourceResult.rows[0];
+
+      const articleResponse = {
+        title: article.title,
+        date: article.article_date,
+        language: source.language,
+        url: article.url,
+        body: articleBodies,
+        source: source.name,
+      }
+
       if (userArticle !== undefined) {
-        return res.status(200).send({ message: "Article already added", article })
+        return res.status(200).send({
+          message: "Article already added",
+          article: articleResponse
+        })
       }
 
       // Update referenced field in Article
@@ -203,7 +223,7 @@ export default {
       // If we failed to add relationship
       if (addUserArticle.length <= 0) return res.status(500).send({ error: 'Failed to add article' });
 
-      res.status(200).send({ message: "Added Article", article })
+      res.status(200).send({ message: "Added Article", article: articleResponse })
     } catch (err) {
       console.log(err);
       res.status(500).send({ error: err })

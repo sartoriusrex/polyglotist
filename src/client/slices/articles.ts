@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { sendMessage } from './messages';
 
 import { Article } from '../interfaces';
 
@@ -46,12 +47,13 @@ const articlesSlice = createSlice({
       newState.loading = true;
       return newState;
     },
-    addArticleSuccess: (state: articlesStateInterface, { payload }) => {
+    addArticleSuccess: (state: articlesStateInterface, { payload }: { payload: Article }) => {
       const newState = { ...state };
 
-      newState.articles = payload;
+      newState.articles = Array.from(new Set([...newState.articles, payload]));
       newState.loading = false;
       newState.hasErrors = false;
+
       return newState;
     },
     addArticleFailure: (state: articlesStateInterface) => {
@@ -125,15 +127,15 @@ export function addOneArticle(userId: number, articleTitle: string) {
         }
       )
 
-      const data = await response.json();
+      const data: { message: 'string', article: Article } = await response.json();
 
       const { message, article } = data;
 
-      console.log(message, article);
-      // dispatch(addArticleSuccess(article));
+      dispatch(addArticleSuccess(article));
+      dispatch(sendMessage(message));
     } catch (err) {
-      console.log(err);
       dispatch(addArticleFailure());
+      dispatch(sendMessage(err.message));
     }
   }
 }

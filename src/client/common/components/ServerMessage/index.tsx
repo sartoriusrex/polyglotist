@@ -17,11 +17,11 @@ const ServerMessage = () => {
     dispatch(clearMessage(null));
   }
 
-  // after 20 seconds after mounting and after the url location changes, clear the message
+  // after 5 seconds after mounting and after the url location changes, clear the message
   useEffect(() => {
     setTimeout(() => {
       closeMessageBox();
-    }, 20000);
+    }, 1000 * 5);
   }, [location]);
 
   if (message) {

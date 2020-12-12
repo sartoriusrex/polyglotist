@@ -26,6 +26,8 @@ export default async function (
     let body: string[][] | Error = await grabBody(page, url);
     if (!Array.isArray(body)) body = [['H2', body.error]];
 
+    body = Array.from(new Set(body))
+
     results.push({ title, date, url, body, language });
   }
 

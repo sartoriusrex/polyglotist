@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { sendMessage, removeMessage } from './messages';
+import { sendMessage } from './messages';
 import { fetchNewArticles } from './newArticles';
 import { loadSettings } from './settings';
 import { fetchAllPhrases } from './phrases';
@@ -109,7 +109,6 @@ export function login(username?: string, password?: string) {
 
   return async (dispatch: Function) => {
     dispatch(loginUser());
-    dispatch(removeMessage());
 
     try {
       const response = await fetch('/api/auth/login', {
@@ -188,7 +187,6 @@ export function signup(email: string, username: string, password: string) {
 
   return async (dispatch: Function) => {
     dispatch(createUser());
-    dispatch(removeMessage());
 
     try {
       const response = await fetch('/api/auth/signup', {
