@@ -156,12 +156,8 @@ const DefinePhraseButton = () => {
   const [saveState, setSaveState] = useState<SaveState>('idle');
 
   async function handlePhraseSave() {
-    let url: string | null;
-    if (location.state !== null && location.state !== undefined && location.state.article) {
-      url = location.state.article.url;
-    } else {
-      url = null;
-    }
+    let url: string | null = location?.state?.article?.url || null;
+    
     // Grab the entire phrase.
     const selection = window.getSelection() as Selection;
     const { anchorNode, anchorOffset } = selection;
