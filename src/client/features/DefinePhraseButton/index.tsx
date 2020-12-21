@@ -14,6 +14,7 @@ import { authSelector } from '../../slices/auth';
 
 import GoogleAttribution from '../../images/GoogleAttr';
 import Check from '../../images/Check';
+import { addOneArticle } from '../../slices/articles';
 
 const DefinePhraseButton = () => {
   const [highlightedPhrase, setHighlightedPhrase] = useState<HighlightedPhrase>(
@@ -25,13 +26,7 @@ const DefinePhraseButton = () => {
     state: LocationState
   } = useLocation();
   const { user } = useSelector(authSelector);
-  let lang: string;
-
-  if (
-    location.state !== null &&
-    location.state !== undefined &&
-    location.state.article
-  ) lang = location.state.article.language;
+  const lang: string = location?.state?.article?.language || '';
 
   const translationInitState: TranslationState = {
     status: 'idle',
@@ -202,8 +197,13 @@ const DefinePhraseButton = () => {
         body: JSON.stringify(body),
       }).then((response) => response.json());
 
+      const articleTitle: string | null = location?.state?.article?.title || null;
+
+      if (articleTitle === null ) return setSaveState('error');
+
       if (response.translationStatus === 'success') {
         setSaveState('success');
+        addOneArticle(user.id, articleTitle);
         setTimeout(() => {
           setHighlightedPhrase('');
           setDefBoxOpen(false);
