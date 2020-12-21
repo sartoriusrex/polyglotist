@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
-import history from '../../../app/history';
+import history from '../../app/history';
 import TestRouter from 'test-router';
 
 import GoBackButton from './index';
