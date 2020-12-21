@@ -1,0 +1,60 @@
+@import '../../styles/variables';
+
+.loadingSection {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background: $white;
+}
+
+.loadingContainer {
+  width: 50%;
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes appearDots {
+  0% {
+    opacity:1;
+  }
+
+  100% {
+    opacity:.1;
+  }
+}
+
+.svg {
+  circle {
+    font-variation-settings:normal;
+    opacity:1;
+    // vector-effect:none;
+    fill:#147d64;
+    fill-opacity:1;
+    fill-rule:evenodd;
+    stroke-width:0.329779;
+    stroke-linecap:butt;
+    stroke-linejoin:miter;
+    stroke-miterlimit:4;
+    stroke-dasharray:none;
+    stroke-dashoffset:0;
+    stroke-opacity:1;
+    stop-color:#000000;
+    stop-opacity:1;
+    animation: appearDots 900ms ease-in-out infinite alternate;
+  }
+
+  g circle:nth-child(2) {
+    animation-delay: 300ms;
+  }
+
+  g circle:nth-child(3) {
+    animation-delay: 600ms;
+  }
+}

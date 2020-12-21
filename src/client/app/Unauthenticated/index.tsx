@@ -1,14 +1,13 @@
-import React, { useEffect } from 'react';
-import { Router, Switch, Route, Redirect } from 'react-router-dom';
-import history from '../history';
+import React from 'react';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import '../history';
 
-import NavBar from '../../features/Navbar';
-import LandingPage from '../../features/UnauthPages/LandingPage';
-import AuthPage from '../../features/UnauthPages/AuthPage';
-import PrivacyPage from '../../features/UnauthPages/PrivacyPage';
-import ContactPage from '../../features/UnauthPages/ContactPage';
-import NoMatchPage from '../../common/components/NoMatchPage';
-import LoadingIndicator from '../../common/components/LoadingIndicator';
+import NavBar from '../../components/Navbar';
+import LandingPage from '../../pages/LandingPage';
+import AuthPage from '../../pages/AuthPage';
+import PrivacyPage from '../../pages/PrivacyPage';
+import ContactPage from '../../pages/ContactPage';
+import NoMatchPage from '../../components/NoMatchPage';
 
 const UnauthenticatedApp = () => {
   return (

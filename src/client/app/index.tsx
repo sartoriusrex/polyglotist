@@ -6,7 +6,7 @@ import history from './history';
 import { login, authSelector } from '../slices/auth';
 import '../styles/index.scss';
 
-import LoadingIndicator from '../common/components/LoadingIndicator';
+import LoadingIndicator from '../components/LoadingIndicator';
 
 const AuthenticatedApp = React.lazy(() => import('./Authenticated'));
 const UnauthenticatedApp = React.lazy(() => import('./Unauthenticated'));

@@ -1,0 +1,69 @@
+@import '../../styles/variables';
+
+.vocabPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h1 {
+        margin: .625rem 0;
+        font-size: 1.25rem;
+        align-self: flex-start;
+    }
+}
+
+.vocabTable {
+    width: 100%;
+    padding: 0 1.25rem;
+    font-size: .75rem;
+    color: $darkest-blue;
+
+    tr *:not(a) {
+        padding: .25rem;
+        border-bottom: 1px solid $light-blue-gray;
+        line-height: 1.25;
+    }
+
+    th {
+        color: $darkest-blue;
+        background-color: $lighter-blue-gray;
+        font-weight: bold;
+
+        &:first-child {
+            border-top-left-radius: .25rem;
+            border-right: 1px solid $light-blue-gray;
+        }
+
+        &:last-child {
+            border-top-right-radius: .25rem;
+            border-left: 1px solid $light-blue-gray;
+        }
+    }
+
+    // th, td {
+    //     border: 2px solid $light-blue-gray;
+    // }
+    
+
+    tr td:last-child {
+        text-align: center;
+        border-left: 1px solid $light-blue-gray;
+    }
+
+    tr td:first-child {
+        border-right: 1px solid $light-blue-gray;
+
+        a {
+            color: $dark-purple;
+            text-decoration: none;
+        }
+    }
+
+    tr {
+        background-color: $light-gray;
+
+        &:nth-child(2n) {
+            background-color: $lighter-blue-gray;
+        }
+    }
+}

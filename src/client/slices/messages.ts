@@ -35,9 +35,8 @@ export const { addMessage, clearMessage } = actions;
 
 export function sendMessage(message: string) {
   return async (dispatch: Function) => {
+    setTimeout(() => dispatch(clearMessage(null)), 1000 * 5)
     dispatch(addMessage(message));
-
-    setTimeout(() => removeMessage(), 1000 * 5)
   };
 }
 

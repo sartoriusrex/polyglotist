@@ -1,0 +1,99 @@
+@import '../../styles/variables';
+
+.formError {
+  color: red;
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1.25rem;
+  position: relative;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  h1, h2 {
+    margin: 1.25rem 0;
+  }
+
+  h2 {
+    color: $blue;
+    padding: 1.25rem;
+    border: 1px solid $blue;
+    font-size: .75rem;
+    width: 100%;
+  }
+
+  label {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    justify-content: space-between;
+    position: relative;
+    color: $dark-purple;
+
+    span {
+      margin-left: .313rem;
+    }
+
+    div {
+      position: absolute;
+      top: -1rem;
+      left: .9rem;
+      z-index: 1;
+      padding: .313rem;
+      background: $white;
+    }
+
+    input {
+      margin-bottom: .625rem;
+      width: 100%;
+      padding: 1rem;
+      border: 1px solid $dark-purple;
+      font-size: 1.25rem;
+      box-shadow: 0 4px 4px rgba(0,0,0,.1);
+
+      &::placeholder {
+        font-size: 1rem;
+      }
+    }
+
+    p {
+      flex-basis: 100%;
+      padding: 0 .313rem;
+      font-size: .875rem;
+    }
+  }
+
+  button {
+    padding: .625rem;
+    background-color: $dark-purple;
+    border: 1px solid $dark-purple;
+    margin: 1.25rem auto;
+    color: $white;
+  }
+
+  .hidePsBtn {
+    background-color: $white;
+    color: $dark-purple;
+  }
+
+  .formShowPsBtn {
+    background-color: $dark-purple;
+    color: $white;
+  }
+}
+
+.formErrorContainer {
+  margin-bottom: 2rem;
+
+  li {
+    margin-bottom: .313rem;
+  }
+}

@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Router, Switch, Route, Redirect } from 'react-router-dom';
-import history from '../history';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import '../history';
 
 import { settingsSelector } from '../../slices/settings';
 import { authSelector } from '../../slices/auth';
 
-import Navbar from '../../features/Navbar';
-import BottomNavbar from '../../features/BottomNavbar';
-import DefinePhraseButton from '../../features/DefinePhraseButton';
-import Dashboard from '../../features/AuthPages/Dashboard';
-import CreateAccountPage from '../../features/AuthPages/CreateAccountPage';
-import ArticlesPage from '../../features/AuthPages/ArticlesPage';
-import ArticleDetailPage from '../../features/AuthPages/ArticleDetailPage';
-import PhrasesPage from '../../features/AuthPages/PhrasesPage';
-import PhraseDetailPage from '../../features/AuthPages/PhraseDetailPage';
-import SettingsPage from '../../features/AuthPages/SettingsPage';
-import PracticePage from '../../features/AuthPages/PracticePage';
-import NoMatchPage from '../../common/components/NoMatchPage';
-import ServerMessage from '../../common/components/ServerMessage';
+import Navbar from '../../components/Navbar';
+import BottomNavbar from '../../components/BottomNavbar';
+import DefinePhraseButton from '../../components/DefinePhraseButton';
+import Dashboard from '../../pages/Dashboard';
+import CreateAccountPage from '../../pages/CreateAccountPage';
+import ArticlesPage from '../../pages/ArticlesPage';
+import ArticleDetailPage from '../../pages/ArticleDetailPage';
+import PhrasesPage from '../../pages/PhrasesPage';
+import PhraseDetailPage from '../../pages/PhraseDetailPage';
+import SettingsPage from '../../pages/SettingsPage';
+import PracticePage from '../../pages/PracticePage';
+import NoMatchPage from '../../components/NoMatchPage';
+import ServerMessage from '../../components/ServerMessage';
 
 import styles from './authIndex.module.scss';
 
