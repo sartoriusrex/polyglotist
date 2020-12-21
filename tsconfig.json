@@ -2,7 +2,11 @@
   "compilerOptions": {
     "outDir": "./dist/",
     // Target latest version of ECMAScript.
-    "target": "esnext",
+    "target": "es2019",
+    "lib": [
+        "ES2019",
+        "dom",
+      ],
     // =============================
     // Maybe correct target to current Node version if there are ts-jest errors
     // =============================
