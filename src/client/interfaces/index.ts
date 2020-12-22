@@ -60,3 +60,15 @@ export interface IPhraseUnit {
 }
 
 export type LocationState = null | undefined | { phrase: IPhraseUnit; article?: Article } | { phrase?: IPhraseUnit; article: Article }
+
+export type AuthNavProps = {
+  user: { username: string };
+  accountMenuOpen: boolean;
+  setAccountMenuOpen: (value: boolean) => void;
+};
+
+
+export type NavbarProps = {
+  accountMenuOpen?: boolean;
+  setAccountMenuOpen?: (value: boolean) => void;
+};

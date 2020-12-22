@@ -3,19 +3,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
 import styles from './definePhraseButton.module.scss';
+
 import {
   HighlightedPhrase,
   TranslationState,
   TranslationAction,
   SaveState,
-  LocationState
+  LocationState,
+  Article
 } from '../../interfaces';
-import { authSelector } from '../../slices/auth';
 
 import GoogleAttribution from '../../images/GoogleAttr';
 import Check from '../../images/Check';
+
 import { addOneArticle, articlesSelector } from '../../slices/articles';
-import { Article } from '../../interfaces';
+import { authSelector } from '../../slices/auth';
 
 const DefinePhraseButton = () => {
   const [highlightedPhrase, setHighlightedPhrase] = useState<HighlightedPhrase>(
@@ -27,8 +29,9 @@ const DefinePhraseButton = () => {
   const location: {
     state: LocationState
   } = useLocation();
-  const { user } = useSelector(authSelector);
   const lang: string = location?.state?.article?.language || '';
+
+  const { user } = useSelector(authSelector);
   const { articles } = useSelector(articlesSelector);
 
   let existingArticle: Boolean = articles.some((storeArticle: Article) => {
@@ -142,15 +145,10 @@ const DefinePhraseButton = () => {
     const langCodes: { [language: string]: string } = {
       french: 'fr',
       spanish: 'es',
-      und: 'und',
+      undefined: 'und',
     };
 
-    let codeResult: string;
-    if (location.state !== null && location.state !== undefined && location.state.article) {
-      codeResult = langCodes[location.state.article.language];
-    } else {
-      codeResult = 'und';
-    }
+    let codeResult: string = langCodes[`${location?.state?.article?.language}`]
 
     switch (defState.status) {
       case 'idle':
@@ -224,9 +222,7 @@ const DefinePhraseButton = () => {
         body: JSON.stringify(body),
       }).then((response) => response.json());
 
-      const articleTitle: string | null = location?.state?.article?.title || null;
-
-      if (articleTitle === null ) return setSaveState('error');
+      if ( !location?.state?.article?.title ) return setSaveState('error');
 
       if (response.translationStatus === 'success') {
         setSaveState('success');
@@ -301,6 +297,7 @@ const DefinePhraseButton = () => {
         phrase = undefined;
       }
 
+      // Phrase can also be an empty string, so we much explicity check that
       if (phrase === null || phrase === undefined) {
         if (saveState !== 'idle') closeDefinitionModal();
       } else {

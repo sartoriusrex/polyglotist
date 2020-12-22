@@ -10,9 +10,10 @@ import styles from './navbar.module.scss';
 import Logo from '../../images/Logo';
 import ChevronUp from '../../images/ChevronUp';
 
+import { AuthNavProps, NavbarProps } from '../../interfaces';
+
 const Nav = (props: any) => {
-  const { children } = props;
-  const { user } = props;
+  const { children, user } = props;
   const positionThreshold = 20;
   const location = useLocation();
   const [isTop, setIsTop] = useState(true);
@@ -63,12 +64,6 @@ const UnAuthNav = () => {
       <Link to='/signup'>Signup</Link>
     </div>
   );
-};
-
-type AuthNavProps = {
-  user: { username: string };
-  accountMenuOpen: boolean;
-  setAccountMenuOpen: (value: boolean) => void;
 };
 
 const AuthNav = ({
@@ -128,11 +123,6 @@ const AuthNav = ({
       </ul>
     </>
   );
-};
-
-type NavbarProps = {
-  accountMenuOpen?: boolean;
-  setAccountMenuOpen?: (value: boolean) => void;
 };
 
 const NavBar = ({ accountMenuOpen, setAccountMenuOpen }: NavbarProps) => {
