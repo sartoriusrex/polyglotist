@@ -1,7 +1,18 @@
 import db from './index';
 import crawlSource from '../crawler';
-import { SrcObj, CrawlResult, Error, SourceText } from '../crawler/interfaces';
+import { 
+  SrcObj,
+  CrawlResult,
+  Error, 
+  SourceText 
+} from '../crawler/interfaces';
 import sources from '../crawler/all_sources';
+import { 
+  select_id_from_source,
+  insert_article,
+  insert_article_bodies,
+  delete_unused_articles
+} from '../queries';
 
 // test crawl functions; declare test to be true and if true, make sure to correctly reference the source to test in crawlers/all_sources.ts, referenced as sources variable.
 const test = false;
@@ -15,25 +26,6 @@ async function testCrawler(src: SrcObj) {
     console.log(err, '\nfetch_fresh_articles.ts line 15 in testCrawler fxn.\n');
   }
 }
-
-const find_source_id = `
-  SELECT id FROM sources WHERE name = $1;
-`;
-
-const insert_article = `
-  INSERT INTO articles (title, article_date, source_id, url) VALUES
-  ($1, $2, $3, $4) RETURNING id;
-`;
-
-const insert_bodies = `
-  INSERT INTO article_bodies (article_id, tag_order, tag, text) VALUES
-  ($1, $2, $3, $4);
-`;
-
-// REMOVE ARTICLES THAT HAVE NOT BEEN SAVED AND HAVE NO REFERENCES AND WERE SCRAPED MORE THAN 12 HOURS AGO
-const removeUnusedArticles = `
-  DELETE FROM articles WHERE referenced = FALSE and AGE(NOW(), scraped_date) > '12 hours';
-`;
 
 const fetchFreshArticles = async function () {
   if (test) {
@@ -57,7 +49,7 @@ const fetchFreshArticles = async function () {
 
     if (Array.isArray(newArticles) && !newArticles.hasOwnProperty('error')) {
       try {
-        await db.query(removeUnusedArticles);
+        await db.query(delete_unused_articles);
       } catch (err) {
         console.log(
           err,
@@ -79,7 +71,7 @@ const fetchFreshArticles = async function () {
           };
 
         try {
-          let result = await db.query(find_source_id, [source.name]);
+          let result = await db.query(select_id_from_source, [source.name]);
           id = result.rows[0].id;
         } catch (err) {
           console.log(
@@ -108,7 +100,7 @@ const fetchFreshArticles = async function () {
                 await Promise.all(
                   body.map(async (bodyText: string[], idx: number) => {
                     try {
-                      await db.query(insert_bodies, [
+                      await db.query(insert_article_bodies, [
                         article_id,
                         idx,
                         bodyText[0],
