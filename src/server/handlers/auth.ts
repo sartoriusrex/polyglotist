@@ -102,11 +102,31 @@ export default {
   },
 
   loginUser: async (req: Request, res: Response) => {
-    // Login user is called in 2 scenarios with 3 possible results: On application mounting and when the user requests to log in.
-    // On mounting,
-    // A). either the user has created an account beforehand and the user's cookie is still valid; so we access it and use its info to fetch the user info. If a user has an accessToken present in the browser, but the credentials are no longer valid for some reason, we must be able to provide the user with the ability to sign on using a different account (not just sign up); In this case, if the user has an access token, but also provides a username and password, then we go to scenario B.
-    // B). or the user's cookie has expired or they have never made an account, and we log in with no cookies. OR the user has an access token but it no longer works for some reason, so the user provides a username and password while still having an access token.
-    // C). When the user requests to login, we proceed to use their input to fetch the user
+    /*
+      Login user is called in 2 scenarios with 3 possible results:
+      On application mounting and when the user requests to log in.
+
+      On mounting,
+      A). either the user has created an account beforehand and 
+        the user's cookie is still valid; 
+        so we access it and use its info to fetch the user info.
+        If a user has an accessToken present in the browser, 
+        but the credentials are no longer valid for some reason,
+        we must be able to provide the user with the ability to 
+        sign on using a different account (not just sign up); 
+        In this case, if the user has an access token,
+        but also provides a username and password, then we go to
+        scenario B.
+
+      B). or the user's cookie has expired or they have never made an 
+        account, and we log in with no cookies. OR the user has an 
+        access token  but it no longer works for some reason, so 
+        the user provides a username and password while still having 
+        an access token.
+
+      C). When the user requests to login, we proceed to use 
+        their input to fetch the user
+    */
 
     // Scenaria A - get cookie and login user
     const { accessToken } = req.cookies;
@@ -183,7 +203,8 @@ export default {
         return res.status(400).send({ message: 'Could not find the user.' });
       }
     } else {
-      // Scenaria B - no cookie, or it has expired and login is called on Mount with no input
+      // Scenaria B - no cookie, or it has 
+      // expired and login is called on Mount with no input
       if (!username || !candidatePassword) {
         const user = null;
         return res.status(200).send({ user });

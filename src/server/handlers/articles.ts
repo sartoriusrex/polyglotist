@@ -192,6 +192,7 @@ export default {
         [articleTitle]
       );
       const article = articleResult.rows[0];
+
       const userArticleResult = await db.query(
         select_all_from_users_articles_from_user_and_article_id, 
         [userId, article.id]
@@ -203,7 +204,11 @@ export default {
         select_all_from_article_bodies_from_id,
         [article.id]
       );
-      const articleBodies = articleBodyResult.rows.map((result: any) => [result.tag, result.text]);
+
+      const articleBodies = articleBodyResult
+        .rows
+        .map((result: any) => [result.tag, result.text]);
+
       const sourceResult = await db.query(
         select_all_from_sources_from_id,
         [source_id]
@@ -239,7 +244,9 @@ export default {
       const addUserArticle = addUserArticleResult.rows[0];
 
       // If we failed to add relationship
-      if (addUserArticle.length <= 0) return res.status(500).send({ error: 'Failed to add article' });
+      if (addUserArticle.length <= 0) {
+        return res.status(500).send({ error: 'Failed to add article' });
+      }
 
       res.status(200).send({ message: "Added Article", article: articleResponse })
     } catch (err) {

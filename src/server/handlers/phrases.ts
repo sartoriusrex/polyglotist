@@ -68,7 +68,8 @@ export default {
       );
       const userId = userResult.rows[0].id;
 
-      // First, check if the article is referenced. If it isn't, update it to referenced true.
+      // First, check if the article is referenced. 
+      // If it isn't, update it to referenced true.
 
       const articleResult = await db.query(
         select_id_ref_from_articles_from_url, 
@@ -84,7 +85,9 @@ export default {
         );
       }
 
-      // Then check if relationship exists in users_articles. If not, create it. If creation goes wrong, make article reference change back if it was referenced false before. Send Error.
+      // Then check if relationship exists in users_articles. 
+      // If not, create it. If creation goes wrong, make article 
+      // reference change back if it was referenced false before. Send Error.
 
       const usersArticles = await db.query(
         select_id_from_users_articles_from_userid_article_id, 
@@ -118,7 +121,9 @@ export default {
         }
       }
 
-      // Then look up the phrase with its definition. If it exists, use that reference, otherwise, create it. If creating it goes wrong, just send the error.
+      // Then look up the phrase with its definition. 
+      // If it exists, use that reference, otherwise, create it. 
+      // If creating it goes wrong, just send the error.
 
       let phraseId;
 
@@ -153,8 +158,12 @@ export default {
         return res.status(500).send({ translationStatus: 'error' });
       }
 
-      // Then check to see if the users_phrases relationship exists between the phrase and user. If it does, we need to UPDATE the relationship: decrease strength by 1, update article_id, and update context_phrase. If the update goes wrong, just send the error.
-      // If that relatinoshp does not exist, create it. If that goes wrong, just send the error.
+      // Then check to see if the users_phrases relationship exists 
+      // between the phrase and user. If it does, we need to UPDATE 
+      // the relationship: decrease strength by 1, update article_id, 
+      // and update context_phrase. If the update goes wrong, just send the error.
+      // If that relatinoshp does not exist, create it.
+      // If that goes wrong, just send the error.
 
       const findUsersPhrases = await db.query(
         select_id_from_users_phrases_from_id, 
@@ -212,43 +221,47 @@ export default {
       );
       const uPhraseRows = userPhraseResult.rows;
 
-      const phrasesArray: Iphrase[] = await Promise.all(uPhraseRows.map(async (phraseRow: IuPhraseRow) => {
-        const {
-          phrase_id,
-          article_id,
-          strength,
-          context_phrase
-        } = phraseRow;
+      const phrasesArray: Iphrase[] = await Promise.all(
+        uPhraseRows.map(
+          async (phraseRow: IuPhraseRow) => {
+            const {
+              phrase_id,
+              article_id,
+              strength,
+              context_phrase
+            } = phraseRow;
 
-        const phraseResult = await db.query(
-          select_all_from_phrases_from_id, 
-          [phrase_id]
-        );
-        const articleResult = await db.query(
-          select_title_from_articles_from_id, 
-          [article_id]
-        );
+            const phraseResult = await db.query(
+              select_all_from_phrases_from_id, 
+              [phrase_id]
+            );
+            const articleResult = await db.query(
+              select_title_from_articles_from_id, 
+              [article_id]
+            );
 
-        const {
-          created,
-          phrase,
-          translation,
-          language
-        } = phraseResult.rows[0];
+            const {
+              created,
+              phrase,
+              translation,
+              language
+            } = phraseResult.rows[0];
 
-        const { title } = articleResult.rows[0]
+            const { title } = articleResult.rows[0]
 
-        return {
-          phrase_id,
-          created_at: created,
-          phrase,
-          translation,
-          language,
-          article: title,
-          context_phrase,
-          strength,
-        }
-      }));
+            return {
+              phrase_id,
+              created_at: created,
+              phrase,
+              translation,
+              language,
+              article: title,
+              context_phrase,
+              strength,
+            }
+          }
+        )
+      );
 
       return res.status(200).send(phrasesArray);
     } catch (err) {

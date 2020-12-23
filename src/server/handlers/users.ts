@@ -164,7 +164,11 @@ export default {
           [userId]
         );
 
-        // Multistep Promise function - convert source names to ids, insert those ids into users_ids, then query those same ids for actual db values instead of relying on the inputs.
+        // Multistep Promise function - convert source names to ids, 
+        // insert those ids into users_ids, 
+        // then query those same ids for actual db values 
+        // instead of relying on the inputs.
+
         const newSources: any = await Promise.all(
           // convert array of source names to pgsql source ids
           sources.map(async (srcName: string) => {
