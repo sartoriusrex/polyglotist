@@ -13,6 +13,16 @@ import cookie from '../utils/constants';
 const salt = 10;
 const secret: any = process.env.SECRET_KEY;
 
+import {
+  select_id_from_users_from_username,
+  select_email_from_users_from_email,
+  insert_user,
+  select_user_from_username,
+  select_sourceid_from_users_sources_from_userid,
+  select_name_from_sources_from_id,
+  select_all_from_user_from_username
+} from '../queries';
+
 export default {
   addUser: async (req: Request, res: Response) => {
     const { username, email, password } = req.body;
@@ -30,12 +40,12 @@ export default {
     // Check that username and email are not already in use
     try {
       const usernameQuery = await db.query(
-        'SELECT id FROM users WHERE username = $1',
+        select_id_from_users_from_username,
         [username]
       );
 
       const emailQuery = await db.query(
-        'SELECT email FROM users WHERE email = $1',
+        select_email_from_users_from_email,
         [email]
       );
 
@@ -51,7 +61,7 @@ export default {
     // Create new user and return it
     try {
       const query = await db.query(
-        'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id, username, email, reading_speed, theme_preference, practice_mode, notification_method, language_preference, languages_learning',
+        insert_user,
         [username, email, hashedPassword]
       );
 
@@ -107,7 +117,7 @@ export default {
         const { username: usernameToken, token } = accessToken;
 
         const userQuery = await db.query(
-          'SELECT id, username, email, theme_preference, reading_speed, practice_mode, notification_method, language_preference, languages_learning FROM users WHERE username = $1',
+          select_user_from_username,
           [usernameToken]
         );
 
@@ -124,7 +134,7 @@ export default {
         } = userQuery.rows[0];
 
         const sourcesQuery = await db.query(
-          `SELECT source_id FROM users_sources WHERE user_id = $1 ORDER BY source_id ASC`,
+          select_sourceid_from_users_sources_from_userid,
           [id]
         );
 
@@ -136,7 +146,7 @@ export default {
                 let srcId = id.source_id;
 
                 let name = await db.query(
-                  `SELECT name FROM sources WHERE id = $1`,
+                  select_name_from_sources_from_id,
                   [srcId]
                 );
 
@@ -182,7 +192,7 @@ export default {
       // Scenario C - user calls login with inputs.
       try {
         const query = await db.query(
-          'SELECT id, username, email, password, theme_preference, reading_speed, practice_mode, notification_method, language_preference, languages_learning FROM users WHERE username = $1',
+          select_all_from_user_from_username,
           [username]
         );
 
@@ -200,7 +210,7 @@ export default {
         } = query.rows[0];
 
         const sourcesQuery = await db.query(
-          `SELECT source_id FROM users_sources WHERE user_id = $1 ORDER BY source_id ASC`,
+          select_sourceid_from_users_sources_from_userid,
           [id]
         );
 
@@ -212,7 +222,7 @@ export default {
                 let srcId = id.source_id;
 
                 let name = await db.query(
-                  `SELECT name FROM sources WHERE id = $1`,
+                  select_name_from_sources_from_id,
                   [srcId]
                 );
 

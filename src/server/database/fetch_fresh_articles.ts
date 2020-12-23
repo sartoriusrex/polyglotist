@@ -8,7 +8,7 @@ import {
 } from '../crawler/interfaces';
 import sources from '../crawler/all_sources';
 import { 
-  select_id_from_source,
+  select_id_from_source_from_name,
   insert_article,
   insert_article_bodies,
   delete_unused_articles
@@ -71,7 +71,10 @@ const fetchFreshArticles = async function () {
           };
 
         try {
-          let result = await db.query(select_id_from_source, [source.name]);
+          let result = await db.query(
+            select_id_from_source_from_name,
+            [source.name]
+          );
           id = result.rows[0].id;
         } catch (err) {
           console.log(

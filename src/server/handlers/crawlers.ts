@@ -8,6 +8,7 @@ import {
 } from '../crawler/interfaces';
 import db from '../database';
 import crawlSource from '../crawler/index';
+import { select_url_lang_from_source_from_name } from '../queries';
 
 export default {
   crawlSources: async (req: Request, res: Response) => {
@@ -18,7 +19,7 @@ export default {
       sources.map(async (src: string) => {
         try {
           const dbSource = await db.query(
-            `SELECT url, language FROM sources WHERE name = $1`,
+            select_url_lang_from_source_from_name,
             [src]
           );
           return {
@@ -44,7 +45,8 @@ export default {
       databaseSources.map(async (source: DatabaseSource) => {
         try {
           if (source.hasOwnProperty('error')) return { source };
-          const articles: CrawlResult[] | Error = await crawlSource(source); //return text and info for each source given name and url
+          //return text and info for each source given name and url
+          const articles: CrawlResult[] | Error = await crawlSource(source); 
           // returns the text data, the source (url), and the language
           return { source, articles };
         } catch (err) {

@@ -11,7 +11,7 @@ import cron from 'node-cron';
 import initializeDatabase from './database/init';
 import fetchFreshArticles from './database/fetch_fresh_articles';
 
-const needData = true;
+const needData = false;
 
 export default function initializeServer(router: Router) {
   const app = express();

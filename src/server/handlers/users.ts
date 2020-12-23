@@ -6,6 +6,21 @@ dotenv.config({ path: `${__dirname}/.env` });
 import bcrypt from 'bcryptjs';
 import db from '../database';
 import { Request, Response } from 'express';
+import { 
+  select_all_from_all_users, 
+  select_all_from_user_from_username, 
+  select_id_from_users_from_username, 
+  update_email, 
+  update_password,
+  update_username, 
+  update_user_settings,
+  delete_user_source,
+  select_id_from_source_from_name,
+  insert_user_sources,
+  select_name_from_sources_from_id,
+  delete_user,
+
+} from '../queries';
 
 const salt = 10;
 
@@ -13,7 +28,7 @@ export default {
   getAllUsers: async (req: Request, res: Response) => {
     try {
       const response = await db.query(
-        'SELECT * FROM users ORDER BY username ASC'
+        select_all_from_all_users
       );
 
       const usersArray = response.rows;
@@ -41,7 +56,7 @@ export default {
 
     try {
       const response = await db.query(
-        'SELECT * FROM users WHERE username = $1',
+        select_all_from_user_from_username,
         [username]
       );
 
@@ -78,7 +93,7 @@ export default {
     try {
       if (updatedName) {
         const newUsername = await db.query(
-          'UPDATE users SET username = $1 WHERE username = $2 RETURNING username',
+          update_username,
           [updatedName, username]
         );
 
@@ -87,7 +102,7 @@ export default {
 
       if (email) {
         const newEmail = await db.query(
-          'UPDATE users SET email = $1 WHERE username = $2 RETURNING email',
+          update_email,
           [email, username]
         );
 
@@ -97,7 +112,7 @@ export default {
       if (password) {
         const hashedPassword = await bcrypt.hash(password, salt);
         const newPassword = await db.query(
-          'UPDATE users SET password = $1 WHERE username = $2 RETURNING password',
+          update_password,
           [hashedPassword, username]
         );
 
@@ -106,7 +121,7 @@ export default {
 
       if (settings.length > 0) {
         const newSettings = await db.query(
-          'UPDATE users SET reading_speed = $1, theme_preference = $2, practice_mode = $3, notification_method = $4, language_preference = $5, languages_learning = $6 WHERE username = $7 RETURNING id, reading_speed, theme_preference, practice_mode, notification_method, language_preference, languages_learning',
+          update_user_settings,
           [
             readingSpeed,
             themePreference,
@@ -138,14 +153,14 @@ export default {
 
       if (sources && sources.length > 0) {
         const userIdQuery = await db.query(
-          `SELECT id FROM users WHERE username = $1`,
+          select_id_from_users_from_username,
           [username]
         );
         const userId = userIdQuery.rows[0].id;
 
         // Delete all user source associations
         const currentSourcesIds = await db.query(
-          `DELETE FROM users_sources WHERE user_id = $1`,
+          delete_user_source,
           [userId]
         );
 
@@ -154,9 +169,10 @@ export default {
           // convert array of source names to pgsql source ids
           sources.map(async (srcName: string) => {
             try {
-              return await db.query('SELECT id FROM sources WHERE name = $1', [
-                srcName,
-              ]);
+              return await db.query(
+                select_id_from_source_from_name, 
+                [srcName]
+              );
             } catch (err) {
               console.log(
                 err,
@@ -173,8 +189,7 @@ export default {
 
                 try {
                   return await db.query(
-                    `INSERT INTO users_sources (user_id, source_id) VALUES
-                  ($1, $2) RETURNING source_id`,
+                    insert_user_sources,
                     [userId, id]
                   );
                 } catch (err) {
@@ -194,7 +209,7 @@ export default {
 
                 try {
                   let result = await db.query(
-                    `SELECT name FROM sources WHERE id = $1`,
+                    select_name_from_sources_from_id,
                     [srcId]
                   );
                   return result.rows[0].name;
@@ -227,9 +242,10 @@ export default {
     const username = req.params.username;
 
     try {
-      const mutation = await db.query('DELETE FROM users WHERE username = $1', [
-        username,
-      ]);
+      const mutation = await db.query(
+        delete_user,
+        [username,]
+      );
 
       return res
         .status(200)

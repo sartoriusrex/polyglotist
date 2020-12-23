@@ -7,6 +7,23 @@ import {
   SourceText,
 } from '../crawler/interfaces';
 
+import {
+  IUsersArticles
+} from '../interfaces';
+
+import {
+  select_all_from_source_from_name,
+  select_new_articles,
+  select_all_from_users_articles_from_user_id,
+  select_all_from_articles_from_id,
+  select_all_from_article_bodies_from_id,
+  select_all_from_sources_from_id,
+  select_all_from_articles_from_title,
+  select_all_from_users_articles_from_user_and_article_id,
+  insert_users_articles,
+  update_article_reference_from_id
+} from '../queries';
+
 export default {
   fetchFreshArticles: async (req: Request, res: Response) => {
     const sources: string[] = req.body;
@@ -15,10 +32,7 @@ export default {
     const databaseSources: DatabaseSource[] = await Promise.all(
       sources.map(async (src: string) => {
         try {
-          const dbSource = await db.query(
-            `SELECT * FROM sources WHERE name = $1`,
-            [src]
-          );
+          const dbSource = await db.query( select_all_from_source_from_name, [src] );
 
           return {
             name: dbSource.rows[0].name,
@@ -47,16 +61,8 @@ export default {
           return { source: src };
         }
 
-        const freshArticlesQuery = `
-          SELECT * FROM articles WHERE AGE(NOW(), scraped_date) < '12 hours' AND source_id = $1;
-        `;
-
         try {
-          let srcArticles = await db.query(freshArticlesQuery, [src.id]);
-
-          const freshArticleBodiesQuery = `
-            SELECT tag, text FROM article_bodies WHERE article_id = $1 ORDER BY tag_order;
-          `;
+          let srcArticles = await db.query(select_new_articles, [src.id]);
 
           try {
             const articlesAndBodies: CrawlResult[] = await Promise.all(
@@ -67,8 +73,8 @@ export default {
                   title: string;
                   url: string;
                 }) => {
-                  let articleBodyQueryResult = await db.query(
-                    freshArticleBodiesQuery,
+                  let articleBodyQueryResult = await db.query( 
+                    select_all_from_article_bodies_from_id, 
                     [article.id]
                   );
 
@@ -126,30 +132,31 @@ export default {
   fetchArticles: async (req: Request, res: Response) => {
     const { id } = req.body;
 
-    interface IUsersArticles {
-      id: Number;
-      user_id: Number;
-      article_id: Number;
-    }
-
     try {
-      const usersArticlesQuery = `SELECT * FROM users_articles WHERE user_id = $1`;
-      const articleQuery = `SELECT * FROM articles WHERE id = $1`;
-      const articleBodyQuery = `SELECT tag, text FROM article_bodies WHERE article_id = $1 ORDER BY tag_order;`;
-      const articleSourceQuery = `SELECT * FROM sources WHERE id = $1`;
-
-      const usersArticlesResult = await db.query(usersArticlesQuery, [id]);
+      const usersArticlesResult = await db.query(
+        select_all_from_users_articles_from_user_id, 
+        [id]
+      );
       const usersArticles: IUsersArticles[] = usersArticlesResult.rows;
 
       const articles = await Promise.all(usersArticles.map(async (userArticle: IUsersArticles) => {
         const { article_id } = userArticle;
 
-        const articleResult = await db.query(articleQuery, [article_id])
+        const articleResult = await db.query(
+          select_all_from_articles_from_id, 
+          [article_id]
+        );
         let article = articleResult.rows[0];
         const { source_id } = article;
-        const articleBodyResult = await db.query(articleBodyQuery, [article_id]);
+        const articleBodyResult = await db.query(
+          select_all_from_article_bodies_from_id,
+          [article_id]
+        );
         const articleBodies = articleBodyResult.rows.map((result: any) => [result.tag, result.text]);
-        const sourceResult = await db.query(articleSourceQuery, [source_id]);
+        const sourceResult = await db.query(
+          select_all_from_sources_from_id,
+          [source_id]
+        );
         const source = sourceResult.rows[0];
 
         article = {
@@ -175,27 +182,32 @@ export default {
   addArticle: async (req: Request, res: Response) => {
     const { userId, articleTitle } = req.body;
 
-    const articleQuery = `SELECT * FROM articles WHERE title = $1`;
-    const userArticleQuery = `SELECT * FROM users_articles WHERE user_id = $1 AND article_id = $2`
-    const addUserArticleQuery = `INSERT INTO users_articles (user_id, article_id) VALUES ($1, $2) RETURNING id`;
-    const updateArticleReferencedQuery = `UPDATE articles SET referenced = $1 WHERE id = $2 RETURNING id;`;
-    const articleBodyQuery = `SELECT tag, text FROM article_bodies WHERE article_id = $1 ORDER BY tag_order;`;
-    const articleSourceQuery = `SELECT * FROM sources WHERE id = $1`;
-
     try {
       // Check to see if relationship already exists between user and article, meaning if the user had already added it.
       // If so, return 200 with the article, stating it already exists
       // Otherwise, create the relationship;
 
-      const articleResult = await db.query(articleQuery, [articleTitle]);
+      const articleResult = await db.query(
+        select_all_from_articles_from_title,
+        [articleTitle]
+      );
       const article = articleResult.rows[0];
-      const userArticleResult = await db.query(userArticleQuery, [userId, article.id])
+      const userArticleResult = await db.query(
+        select_all_from_users_articles_from_user_and_article_id, 
+        [userId, article.id]
+      );
       const userArticle = userArticleResult.rows[0];
 
       const { source_id } = article;
-      const articleBodyResult = await db.query(articleBodyQuery, [article.id]);
+      const articleBodyResult = await db.query(
+        select_all_from_article_bodies_from_id,
+        [article.id]
+      );
       const articleBodies = articleBodyResult.rows.map((result: any) => [result.tag, result.text]);
-      const sourceResult = await db.query(articleSourceQuery, [source_id]);
+      const sourceResult = await db.query(
+        select_all_from_sources_from_id,
+        [source_id]
+      );
       const source = sourceResult.rows[0];
 
       const articleResponse = {
@@ -215,9 +227,15 @@ export default {
       }
 
       // Update referenced field in Article
-      await db.query(updateArticleReferencedQuery, [true, article.id]);
+      await db.query(
+        update_article_reference_from_id, 
+        [true, article.id]
+      );
 
-      const addUserArticleResult = await db.query(addUserArticleQuery, [userId, article.id])
+      const addUserArticleResult = await db.query(
+        insert_users_articles,
+        [userId, article.id]
+      );
       const addUserArticle = addUserArticleResult.rows[0];
 
       // If we failed to add relationship
