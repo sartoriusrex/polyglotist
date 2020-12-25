@@ -16,9 +16,12 @@ const PhrasesPage = () => {
     dispatch(fetchAllPhrases(user.id))
   }, [dispatch, fetchAllPhrases])
 
-
   const PhraseUnit = ({ phraseObject }: { phraseObject: IPhraseUnit }) => {
-    const { phrase_id, phrase, translation, strength } = phraseObject;
+    const { phrase_id, phrase, translation, strength, created_at: created } = phraseObject;
+    const dateObject = new Date(created);
+    const day = dateObject.getDay();
+    const month = dateObject.getMonth() + 1;
+    const year = dateObject.getFullYear();
 
     return (
       <tr>
@@ -35,7 +38,8 @@ const PhrasesPage = () => {
           </Link>
         </td>
         <td>{translation}</td>
-        <td>{strength}</td>
+        <td className={styles.strength}>{strength}</td>
+        <td>{day}/{month}/{year}</td>
       </tr>
     )
   }
@@ -55,6 +59,7 @@ const PhrasesPage = () => {
             <th>Phrase</th>
             <th>Definition</th>
             <th>Strength</th>
+            <th>Created</th>
           </tr>
         </thead>
         <tbody>
