@@ -22,10 +22,10 @@ const ServerMessage = () => {
     let mounted = true;
     
     setTimeout(() => {
-      if (mounted ) {
+      if ( mounted && message ) {
         closeMessageBox(); 
       }
-    }, 1000 * 5);
+    }, 1000 * 6);
   
 
     return function cleanup() {
