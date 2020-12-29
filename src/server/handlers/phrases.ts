@@ -58,11 +58,23 @@ export default {
 
     console.log(language, mode);
     // Send back list of phrases for practice session
-    // Send back 15 if untimed, 50 if timed, or if there aren't that many words, the max
-    // Order all the words by strength descending, and then by last_practiced descending (oldest first)
+    // Send back 15 if untimed, 50 if timed, or if 
+    // there aren't that many words, the max that the user has
+    // Order all the words by strength descending, 
+    // and then by last_practiced descending (oldest first)
     // 
   },
   updateOnePhrase: async (req: Request, res: Response) => {
+    const { 
+      user, 
+      phrase, 
+      strikeChange 
+    } : { user: string; 
+        phrase: string; 
+        strikeChange: number
+      } = req.body;
+
+    console.log(user, phrase, strikeChange);
     // Update phrase strikes, strength, and last_practiced in user_phrase
     // import the strikes to strength algorithm here to use from utils or constants?
     // update strength based on strikes
