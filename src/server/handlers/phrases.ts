@@ -53,6 +53,24 @@ export default {
       return res.status(502).send({ error });
     }
   },
+  fetchPracticePhrases: async (req: Request, res: Response) => {
+    const { language, mode } = req.params;
+
+    console.log(language, mode);
+    // Send back list of phrases for practice session
+    // Send back 15 if untimed, 50 if timed, or if there aren't that many words, the max
+    // Order all the words by strength descending, and then by last_practiced descending (oldest first)
+    // 
+  },
+  updateOnePhrase: async (req: Request, res: Response) => {
+    // Update phrase strikes, strength, and last_practiced in user_phrase
+    // import the strikes to strength algorithm here to use from utils or constants?
+    // update strength based on strikes
+    // Update last-practiced
+    // Send back the updated user_phrase with the phrase itself
+    // Also send back the object stating the changes made --
+    // essential the change to strength (0, +1, or -1)
+  },
   savePhrase: async (req: Request, res: Response) => {
     const username: string = req.body.username;
     const articleURL: string = req.body.articleURL;
