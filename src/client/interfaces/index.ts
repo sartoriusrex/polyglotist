@@ -72,3 +72,98 @@ export type NavbarProps = {
   accountMenuOpen?: boolean;
   setAccountMenuOpen?: (value: boolean) => void;
 };
+
+export interface settingsStateInterface {
+  loading: boolean;
+  hasErrors: boolean;
+  themePreference: string;
+  readingSpeed: string;
+  practiceMode: boolean;
+  notificationMethod: string;
+  languagePreference: string;
+  languagesLearning: string[] | null;
+  sources: string[];
+}
+
+
+export interface phraseInterface {
+  phrase_id: string;
+  created_at: string;
+  phrase: string;
+  translation: string;
+  language: string;
+  article: string;
+  context_phrase: string;
+  strength: number;
+}
+
+export interface phrasesStateInterface {
+  loading: boolean;
+  hasErrors: boolean;
+  phrases: phraseInterface[] | [];
+}
+
+export interface phraseResult {
+  phrase: phraseInterface;
+  change: 1 | -1 | 0;
+}
+
+export interface practiceStateInterface {
+  loading: boolean;
+  hasErrors: boolean;
+  phrases: phraseInterface[];
+  results: phraseResult[];
+}
+
+export interface userStateInterface {
+  loading: boolean;
+  hasErrors: boolean;
+  users: any[];
+}
+
+
+export interface authStateInterface {
+  loading: boolean;
+  hasErrors: boolean;
+  user: any;
+}
+
+export interface messageStateInterface {
+  message: string | null;
+}
+
+interface DatabaseSource {
+  name: string;
+  url: string;
+  language: string;
+  error?: string;
+}
+
+interface CrawlResult {
+  title: string;
+  date: string;
+  url: string;
+  language: string;
+  body: string[][];
+  error?: string;
+}
+
+interface SourceText {
+  source: DatabaseSource;
+  articles?: CrawlResult[] | { error: string };
+  error?: string;
+}
+
+export interface newArticlesStateInterface {
+  loading: boolean;
+  hasErrors: boolean;
+  articles: SourceText[] | null;
+}
+
+
+export interface ArticlesStateInterface {
+  loading: boolean;
+  hasErrors: boolean;
+  articles: Article[] | [];
+  // Need to add date and date read in state, as well as update backend to get this data
+}

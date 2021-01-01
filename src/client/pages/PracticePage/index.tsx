@@ -2,6 +2,7 @@ import React, { useState, FormEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { settingsSelector } from '../../slices/settings';
+import { createSession } from '../../slices/practice';
 
 import styles from './practicePage.module.scss';
 
@@ -39,8 +40,7 @@ const PracticePage = () => {
   function onSubmit(e: FormEvent) {
     e.preventDefault();
 
-    console.log(lang);
-    console.log(mode);
+    dispatch(createSession(lang, mode));
   }
 
   return(

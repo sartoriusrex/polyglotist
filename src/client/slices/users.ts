@@ -1,10 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-interface userStateInterface {
-  loading: boolean;
-  hasErrors: boolean;
-  users: any[];
-}
+import { userStateInterface } from '../interfaces'
 
 export const initialState: userStateInterface = {
   loading: false,
