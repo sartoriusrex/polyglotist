@@ -22,9 +22,10 @@
         margin-top: 3rem;
         padding: .625rem 1.25rem;
         font-size: 1.5rem;
-        color: $green;
+        color: $dark-purple;
         background-color: $white;
-        border: 1px solid $green;
+        border: 1px solid $dark-purple;
+        box-shadow: $box-shadow;
     }
 }
 
@@ -37,10 +38,13 @@
 }
 
 .sessionInputGroup {
-    margin-bottom: 3rem;
+    margin-bottom: 1rem;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    padding: 2rem;
+    box-shadow: $box-shadow;
+    background-color: $light-gray;
 
     h2 {
         margin-bottom: 1.25rem;
