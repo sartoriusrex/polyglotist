@@ -156,10 +156,13 @@ export const select_practice_from_users_phrases_from_userid = `
         context_phrase,
         phrase,
         translation,
-        language
+        language,
+        articles.title as article_title
     FROM users_phrases
     LEFT JOIN phrases 
         ON phrases.ID = users_phrases.phrase_id
+    LEFT JOIN articles
+        ON articles.ID = users_phrases.article_id
     WHERE users_phrases.user_id = $1 AND phrases.language = $2
     ORDER BY strength ASC, last_practiced ASC
     LIMIT $3;
