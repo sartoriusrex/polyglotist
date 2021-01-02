@@ -146,18 +146,16 @@ export const select_all_from_users_phrases_from_userid = `
 
 export const select_practice_from_users_phrases_from_userid = `
     SELECT
-        users_phrases.ID AS relationship_id,
-        user_id,
+        phrases.created as created_at,
         phrase_id,
         last_practiced,
         strength,
-        strikes,
         article_id,
         context_phrase,
         phrase,
         translation,
         language,
-        articles.title as article_title
+        articles.title as article
     FROM users_phrases
     LEFT JOIN phrases 
         ON phrases.ID = users_phrases.phrase_id

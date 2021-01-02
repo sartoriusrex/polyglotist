@@ -59,10 +59,21 @@ export default {
     const quantity = mode === "untimed" ? 15 : 50;
 
     try {
-      const phrases = await db.query(
+      const phrasesResult = await db.query(
         select_practice_from_users_phrases_from_userid,
         [userId, language, quantity]
       ).then( result => result.rows);
+
+      const phrases = phrasesResult.map( (phrase: any) => ({
+        phrase_id: phrase.phrase_id,
+        created_at: phrase.created_at,
+        phrase: phrase.phrase,
+        translation: phrase.translation,
+        language: phrase.language,
+        article: phrase.article,
+        context_phrase: phrase.context_phrase,
+        strength: phrase.strength
+      }));
 
       return res.status(200).send({ phrases });
     } catch( err ) {
