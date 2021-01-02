@@ -17,6 +17,7 @@ import PhrasesPage from '../../pages/PhrasesPage';
 import PhraseDetailPage from '../../pages/PhraseDetailPage';
 import SettingsPage from '../../pages/SettingsPage';
 import PracticePage from '../../pages/PracticePage';
+import PracticeSessionPage from '../../pages/PracticeSessionPage';
 import NoMatchPage from '../../components/NoMatchPage';
 import ServerMessage from '../../components/ServerMessage';
 
@@ -71,6 +72,9 @@ const AuthenticatedApp = () => {
         </Route>
         <Route exact path='/:username/practice'>
           <PracticePage />
+        </Route>
+        <Route exact path='/:username/practice/:language'>
+          <PracticeSessionPage />
         </Route>
         <Route exact path='/:username/settings'>
           {settings.languagesLearning ? (

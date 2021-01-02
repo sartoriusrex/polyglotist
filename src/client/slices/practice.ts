@@ -88,11 +88,8 @@ export function createSession( lang: string, mode: string, username: string, use
 
             const { phrases } = await response.json();
 
-            console.log(phrases);
-
-            // history.push(`/${username}/practice/${lang}`);
-            
-            // dispatch(setPracticeSuccess());
+            history.push(`/${username}/practice/${lang}`);
+            dispatch(setPracticeSuccess({phrases}));
         } catch (err) {
             console.log(err);
             dispatch(setPracticeFailure());
