@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { settingsSelector } from '../../slices/settings';
 import { createSession } from '../../slices/practice';
+import { authSelector } from '../../slices/auth';
 
 import styles from './practicePage.module.scss';
 
 const PracticePage = () => {
   const dispatch = useDispatch();
   const { languagesLearning: languages } = useSelector(settingsSelector);
+  const { user } = useSelector(authSelector);
   const [lang, setLang] = useState(languages[0]);
   const [mode, setMode] = useState('untimed');
 
@@ -40,7 +42,9 @@ const PracticePage = () => {
   function onSubmit(e: FormEvent) {
     e.preventDefault();
 
-    dispatch(createSession(lang, mode));
+    const { username, id } = user;
+
+    dispatch(createSession(lang, mode, username, id));
   }
 
   return(

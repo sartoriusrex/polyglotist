@@ -74,12 +74,12 @@ export const {
     updateResultsSuccess
 } = actions;
 
-export function createSession( lang: string, mode: string ) {
+export function createSession( lang: string, mode: string, username: string, userId: number ) {
     return async (dispatch: Function) => {
         dispatch(setPractice());
 
         try {
-            const response = await fetch(`/api/phrases/practice/${lang}/${mode}}`, {
+            const response = await fetch(`/api/phrases/practice/${lang}/${mode}/${userId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -90,7 +90,7 @@ export function createSession( lang: string, mode: string ) {
 
             console.log(phrases);
 
-            // history.push(`/${user}/practice/${lang}`);
+            // history.push(`/${username}/practice/${lang}`);
             
             // dispatch(setPracticeSuccess());
         } catch (err) {

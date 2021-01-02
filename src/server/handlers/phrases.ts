@@ -13,7 +13,8 @@ import {
   insert_user_phrase,
   select_all_from_phrases_from_id,
   select_all_from_users_phrases_from_userid,
-  select_title_from_articles_from_id
+  select_title_from_articles_from_id,
+  select_practice_from_users_phrases_from_userid,
 } from '../queries';
 
 import {
@@ -54,15 +55,21 @@ export default {
     }
   },
   fetchPracticePhrases: async (req: Request, res: Response) => {
-    const { language, mode } = req.params;
+    const { language, mode, userId } = req.params;
+    const quantity = mode === "untimed" ? 15 : 50;
 
-    console.log(language, mode);
-    // Send back list of phrases for practice session
-    // Send back 15 if untimed, 50 if timed, or if 
-    // there aren't that many words, the max that the user has
-    // Order all the words by strength descending, 
-    // and then by last_practiced descending (oldest first)
-    // 
+    try {
+      const phrases = await db.query(
+        select_practice_from_users_phrases_from_userid,
+        [userId, language, quantity]
+      ).then( result => result.rows);
+
+      return res.status(200).send({ phrases });
+    } catch( err ) {
+      console.log(err);
+
+      return res.status(500).send({ error: err });
+    }
   },
   updateOnePhrase: async (req: Request, res: Response) => {
     const { 
@@ -75,6 +82,7 @@ export default {
       } = req.body;
 
     console.log(user, phrase, strikeChange);
+
     // Update phrase strikes, strength, and last_practiced in user_phrase
     // import the strikes to strength algorithm here to use from utils or constants?
     // update strength based on strikes

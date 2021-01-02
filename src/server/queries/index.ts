@@ -144,6 +144,27 @@ export const select_all_from_users_phrases_from_userid = `
     WHERE user_id = $1;
 `
 
+export const select_practice_from_users_phrases_from_userid = `
+    SELECT
+        users_phrases.ID AS relationship_id,
+        user_id,
+        phrase_id,
+        last_practiced,
+        strength,
+        strikes,
+        article_id,
+        context_phrase,
+        phrase,
+        translation,
+        language
+    FROM users_phrases
+    LEFT JOIN phrases 
+        ON phrases.ID = users_phrases.phrase_id
+    WHERE users_phrases.user_id = $1 AND phrases.language = $2
+    ORDER BY strength ASC, last_practiced ASC
+    LIMIT $3;
+`
+
 export const select_title_from_articles_from_id = `
     SELECT title 
     FROM articles 
