@@ -59,9 +59,7 @@ const practiceSlice = createSlice({
     }
 })
 
-export const practicePhrasesSelector = (state: practiceStateInterface) => state.phrases;
-
-export const practiceResultsSelector = (state: practiceStateInterface) => state.results;
+export const practiceSelector = (state: any) => state.practice;
 
 const { actions, reducer } = practiceSlice;
 
@@ -98,8 +96,8 @@ export function createSession( lang: string, mode: string, username: string, use
     }
 }
 
-export function updatePhraseStrength( phraseId: string, result: 1 | -1) {
-    console.log(phraseId, result);
+export function updatePhraseStrength( userId: string, phraseId: string, result: 1 | -1) {
+    console.log(userId, phraseId, result);
 }
 
 export default reducer;
