@@ -1,34 +1,46 @@
 import React from 'react';
 
-import { phraseInterface } from '../../interfaces';
-
 import styles from './practiceQuestion.module.scss';
 
-const PracticeQuestion = (
-    { 
+const PracticeQuestion = ({ 
         phrase_id,
         phrase,
         translation,
         context_phrase,
-        article
+        article,
+        submit,
+        progress,
+        index,
     } : {
         phrase_id: string,
         phrase: string,
         translation: string,
         context_phrase: string,
-        article: string
-    }
-    ) => {
-    return (
-        <div 
-            key={phrase_id}
-            className={styles.questionContainer}>
-            <p>{phrase}</p>
-            <p>{translation}</p>
-            <p>{context_phrase}</p>
-            <p>{article}</p>
-        </div>
-    )
+        article: string,
+        submit: Function,
+        progress: number,
+        index: number
+    }) => {
+        const formats = [
+            'multipleChoice',
+            'sentenceCompletion'
+        ]
+        const randomInteger = Math.floor(Math.random() * (formats.length - 1 ));
+
+        return (
+            <div 
+                key={phrase_id}
+                className={ 
+                    progress === index ? 
+                    styles.questionContainerVisible :
+                    styles.questionContainerHidden
+                    }>
+                <p>{phrase}</p>
+                <p>{translation}</p>
+                <p>{context_phrase}</p>
+                <p>{article}</p>
+            </div>
+        )
 }
 
 export default PracticeQuestion;

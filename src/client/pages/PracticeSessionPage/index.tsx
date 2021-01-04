@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { 
@@ -6,6 +6,8 @@ import {
     updatePhraseStrength
 } from '../../slices/practice';
 import { authSelector } from '../../slices/auth';
+
+import LoadingIndicator from '../../components/LoadingIndicator';
 
 import styles from './practiceSessionPage.module.scss';
 
@@ -25,9 +27,12 @@ const practiceSessionPage = () => {
         results
     } = useSelector(practiceSelector);
     const dispatch = useDispatch();
+    const [progress, setProgress] = useState(() => 0);
     
     function updatePhrase(phraseId: string, result: 1 | -1) {
         dispatch(updatePhraseStrength(id, phraseId, result));
+
+        setProgress(progress => progress + 1);
     }
 
     function showResults() {
@@ -48,18 +53,14 @@ const practiceSessionPage = () => {
 
     if( loading ) {
         return (
-            <p>
-                loading...
-            </p>
+            <LoadingIndicator />
         )
     }
 
     return (
         <section className={styles.practiceSession}>
-            <h1>Practice Session Page</h1>
-
             {
-                phrases.map( (phrase: phraseInterface) =>
+                phrases.map( (phrase: phraseInterface, idx: number ) =>
                     <PracticeQuestion 
                         key={phrase.phrase_id}
                         phrase_id={phrase.phrase_id}
@@ -67,8 +68,16 @@ const practiceSessionPage = () => {
                         translation={phrase.translation}
                         article={phrase.article}
                         context_phrase={phrase.context_phrase}
+                        submit={updatePhrase}
+                        progress={progress}
+                        index={idx}
                     />
                 )
+            }
+
+            {
+                progress === phrases.length &&
+                showResults()
             }
         </section>
     )

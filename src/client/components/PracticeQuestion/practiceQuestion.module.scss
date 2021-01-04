@@ -1,5 +1,10 @@
 @import '../../styles/variables';
 
-.questionContainer {
-    
+.questionContainerVisible {
+    box-shadow: $box-shadow;
+}
+
+.questionContainerHidden {
+    @extend .questionContainerVisible;
+    display: none;
 }
