@@ -8,3 +8,11 @@
     @extend .questionContainerVisible;
     display: none;
 }
+
+.hintShown {
+    display: flex;
+}
+
+.hintHidden {
+    display: none;
+}

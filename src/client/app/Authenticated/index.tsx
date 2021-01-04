@@ -73,7 +73,7 @@ const AuthenticatedApp = () => {
         <Route exact path='/:username/practice'>
           <PracticePage />
         </Route>
-        <Route exact path='/:username/practice/:language'>
+        <Route exact path='/:username/practice/:language/:mode'>
           <PracticeSessionPage />
         </Route>
         <Route exact path='/:username/settings'>
