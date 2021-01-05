@@ -15,6 +15,8 @@ import {
   select_all_from_users_phrases_from_userid,
   select_title_from_articles_from_id,
   select_practice_from_users_phrases_from_userid,
+  update_phrase_strength,
+  select_all_from_users_phrases_from_userid_and_phrase_id,
 } from '../queries';
 
 import {
@@ -84,15 +86,46 @@ export default {
   },
   updateOnePhrase: async (req: Request, res: Response) => {
     const { 
-      user, 
-      phrase, 
-      strikeChange 
-    } : { user: string; 
-        phrase: string; 
-        strikeChange: number
+      userId, 
+      phraseId, 
+      result 
+    } : { userId: string; 
+        phraseId: string; 
+        result: 1 | -1;
       } = req.body;
 
-    console.log(user, phrase, strikeChange);
+    try {
+
+      const userPhraseResult = await db.query(
+        select_all_from_users_phrases_from_userid_and_phrase_id,
+        [ userId, phraseId ]
+      ).then( result => result.rows[0] );
+
+      const {
+        user_id,
+        phrase_id,
+        strength,
+        strikes,
+        last_practiced
+      } = userPhraseResult;
+
+      const newStrikes = strikes + result;
+      const lastPracticed = new Date();
+
+      // implement strength increase logic
+
+      // await db.query(
+      //   update_phrase_strength,
+      //   [ userId, phraseId, newStrength, lastPracticed, newStrikes ]
+      // )
+
+
+      return res.status(200).send({ phrase: 'hello' });
+    } catch (err) {
+      console.log(err);
+
+      return res.status(500).send({ error: 'Failed to update phrase'});
+    }
 
     // Update phrase strikes, strength, and last_practiced in user_phrase
     // import the strikes to strength algorithm here to use from utils or constants?

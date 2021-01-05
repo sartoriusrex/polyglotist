@@ -8,7 +8,7 @@ import phraseHandlers from '../handlers/phrases';
 router.get('/define/:language/:phrase', phraseHandlers.fetchPhraseDefinition);
 router.get('/practice/:language/:mode/:userId', phraseHandlers.fetchPracticePhrases);
 router.post('/:language/:phrase', phraseHandlers.savePhrase);
-router.patch('/:phrase', phraseHandlers.updateOnePhrase);
+router.patch('/:phraseId', phraseHandlers.updateOnePhrase);
 router.get('/:phrase', phraseHandlers.fetchOnePhrase);
 router.post('/', phraseHandlers.fetchPhrases);
 

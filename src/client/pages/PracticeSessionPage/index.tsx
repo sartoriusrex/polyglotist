@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 import { 
     practiceSelector,
@@ -28,22 +28,23 @@ const practiceSessionPage = () => {
         results
     } = useSelector(practiceSelector);
     const dispatch = useDispatch();
-    const location: { state: { mode: string }} = useLocation();
+    const location: { pathname: string; state: { mode: string }} = useLocation();
     const mode = location?.state?.mode;
+    const path = location.pathname;
+    const practiceHomePath = path.split('/').slice(0,3).join('/');
     const [progress, setProgress] = useState(() => 0);
-    const finishedSession = progress === phrases.length - 1;
+    const finishedSession = progress === phrases.length;
     
     function updatePhrase(phraseId: string, result: 1 | -1) {
-        // dispatch(updatePhraseStrength(id, phraseId, result));
+        dispatch(updatePhraseStrength(id, phraseId, result));
     }
 
     function showResults() {
         return (
-            <div>
+            <div className={styles.resultsContainer}>
                 {/* { results.map( (result: phraseResult) => <p>{result}</p>)} */}
                 results!
-                <button>Change Practice Settings</button>
-                <button>Repeat Session</button>
+                <Link to={practiceHomePath}>Practice Again</Link>
             </div>
         )
     }

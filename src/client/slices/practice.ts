@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import history from '../app/history';
 import { sendMessage } from './messages';
 import { practiceStateInterface } from '../interfaces';
+import { json } from 'body-parser';
 
 export const initialState: practiceStateInterface = {
     loading: false,
@@ -97,7 +98,29 @@ export function createSession( lang: string, mode: string, username: string, use
 }
 
 export function updatePhraseStrength( userId: string, phraseId: string, result: 1 | -1) {
-    console.log(userId, phraseId, result);
+    const body = { userId, phraseId, result };
+    
+    return async (dispatch: Function) => {
+        dispatch(updateResults());
+
+        try {
+            const response = await fetch(`/api/phrases/${phraseId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
+
+            const { phrase } = await response.json();
+
+            console.log(phrase);
+
+        } catch(err) {
+            console.log(err);
+            dispatch(updateResultsFailure());
+        }
+    }
 }
 
 export default reducer;

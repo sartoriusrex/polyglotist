@@ -166,6 +166,17 @@ export const select_practice_from_users_phrases_from_userid = `
     LIMIT $3;
 `
 
+export const select_all_from_users_phrases_from_userid_and_phrase_id = `
+    SELECT
+        user_id,
+        phrase_id,
+        strength,
+        strikes,
+        last_practiced
+    FROM users_phrases
+    WHERE user_id = $1 AND phrase_id = $2;
+`
+
 export const select_title_from_articles_from_id = `
     SELECT title 
     FROM articles 
@@ -265,6 +276,12 @@ export const update_article_reference_from_id = `
 export const update_users_phrases = `
     UPDATE users_phrases 
     SET strength = $1, article_id = $2, context_phrase = $3;
+`
+
+export const update_phrase_strength = `
+    UPDATE users_phrases
+    WHERE user_id = $1 AND phrase_id = $2
+    SET strength = $3, last_practiced = $4, strikes = $5;
 `
 
 export const drop_all_tables = `
