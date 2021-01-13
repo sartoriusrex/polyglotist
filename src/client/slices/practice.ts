@@ -2,11 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import history from '../app/history';
 import { sendMessage } from './messages';
 import { practiceStateInterface } from '../interfaces';
-import { json } from 'body-parser';
 
 export const initialState: practiceStateInterface = {
-    loading: false,
-    hasErrors: false,
+    loadingQuestions: false,
+    loadingResults: false,
+    questionsHasErrors: false,
+    resultsHasErrors: false,
     phrases: [],
     results: [],
 }
@@ -18,43 +19,47 @@ const practiceSlice = createSlice({
         setPractice: (state: practiceStateInterface) => {
             const newState = { ...state };
 
-            newState.loading = true;
+            newState.loadingQuestions = true;
             return newState;
         },
         setPracticeSuccess: (state: practiceStateInterface, { payload }) => {
             const newState = { ...state };
 
-            newState.loading = false;
-            newState.hasErrors = false;
+            newState.loadingQuestions = false;
+            newState.questionsHasErrors = false;
             newState.phrases = payload.phrases;
             return newState;
         },
         setPracticeFailure: (state: practiceStateInterface ) => {
             const newState = { ...state };
 
-            newState.loading = false;
-            newState.hasErrors = true;
+            newState.loadingQuestions = false;
+            newState.questionsHasErrors = true;
             return newState;
         },
         updateResults: (state: practiceStateInterface) => {
             const newState = { ...state };
 
-            newState.loading = true;
+            newState.loadingResults = true;
             return newState;
         },
         updateResultsSuccess: (state: practiceStateInterface, { payload } ) => {
             const newState = { ...state };
 
-            newState.loading = false;
-            newState.hasErrors = false;
-            newState.results = [ ...newState.results, ...payload.results ];
+            console.log(newState);
+
+            newState.loadingResults = false;
+            newState.resultsHasErrors = false;
+
+            newState.results = [ ...newState.results, payload.results ];
+
             return newState;
         },
         updateResultsFailure: (state: practiceStateInterface) => {
             const newState = { ...state };
 
-            newState.loading = false;
-            newState.hasErrors = true;
+            newState.loadingResults = false;
+            newState.resultsHasErrors = true;
             return newState;
         }
     }
@@ -112,10 +117,11 @@ export function updatePhraseStrength( userId: string, phraseId: string, result: 
                 body: JSON.stringify(body)
             });
 
-            const { phrase } = await response.json();
+            const { phrase, change } = await response.json();
 
-            console.log(phrase);
+            let results = { phrase, change };
 
+            dispatch(updateResultsSuccess(results))
         } catch(err) {
             console.log(err);
             dispatch(updateResultsFailure());

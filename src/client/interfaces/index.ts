@@ -109,8 +109,10 @@ export interface phraseResult {
 }
 
 export interface practiceStateInterface {
-  loading: boolean;
-  hasErrors: boolean;
+  loadingQuestions: boolean;
+  loadingResults: boolean;
+  questionsHasErrors: boolean;
+  resultsHasErrors: boolean;
   phrases: phraseInterface[];
   results: phraseResult[];
 }

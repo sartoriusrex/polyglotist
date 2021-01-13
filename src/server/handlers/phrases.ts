@@ -19,6 +19,8 @@ import {
   select_all_from_users_phrases_from_userid_and_phrase_id,
 } from '../queries';
 
+import { updatePhraseStrength } from '../utils/phraseStrength';
+
 import {
   Iphrase,
   IuPhraseRow
@@ -106,21 +108,46 @@ export default {
         phrase_id,
         strength,
         strikes,
-        last_practiced
+        last_practiced,
+        context_phrase,
+        language,
+        created_at,
+        phrase,
+        translation,
+        article
       } = userPhraseResult;
 
-      const newStrikes = strikes + result;
+      let newStrikes: number;
+
+      if( strikes === 0 ) {
+          newStrikes = 0;
+      } else {
+          newStrikes = strikes + result;
+      }
       const lastPracticed = new Date();
 
       // implement strength increase logic
 
-      // await db.query(
-      //   update_phrase_strength,
-      //   [ userId, phraseId, newStrength, lastPracticed, newStrikes ]
-      // )
+      const newStrength = updatePhraseStrength(newStrikes, strength, result);
+      const strengthChange = newStrength - strength;
 
+      const { strength: updatedStrength, last_practiced: updatedPractice } = await db.query(
+        update_phrase_strength,
+        [ userId, phraseId, newStrength, lastPracticed, newStrikes ]
+      ).then( result => result.rows[0]);
 
-      return res.status(200).send({ phrase: 'hello' });
+      const newPhrase = {
+        phrase_id,
+        created_at,
+        phrase,
+        translation,
+        language,
+        article,
+        context_phrase,
+        strength: updatedStrength
+      }
+
+      return res.status(200).send({ phrase: newPhrase , change: strengthChange });
     } catch (err) {
       console.log(err);
 

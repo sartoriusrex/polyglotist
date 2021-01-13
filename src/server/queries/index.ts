@@ -168,12 +168,23 @@ export const select_practice_from_users_phrases_from_userid = `
 
 export const select_all_from_users_phrases_from_userid_and_phrase_id = `
     SELECT
-        user_id,
+        phrases.created as created_at,
         phrase_id,
+        user_id,
+        last_practiced,
         strength,
         strikes,
-        last_practiced
+        article_id,
+        context_phrase,
+        phrase,
+        translation,
+        language,
+        articles.title as article
     FROM users_phrases
+    LEFT JOIN phrases
+        ON phrases.ID = users_phrases.phrase_id
+    LEFT JOIN articles
+        ON articles.ID = users_phrases.article_id
     WHERE user_id = $1 AND phrase_id = $2;
 `
 
@@ -263,7 +274,8 @@ export const update_password = `
 export const update_user_settings = `
     UPDATE users 
     SET reading_speed = $1, theme_preference = $2, practice_mode = $3, notification_method = $4, language_preference = $5, languages_learning = $6 
-    WHERE username = $7 RETURNING id, reading_speed, theme_preference, practice_mode, notification_method, language_preference, languages_learning;
+    WHERE username = $7
+    RETURNING id, reading_speed, theme_preference, practice_mode, notification_method, language_preference, languages_learning;
 `
 
 export const update_article_reference_from_id = `
@@ -280,8 +292,9 @@ export const update_users_phrases = `
 
 export const update_phrase_strength = `
     UPDATE users_phrases
+    SET strength = $3, last_practiced = $4, strikes = $5
     WHERE user_id = $1 AND phrase_id = $2
-    SET strength = $3, last_practiced = $4, strikes = $5;
+    RETURNING strength, last_practiced;
 `
 
 export const drop_all_tables = `

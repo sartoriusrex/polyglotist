@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import styles from './practiceQuestion.module.scss';
 
@@ -11,7 +12,8 @@ const PracticeQuestion = ({
         submit,
         updateProgress,
         current,
-        last
+        last,
+        userId
     } : {
         phrase_id: string,
         phrase: string,
@@ -21,7 +23,8 @@ const PracticeQuestion = ({
         submit: Function,
         updateProgress: Function,
         current: boolean,
-        last: boolean
+        last: boolean,
+        userId: string
     }) => {
         const [ answer, setAnswer ] = useState('');
         const [ answered, setAnswered ] = useState(false);
@@ -71,12 +74,19 @@ const PracticeQuestion = ({
                             </>
                         }
 
-                        <button 
-                            title={ last ? "See Results" : "Next Question"}
-                            onClick={ () => updateProgress() }
-                        >
-                            { last ? "Results" : "Next" }
-                        </button>
+                        {
+                            last ?
+                            <Link to={`/${userId}/practice/results`}>
+                                See Results
+                            </Link> :
+                            <button 
+                                title={ "Next Question" }
+                                onClick={ () => updateProgress() }
+                            >
+                                Next
+                            </button>
+                        }
+
                     </div> :
                     <button 
                         title="Submit Answer" 

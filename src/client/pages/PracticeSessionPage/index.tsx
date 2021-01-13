@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { 
     practiceSelector,
@@ -12,20 +12,16 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 
 import styles from './practiceSessionPage.module.scss';
 
-import { 
-    phraseInterface,
-    phraseResult
-} from '../../interfaces';
+import { phraseInterface } from '../../interfaces';
 
 import PracticeQuestion from '../../components/PracticeQuestion';
 
 const practiceSessionPage = () => {
     const { id } = useSelector(authSelector).user;
     const { 
-        hasErrors,
-        loading,
+        questionsHasErrors,
+        loadingQuestions,
         phrases,
-        results
     } = useSelector(practiceSelector);
     const dispatch = useDispatch();
     const location: { pathname: string; state: { mode: string }} = useLocation();
@@ -33,23 +29,12 @@ const practiceSessionPage = () => {
     const path = location.pathname;
     const practiceHomePath = path.split('/').slice(0,3).join('/');
     const [progress, setProgress] = useState(() => 0);
-    const finishedSession = progress === phrases.length;
     
     function updatePhrase(phraseId: string, result: 1 | -1) {
         dispatch(updatePhraseStrength(id, phraseId, result));
     }
 
-    function showResults() {
-        return (
-            <div className={styles.resultsContainer}>
-                {/* { results.map( (result: phraseResult) => <p>{result}</p>)} */}
-                results!
-                <Link to={practiceHomePath}>Practice Again</Link>
-            </div>
-        )
-    }
-
-    if( hasErrors ) {
+    if( questionsHasErrors ) {
         return (
             <p>
                 Error
@@ -57,7 +42,7 @@ const practiceSessionPage = () => {
         )
     }
 
-    if( loading ) {
+    if( loadingQuestions ) {
         return (
             <LoadingIndicator />
         )
@@ -86,14 +71,10 @@ const practiceSessionPage = () => {
                             updateProgress={ () => setProgress(progress => progress + 1)}
                             current={current}
                             last={last}
+                            userId={ id }
                         />
                     )
                 })
-            }
-
-            {
-                finishedSession &&
-                showResults()
             }
         </section>
     )
