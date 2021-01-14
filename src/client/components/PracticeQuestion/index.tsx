@@ -13,7 +13,7 @@ const PracticeQuestion = ({
         updateProgress,
         current,
         last,
-        userId
+        username
     } : {
         phrase_id: string,
         phrase: string,
@@ -24,7 +24,7 @@ const PracticeQuestion = ({
         updateProgress: Function,
         current: boolean,
         last: boolean,
-        userId: string
+        username: string
     }) => {
         const [ answer, setAnswer ] = useState('');
         const [ answered, setAnswered ] = useState(false);
@@ -76,7 +76,7 @@ const PracticeQuestion = ({
 
                         {
                             last ?
-                            <Link to={`/${userId}/practice/results`}>
+                            <Link to={`/${username}/practice/results`}>
                                 See Results
                             </Link> :
                             <button 

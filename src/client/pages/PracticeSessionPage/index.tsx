@@ -17,7 +17,7 @@ import { phraseInterface } from '../../interfaces';
 import PracticeQuestion from '../../components/PracticeQuestion';
 
 const practiceSessionPage = () => {
-    const { id } = useSelector(authSelector).user;
+    const { id, username } = useSelector(authSelector).user;
     const { 
         questionsHasErrors,
         loadingQuestions,
@@ -71,7 +71,7 @@ const practiceSessionPage = () => {
                             updateProgress={ () => setProgress(progress => progress + 1)}
                             current={current}
                             last={last}
-                            userId={ id }
+                            username={ username }
                         />
                     )
                 })
