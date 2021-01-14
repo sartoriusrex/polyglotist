@@ -2,6 +2,28 @@
 
 .questionContainerVisible {
     box-shadow: $box-shadow;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+
+    button {
+        font-size: 1rem;
+        padding: .5rem 1rem;
+    }
+
+    input {
+        width: 100%;
+        border: 1px solid $dark-purple;
+        color: $dark-purple;
+        padding: .5rem;
+        margin-bottom: 1rem;
+
+        &[disabled] {
+            background-color: $light-blue-gray;
+        }
+    }
 }
 
 .questionContainerHidden {
@@ -9,10 +31,54 @@
     display: none;
 }
 
+.phrase {
+    font-size: 1.25rem;
+    margin: 1rem;
+}
+
+.hintBtn {
+    border: 1px solid $dark-purple;
+    color: $dark-purple;
+    margin-bottom: 1rem;
+}
+
+.hintBtnHide {
+    @extend .hintBtn;
+    border: none;
+    background-color: $dark-purple;
+    color: $white;
+}
+
 .hintShown {
     display: flex;
+    line-height: 1.4;
+    padding: .5rem;
 }
 
 .hintHidden {
     display: none;
+}
+
+.resultContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem;
+    padding: 1rem;
+
+    p {
+        margin-bottom: .5rem;
+    }
+}
+
+.resultsLink,
+.nextBtn {
+    color: $dark-purple;
+    font-size: 1.25rem;
+    border: 1px solid $dark-purple;
+}
+
+.answerBtn {
+    color: $darkest-green;
+    border: 1px solid $darkest-green;
 }

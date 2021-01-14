@@ -130,8 +130,6 @@ export default {
 
       // implement strength increase logic
 
-      console.log(result, strikes, newStrikes);
-
       const newStrength = updatePhraseStrength(newStrikes, strength, result);
       const strengthChange = newStrength - strength;
 

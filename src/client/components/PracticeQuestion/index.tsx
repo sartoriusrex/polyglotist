@@ -45,24 +45,27 @@ const PracticeQuestion = ({
                     styles.questionContainerHidden
                     }>
                 
-                <p>{phrase}</p>
+                <p className={styles.phrase}>{phrase}</p>
                 <button 
                     title="Toggle Hint"
+                    className={ showHint ? styles.hintBtn : styles.hintBtnHide }
                     onClick={ () => setShowHint(showHint => !showHint)}
                 >
-                    Show Hint
+                    { showHint ? "Hide Hint" : "Show Hint"}
                 </button>
                 <p className={ showHint ? styles.hintShown : styles.hintHidden } >
-                    hint: {context_phrase}
+                    {context_phrase}
                 </p>
                 <input 
                     type="text"
                     placeholder="Answer"
                     onChange={ (e) => setAnswer(e.target.value) } 
-                    value={answer} />
+                    value={answer} 
+                    disabled={ answered }    
+                />
                 { 
                     answered ?
-                    <div>
+                    <div className={styles.resultContainer}>
                         { 
                             result === 1 ?
                             <p>Correct!</p> :
@@ -76,11 +79,15 @@ const PracticeQuestion = ({
 
                         {
                             last ?
-                            <Link to={`/${username}/practice/results`}>
+                            <Link 
+                                to={`/${username}/practice/results`}
+                                className={styles.resultsLink}
+                            >
                                 See Results
                             </Link> :
                             <button 
                                 title={ "Next Question" }
+                                className={styles.nextBtn}
                                 onClick={ () => updateProgress() }
                             >
                                 Next
@@ -90,6 +97,7 @@ const PracticeQuestion = ({
                     </div> :
                     <button 
                         title="Submit Answer" 
+                        className={styles.answerBtn}
                         onClick={ () => handleAnswer() }
                     >Answer</button>
                 }
