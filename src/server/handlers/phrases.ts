@@ -96,6 +96,8 @@ export default {
         result: 1 | -1;
       } = req.body;
 
+      // result is 1 when correct
+
     try {
 
       const userPhraseResult = await db.query(
@@ -119,14 +121,16 @@ export default {
 
       let newStrikes: number;
 
-      if( strikes === 0 ) {
+      if( strikes === 0 && result === 1 ) {
           newStrikes = 0;
       } else {
-          newStrikes = strikes + result;
+          newStrikes = strikes - result;
       }
       const lastPracticed = new Date();
 
       // implement strength increase logic
+
+      console.log(result, strikes, newStrikes);
 
       const newStrength = updatePhraseStrength(newStrikes, strength, result);
       const strengthChange = newStrength - strength;
