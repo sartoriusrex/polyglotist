@@ -46,16 +46,7 @@ const PracticeQuestion = ({
                     }>
                 
                 <p className={styles.phrase}>{phrase}</p>
-                <button 
-                    title="Toggle Hint"
-                    className={ showHint ? styles.hintBtn : styles.hintBtnHide }
-                    onClick={ () => setShowHint(showHint => !showHint)}
-                >
-                    { showHint ? "Hide Hint" : "Show Hint"}
-                </button>
-                <p className={ showHint ? styles.hintShown : styles.hintHidden } >
-                    {context_phrase}
-                </p>
+                
                 <input 
                     type="text"
                     placeholder="Answer"
@@ -63,6 +54,23 @@ const PracticeQuestion = ({
                     value={answer} 
                     disabled={ answered }    
                 />
+                
+                {
+                    !answered &&
+                    <button 
+                        title="Toggle Hint"
+                        className={ showHint ? styles.hintBtn : styles.hintBtnHide }
+                        onClick={ () => setShowHint(showHint => !showHint)}
+                    >
+                        { showHint ? "Hide Hint" : "Show Hint"}
+                    </button>
+                }
+                
+
+                <p className={ showHint && !answered ? styles.hintShown : styles.hintHidden } >
+                    {context_phrase}
+                </p>
+
                 { 
                     answered ?
                     <div className={styles.resultContainer}>

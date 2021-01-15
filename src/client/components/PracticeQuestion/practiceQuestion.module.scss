@@ -19,9 +19,12 @@
         color: $dark-purple;
         padding: .5rem;
         margin-bottom: 1rem;
+        text-align: center;
 
         &[disabled] {
             background-color: $light-blue-gray;
+            border: 2px solid $light-blue-gray;
+            color: $white;
         }
     }
 }
