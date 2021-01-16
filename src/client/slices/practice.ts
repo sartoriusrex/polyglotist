@@ -46,8 +46,6 @@ const practiceSlice = createSlice({
         updateResultsSuccess: (state: practiceStateInterface, { payload } ) => {
             const newState = { ...state };
 
-            console.log(newState);
-
             newState.loadingResults = false;
             newState.resultsHasErrors = false;
 
@@ -121,7 +119,9 @@ export function updatePhraseStrength( userId: string, phraseId: string, result: 
 
             let results = { phrase, change };
 
-            dispatch(updateResultsSuccess(results))
+            console.log(results);
+
+            dispatch(updateResultsSuccess({results}))
         } catch(err) {
             console.log(err);
             dispatch(updateResultsFailure());
