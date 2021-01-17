@@ -23,7 +23,7 @@ const PracticeResultsPage = () => {
             .filter( (result: number ) => result === 1 )
             .length;
 
-        const percentageCorrect = totalCorrect / total * 100;
+        const percentageCorrect = parseFloat((totalCorrect / total * 100).toFixed(2));
         const passingGrade = percentageCorrect > 70;
 
         return (
@@ -43,6 +43,7 @@ const PracticeResultsPage = () => {
                         <tr>
                             <td>Phrase</td>
                             <td>Answer</td>
+                            <td>Strength</td>
                             <td>Strength Change</td>
                         </tr>
                     </thead>
@@ -54,10 +55,12 @@ const PracticeResultsPage = () => {
                                 resultItem.change === -1 ?
                                 "Decrease" :
                                 "No Change"
+                                
                             return (
                                 <tr key={resultItem.phrase.phrase_id}>
                                     <td>{resultItem.phrase.phrase}</td>
                                     <td>{resultItem.phrase.translation}</td>
+                                    <td>{resultItem.phrase.strength}</td>
                                     <td>{ changeDisplay }</td>
                                 </tr>
                             );
