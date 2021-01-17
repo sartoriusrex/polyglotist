@@ -115,11 +115,9 @@ export function updatePhraseStrength( userId: string, phraseId: string, result: 
                 body: JSON.stringify(body)
             });
 
-            const { phrase, change } = await response.json();
+            const { phrase, change, result } = await response.json();
 
-            let results = { phrase, change };
-
-            console.log(results);
+            let results = { phrase, change, result };
 
             dispatch(updateResultsSuccess({results}))
         } catch(err) {

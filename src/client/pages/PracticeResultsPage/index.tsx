@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 
 import { practiceSelector } from '../../slices/practice';
+import { authSelector } from '../../slices/auth';
 
 import styles from './practiceResultsPage.module.scss';
+import { phraseResult } from 'client/interfaces';
 
 const PracticeResultsPage = () => {
     const { 
@@ -12,11 +14,61 @@ const PracticeResultsPage = () => {
         resultsHasErrors, 
         results
     } = useSelector(practiceSelector);
+    const { username } = useSelector(authSelector).user;
 
     function displayResults() {
-        console.log(results);
+        const total = results.length;
+        const totalCorrect = results
+            .map( (resultItem: phraseResult ) => resultItem.result )
+            .filter( (result: number ) => result === 1 )
+            .length;
+
+        const percentageCorrect = totalCorrect / total * 100;
+        const passingGrade = percentageCorrect > 70;
+
+        return (
+            <div>
+                <h2><span>{totalCorrect} Correct Out Of {total}</span></h2>
+                <h3 className={ passingGrade ? styles.percentPass : styles.percentFail }>{percentageCorrect} %</h3>
+                { 
+                    passingGrade ?
+                    <p className={styles.passingMessage}>Good Job!</p> :
+                    <p className={styles.failingMessage}>Keep practicing!</p>
+                }
+
+                <Link to={`/${username}/practice`}>Practice Again</Link>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Phrase</td>
+                            <td>Answer</td>
+                            <td>Strength Change</td>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        { results.map( (resultItem: phraseResult) => {
+                            const changeDisplay = resultItem.change === 1 ?
+                                "Increase" :
+                                resultItem.change === -1 ?
+                                "Decrease" :
+                                "No Change"
+                            return (
+                                <tr key={resultItem.phrase.phrase_id}>
+                                    <td>{resultItem.phrase.phrase}</td>
+                                    <td>{resultItem.phrase.translation}</td>
+                                    <td>{ changeDisplay }</td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
+            </div>
+        )
         /*
             change: (-1, 0, 1);
+            result: (1, -1);
             phrase: {
                 article title,
                 context,
@@ -28,16 +80,6 @@ const PracticeResultsPage = () => {
                 translation
             }
         */
-
-        /*
-            should display some statistics, such as total correct,
-            which ones had errors, and their correct answers, and
-            for each phrase, whether or not the strength increased,
-            decreased, or stayed the same
-        */
-        // return results.map( result => {
-        //     <div>{result}</div>
-        // })
     }
 
     if (loadingResults ) {
@@ -49,7 +91,7 @@ const PracticeResultsPage = () => {
     }
 
     return (
-        <section>
+        <section className={styles.resultsPageSection}>
             <h1>Results</h1>
 
             { displayResults() }

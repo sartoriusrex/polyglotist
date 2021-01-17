@@ -149,7 +149,7 @@ export default {
         strength: updatedStrength
       }
 
-      return res.status(200).send({ phrase: newPhrase , change: strengthChange });
+      return res.status(200).send({ phrase: newPhrase , change: strengthChange, result });
     } catch (err) {
       console.log(err);
 

@@ -106,6 +106,7 @@ export interface phrasesStateInterface {
 export interface phraseResult {
   phrase: phraseInterface;
   change: 1 | -1 | 0;
+  result: 1 | -1;
 }
 
 export interface practiceStateInterface {
