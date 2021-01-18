@@ -64,3 +64,34 @@
     @extend .passingMessage;
     color: $red;
 }
+
+.resultsContainer {
+    width: 100%;
+
+    table {
+        width: 100%;
+    }
+
+    thead {
+        tr {
+            margin-bottom: 1px solid $dark-purple;
+        }
+
+        td {
+            color: $dark-purple;
+            text-align: center;
+            padding: .5rem 0;
+        }
+    }
+
+    tbody {
+        tr {
+            border-bottom: 1px solid $darkest-green;
+        }
+
+        td {
+            padding: .25rem;
+            text-align: center;
+        }
+    }
+}

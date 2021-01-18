@@ -27,7 +27,7 @@ const PracticeResultsPage = () => {
         const passingGrade = percentageCorrect > 70;
 
         return (
-            <div>
+            <div className={styles.resultsContainer}>
                 <div className={styles.summaryContainer}>
                     <h2>{totalCorrect} Correct Out Of {total}</h2>
                     <h3 className={ passingGrade ? styles.percentPass : styles.percentFail }>{percentageCorrect} %</h3>
@@ -46,17 +46,17 @@ const PracticeResultsPage = () => {
                             <td>Phrase</td>
                             <td>Answer</td>
                             <td>Strength</td>
-                            <td>Strength Change</td>
+                            <td>Change</td>
                         </tr>
                     </thead>
 
                     <tbody>
                         { results.map( (resultItem: phraseResult) => {
                             const changeDisplay = resultItem.change === 1 ?
-                                "Increase" :
+                                "+" :
                                 resultItem.change === -1 ?
-                                "Decrease" :
-                                "No Change"
+                                "-" :
+                                "None"
 
                             return (
                                 <tr key={resultItem.phrase.phrase_id}>
@@ -71,20 +71,6 @@ const PracticeResultsPage = () => {
                 </table>
             </div>
         )
-        /*
-            change: (-1, 0, 1);
-            result: (1, -1);
-            phrase: {
-                article title,
-                context,
-                created at (needs to change to last practiced),
-                language,
-                phrase,
-                phrase id,
-                strength,
-                translation
-            }
-        */
     }
 
     if (loadingResults ) {
