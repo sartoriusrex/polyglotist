@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
 import { 
     practiceSelector,
-    updatePhraseStrength
+    updatePhraseStrength,
+    clearResults
 } from '../../slices/practice';
 import { authSelector } from '../../slices/auth';
 
@@ -33,6 +34,10 @@ const practiceSessionPage = () => {
     function updatePhrase(phraseId: string, result: 1 | -1) {
         dispatch(updatePhraseStrength(id, phraseId, result));
     }
+
+    useEffect(() => {
+        dispatch(clearResults())
+    }, [])
 
     if( questionsHasErrors ) {
         return (

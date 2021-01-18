@@ -28,15 +28,17 @@ const PracticeResultsPage = () => {
 
         return (
             <div>
-                <h2><span>{totalCorrect} Correct Out Of {total}</span></h2>
-                <h3 className={ passingGrade ? styles.percentPass : styles.percentFail }>{percentageCorrect} %</h3>
-                { 
-                    passingGrade ?
-                    <p className={styles.passingMessage}>Good Job!</p> :
-                    <p className={styles.failingMessage}>Keep practicing!</p>
-                }
+                <div className={styles.summaryContainer}>
+                    <h2>{totalCorrect} Correct Out Of {total}</h2>
+                    <h3 className={ passingGrade ? styles.percentPass : styles.percentFail }>{percentageCorrect} %</h3>
+                    { 
+                        passingGrade ?
+                        <p className={styles.passingMessage}>Good Job!</p> :
+                        <p className={styles.failingMessage}>Keep practicing!</p>
+                    }
 
-                <Link to={`/${username}/practice`}>Practice Again</Link>
+                    <Link to={`/${username}/practice`}>Practice Again</Link>
+                </div>
 
                 <table>
                     <thead>
@@ -55,7 +57,7 @@ const PracticeResultsPage = () => {
                                 resultItem.change === -1 ?
                                 "Decrease" :
                                 "No Change"
-                                
+
                             return (
                                 <tr key={resultItem.phrase.phrase_id}>
                                     <td>{resultItem.phrase.phrase}</td>

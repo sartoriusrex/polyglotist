@@ -59,6 +59,16 @@ const practiceSlice = createSlice({
             newState.loadingResults = false;
             newState.resultsHasErrors = true;
             return newState;
+        },
+        clearAllResults: (state: practiceStateInterface) => {
+            const newState = { ...state };
+            const clearedResults = {
+                loadingResults: false,
+                resultsHasErrors: false,
+                results: []
+            }
+
+            return { ...newState, ...clearedResults }
         }
     }
 })
@@ -73,7 +83,8 @@ export const {
     setPracticeFailure,
     updateResults,
     updateResultsFailure,
-    updateResultsSuccess
+    updateResultsSuccess,
+    clearAllResults
 } = actions;
 
 export function createSession( lang: string, mode: string, username: string, userId: number ) {
@@ -124,6 +135,12 @@ export function updatePhraseStrength( userId: string, phraseId: string, result: 
             console.log(err);
             dispatch(updateResultsFailure());
         }
+    }
+}
+
+export function clearResults() {
+    return async (dispatch: Function) => {
+        dispatch(clearAllResults());
     }
 }
 
