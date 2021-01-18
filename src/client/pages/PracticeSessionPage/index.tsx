@@ -27,8 +27,6 @@ const practiceSessionPage = () => {
     const dispatch = useDispatch();
     const location: { pathname: string; state: { mode: string }} = useLocation();
     const mode = location?.state?.mode;
-    const path = location.pathname;
-    const practiceHomePath = path.split('/').slice(0,3).join('/');
     const [progress, setProgress] = useState(() => 0);
     
     function updatePhrase(phraseId: string, result: 1 | -1) {
