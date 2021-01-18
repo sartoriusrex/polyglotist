@@ -70,7 +70,7 @@ const PracticeQuestion = ({
                     styles.questionContainerHidden
                     }>
                 
-                <p className={styles.phrase}>{phrase}</p>
+                <h1 className={styles.phrase}>{phrase}</h1>
                 
                 <input 
                     type="text"
@@ -103,12 +103,21 @@ const PracticeQuestion = ({
                     <div className={styles.resultContainer}>
                         { 
                             result === 1 ?
-                            <p>Correct!</p> :
+                            <h2><em>Correct!</em></h2> :
                             <>
-                                <p>Incorrect.</p>
-                                <p>Answer: {translation}</p>
-                                <p>From sentence: {context_phrase}</p>
-                                <p>Found in {article}</p>
+                                <h2><em>Incorrect.</em></h2>
+                                <div className={styles.resultItem}>
+                                    <em>Answer:</em> 
+                                    <p>{translation}</p>
+                                </div>
+                                <div className={styles.resultItem}>
+                                    <em>From sentence:</em> 
+                                    <p>{context_phrase}</p>
+                                </div>
+                                <div className={styles.resultItem}>
+                                    <em>Found in</em>
+                                    <p>{article}</p>
+                                </div>
                             </>
                         }
 

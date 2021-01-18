@@ -56,6 +56,7 @@
     display: flex;
     line-height: 1.4;
     padding: .5rem;
+    margin-bottom: 1rem;
 }
 
 .hintHidden {
@@ -66,11 +67,36 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 1rem;
-    padding: 1rem;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+
+    h2 {
+        font-size: 1.25rem;
+        color: $dark-purple;
+        margin-bottom: 1.5rem;;
+    }
+}
+
+.resultItem {
+    width: 100%;
+    display: flex;
 
     p {
-        margin-bottom: .5rem;
+        margin-bottom: 1rem;
+        width: calc(75% - .5rem);
+        text-align: left;
+        display: flex;
+
+        &:last-of-type {
+            margin-bottom: 1.5rem;
+        }
+    }
+
+    em {
+        color: $dark-purple;
+        margin-right: .5rem;
+        width: 25%;
     }
 }
 
@@ -79,6 +105,15 @@
     color: $dark-purple;
     font-size: 1.25rem;
     border: 1px solid $dark-purple;
+    padding: .5rem 1rem;
+    box-shadow: $box-shadow;
+
+    &:focus,
+    &:active,
+    &:hover {
+        border: 2px solid $dark-purple;
+        transform: translateY(-.5rem);
+    }
 }
 
 .answerBtn {
