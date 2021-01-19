@@ -70,6 +70,7 @@
 
     table {
         width: 100%;
+        margin-bottom: 4rem;
     }
 
     thead {
@@ -81,6 +82,10 @@
             color: $dark-purple;
             text-align: center;
             padding: .5rem 0;
+
+            &:last-of-type {
+                padding: .5rem;
+            }
         }
     }
 
@@ -92,6 +97,11 @@
         td {
             padding: .25rem;
             text-align: center;
+
+            &:nth-child(1),
+            &:nth-child(2) {
+                text-align: left;
+            }
         }
     }
 }
