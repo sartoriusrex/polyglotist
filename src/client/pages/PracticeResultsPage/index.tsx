@@ -60,14 +60,19 @@ const PracticeResultsPage = () => {
 
                     <tbody>
                         { results.map( (resultItem: phraseResult) => {
+                            const correct = resultItem.result === 1;
                             const changeDisplay = resultItem.change === 1 ?
                                 "+" :
                                 resultItem.change === -1 ?
                                 "-" :
-                                "None"
+                                "None";
+                            
 
                             return (
-                                <tr key={resultItem.phrase.phrase_id}>
+                                <tr 
+                                    key={resultItem.phrase.phrase_id}
+                                    className={ correct ? styles.correct : styles.incorrect }
+                                >
                                     <td>{resultItem.phrase.phrase}</td>
                                     <td>{resultItem.phrase.translation}</td>
                                     <td>{resultItem.phrase.strength}</td>

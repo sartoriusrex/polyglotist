@@ -75,7 +75,7 @@
 
     thead {
         tr {
-            margin-bottom: 1px solid $dark-purple;
+            border-bottom: 1px solid $dark-purple;
         }
 
         td {
@@ -88,20 +88,32 @@
             }
         }
     }
+}
 
-    tbody {
-        tr {
-            border-bottom: 1px solid $darkest-green;
+.correct {
+    border-bottom: 1px solid $darkest-green;
+
+    td {
+        padding: .5rem .25rem;
+        text-align: center;
+
+        &:nth-child(1),
+        &:nth-child(2) {
+            text-align: left;
         }
 
-        td {
-            padding: .25rem;
-            text-align: center;
+        &:nth-child(1) {
+            color: $dark-purple;
+        }
+    }
+}
 
-            &:nth-child(1),
-            &:nth-child(2) {
-                text-align: left;
-            }
+.incorrect {
+    @extend .correct;
+
+    td {
+        &:nth-child(1) {
+            color: $red;
         }
     }
 }
