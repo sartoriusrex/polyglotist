@@ -13,7 +13,8 @@ const PracticeQuestion = ({
         updateProgress,
         current,
         last,
-        username
+        username,
+        timeUp
     } : {
         phrase_id: string,
         phrase: string,
@@ -24,7 +25,8 @@ const PracticeQuestion = ({
         updateProgress: Function,
         current: boolean,
         last: boolean,
-        username: string
+        username: string,
+        timeUp: boolean
     }) => {
         const [ answer, setAnswer ] = useState('');
         const [ answered, setAnswered ] = useState(false);
@@ -61,6 +63,27 @@ const PracticeQuestion = ({
             }
         }, [answered])
 
+        if (timeUp) {
+            return (
+                <div  
+                    className={ 
+                        current ? 
+                        styles.questionContainerVisible :
+                        styles.questionContainerHidden
+                    }
+                >
+                    <h1>Time's Up!</h1>
+                    <Link 
+                        to={`/${username}/practice/results`}
+                        className={styles.resultsLink}
+                        ref={ resultsBtn }
+                    >
+                        See Results
+                    </Link> 
+                </div>
+            )
+        }
+
         return (
             <div 
                 key={phrase_id}
@@ -68,7 +91,8 @@ const PracticeQuestion = ({
                     current ? 
                     styles.questionContainerVisible :
                     styles.questionContainerHidden
-                    }>
+                }
+            >
                 
                 <h1 className={styles.phrase}>{phrase}</h1>
                 

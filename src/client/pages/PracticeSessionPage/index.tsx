@@ -10,6 +10,7 @@ import {
 import { authSelector } from '../../slices/auth';
 
 import LoadingIndicator from '../../components/LoadingIndicator';
+import Timer from '../../components/Timer';
 
 import styles from './practiceSessionPage.module.scss';
 
@@ -28,6 +29,8 @@ const practiceSessionPage = () => {
     const location: { pathname: string; state: { mode: string }} = useLocation();
     const mode = location?.state?.mode;
     const [progress, setProgress] = useState(() => 0);
+    const [time, setTime]  = useState(5);
+    const timeUp = time === 0;
     
     function updatePhrase(phraseId: string, result: 1 | -1) {
         dispatch(updatePhraseStrength(id, phraseId, result));
@@ -36,6 +39,17 @@ const practiceSessionPage = () => {
     useEffect(() => {
         dispatch(clearResults())
     }, [])
+
+    // Timer
+    useEffect(() => {
+        if (mode === 'timed' && time > 0 ) {
+            const timer = setTimeout(() => {
+                setTime((time) => time - 1);
+            }, 1000)
+            
+            return () => clearTimeout(timer);
+        }
+    })
 
     if( questionsHasErrors ) {
         return (
@@ -55,7 +69,7 @@ const practiceSessionPage = () => {
         <section className={styles.practiceSession}>
             {
                 mode === 'timed' &&
-                <div>Timed Mode</div>
+                <Timer time={time} />
             }
             {
                 phrases.map( (phrase: phraseInterface, idx: number ) => {
@@ -75,6 +89,7 @@ const practiceSessionPage = () => {
                             current={current}
                             last={last}
                             username={ username }
+                            timeUp={ timeUp }
                         />
                     )
                 })

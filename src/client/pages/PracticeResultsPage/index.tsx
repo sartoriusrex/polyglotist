@@ -23,8 +23,16 @@ const PracticeResultsPage = () => {
             .filter( (result: number ) => result === 1 )
             .length;
 
-        const percentageCorrect = parseFloat((totalCorrect / total * 100).toFixed(2));
+        const percentageCorrect = total !== 0 ? parseFloat((totalCorrect / total * 100).toFixed(2)) : 0;
         const passingGrade = percentageCorrect > 70;
+
+        if (total <= 0 ) {
+            return (
+                <div className={styles.resultsContainer}>
+                    <h2>No Results</h2>
+                </div>
+            )
+        }
 
         return (
             <div className={styles.resultsContainer}>

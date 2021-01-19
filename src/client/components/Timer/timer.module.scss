@@ -1,0 +1,12 @@
+@import '../../styles/variables';
+
+.timer {
+    margin-bottom: 2rem;
+    width: 100%;
+    text-align: center;
+    color: $dark-purple;
+}
+
+.warning {
+    color: $red;
+}
