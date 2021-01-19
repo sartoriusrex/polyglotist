@@ -5,12 +5,7 @@ import { loadSettings } from './settings';
 import { fetchAllPhrases } from './phrases';
 import { fetchAllArticles } from './articles';
 import history from '../app/history';
-
-interface authStateInterface {
-  loading: boolean;
-  hasErrors: boolean;
-  user: any;
-}
+import { authStateInterface } from '../interfaces';
 
 export const initialState: authStateInterface = {
   loading: false,

@@ -1,16 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { sendMessage } from './messages';
 
-import { Article } from '../interfaces';
+import { Article, ArticlesStateInterface } from '../interfaces';
 
-interface articlesStateInterface {
-  loading: boolean;
-  hasErrors: boolean;
-  articles: Article[] | [];
-  // Need to add date and date read in state, as well as update backend to get this data
-}
 
-export const initialState: articlesStateInterface = {
+export const initialState: ArticlesStateInterface = {
   loading: false,
   hasErrors: false,
   articles: [],
@@ -20,13 +14,13 @@ const articlesSlice = createSlice({
   name: 'articles',
   initialState,
   reducers: {
-    fetchArticles: (state: articlesStateInterface) => {
+    fetchArticles: (state: ArticlesStateInterface) => {
       const newState = { ...state };
 
       newState.loading = true;
       return newState;
     },
-    fetchArticlesSuccess: (state: articlesStateInterface, { payload }) => {
+    fetchArticlesSuccess: (state: ArticlesStateInterface, { payload }) => {
       const newState = { ...state };
 
       newState.articles = payload;
@@ -34,20 +28,20 @@ const articlesSlice = createSlice({
       newState.hasErrors = false;
       return newState;
     },
-    fetchArticlesFailure: (state: articlesStateInterface) => {
+    fetchArticlesFailure: (state: ArticlesStateInterface) => {
       const newState = { ...state };
 
       newState.loading = false;
       newState.hasErrors = true;
       return newState;
     },
-    addArticle: (state: articlesStateInterface) => {
+    addArticle: (state: ArticlesStateInterface) => {
       const newState = { ...state };
 
       newState.loading = true;
       return newState;
     },
-    addArticleSuccess: (state: articlesStateInterface, { payload }: { payload: Article }) => {
+    addArticleSuccess: (state: ArticlesStateInterface, { payload }: { payload: Article }) => {
       const newState = { ...state };
 
       newState.articles = Array.from(new Set([...newState.articles, payload]));
@@ -56,7 +50,7 @@ const articlesSlice = createSlice({
 
       return newState;
     },
-    addArticleFailure: (state: articlesStateInterface) => {
+    addArticleFailure: (state: ArticlesStateInterface) => {
       const newState = { ...state };
 
       newState.loading = false;

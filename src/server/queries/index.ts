@@ -144,6 +144,50 @@ export const select_all_from_users_phrases_from_userid = `
     WHERE user_id = $1;
 `
 
+export const select_practice_from_users_phrases_from_userid = `
+    SELECT
+        phrases.created as created_at,
+        phrase_id,
+        last_practiced,
+        strength,
+        article_id,
+        context_phrase,
+        phrase,
+        translation,
+        language,
+        articles.title as article
+    FROM users_phrases
+    LEFT JOIN phrases 
+        ON phrases.ID = users_phrases.phrase_id
+    LEFT JOIN articles
+        ON articles.ID = users_phrases.article_id
+    WHERE users_phrases.user_id = $1 AND phrases.language = $2
+    ORDER BY strength ASC, last_practiced ASC
+    LIMIT $3;
+`
+
+export const select_all_from_users_phrases_from_userid_and_phrase_id = `
+    SELECT
+        phrases.created as created_at,
+        phrase_id,
+        user_id,
+        last_practiced,
+        strength,
+        strikes,
+        article_id,
+        context_phrase,
+        phrase,
+        translation,
+        language,
+        articles.title as article
+    FROM users_phrases
+    LEFT JOIN phrases
+        ON phrases.ID = users_phrases.phrase_id
+    LEFT JOIN articles
+        ON articles.ID = users_phrases.article_id
+    WHERE user_id = $1 AND phrase_id = $2;
+`
+
 export const select_title_from_articles_from_id = `
     SELECT title 
     FROM articles 
@@ -230,7 +274,8 @@ export const update_password = `
 export const update_user_settings = `
     UPDATE users 
     SET reading_speed = $1, theme_preference = $2, practice_mode = $3, notification_method = $4, language_preference = $5, languages_learning = $6 
-    WHERE username = $7 RETURNING id, reading_speed, theme_preference, practice_mode, notification_method, language_preference, languages_learning;
+    WHERE username = $7
+    RETURNING id, reading_speed, theme_preference, practice_mode, notification_method, language_preference, languages_learning;
 `
 
 export const update_article_reference_from_id = `
@@ -243,6 +288,13 @@ export const update_article_reference_from_id = `
 export const update_users_phrases = `
     UPDATE users_phrases 
     SET strength = $1, article_id = $2, context_phrase = $3;
+`
+
+export const update_phrase_strength = `
+    UPDATE users_phrases
+    SET strength = $3, last_practiced = $4, strikes = $5
+    WHERE user_id = $1 AND phrase_id = $2
+    RETURNING strength, last_practiced;
 `
 
 export const drop_all_tables = `
@@ -319,7 +371,9 @@ export const create_table_users_phrases = `
     ID SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
     phrase_id INT NOT NULL,
+    last_practiced TIMESTAMP DEFAULT NOW(),
     strength INT DEFAULT 0,
+    strikes INT DEFAULT 0,
     article_id INT NOT NULL,
     context_phrase TEXT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,

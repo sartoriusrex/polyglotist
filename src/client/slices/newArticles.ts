@@ -1,32 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-interface DatabaseSource {
-  name: string;
-  url: string;
-  language: string;
-  error?: string;
-}
-
-interface CrawlResult {
-  title: string;
-  date: string;
-  url: string;
-  language: string;
-  body: string[][];
-  error?: string;
-}
-
-interface SourceText {
-  source: DatabaseSource;
-  articles?: CrawlResult[] | { error: string };
-  error?: string;
-}
-
-interface newArticlesStateInterface {
-  loading: boolean;
-  hasErrors: boolean;
-  articles: SourceText[] | null;
-}
+import { newArticlesStateInterface } from '../interfaces';
 
 export const initialState: newArticlesStateInterface = {
   loading: false,

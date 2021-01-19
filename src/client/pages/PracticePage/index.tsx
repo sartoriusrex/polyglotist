@@ -1,14 +1,16 @@
 import React, { useState, FormEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import { settingsSelector } from '../../slices/settings';
+import { createSession } from '../../slices/practice';
+import { authSelector } from '../../slices/auth';
 
 import styles from './practicePage.module.scss';
 
 const PracticePage = () => {
   const dispatch = useDispatch();
   const { languagesLearning: languages } = useSelector(settingsSelector);
+  const { user } = useSelector(authSelector);
   const [lang, setLang] = useState(languages[0]);
   const [mode, setMode] = useState('untimed');
 
@@ -17,16 +19,20 @@ const PracticePage = () => {
       return (
         <div 
           key={language} 
-          className="input-group" >
-          <input 
-            type="radio" 
-            id={language} 
-            name='language' 
-            value={language}
-            onChange={() => setLang(language)}
-            defaultChecked={language === lang } />
-          <label htmlFor={language}>
+          className={styles.inputGroup} >
+          
+          <label 
+            htmlFor={language} 
+            className={lang === language ? styles.active : styles.inactive}>
             {language[0].toUpperCase() + language.substring(1)}
+
+            <input 
+              type="radio" 
+              id={language} 
+              name='language' 
+              value={language}
+              onChange={() => setLang(language)}
+              defaultChecked={language === lang } />
           </label>
         </div>
       )
@@ -36,8 +42,9 @@ const PracticePage = () => {
   function onSubmit(e: FormEvent) {
     e.preventDefault();
 
-    console.log(lang);
-    console.log(mode);
+    const { username, id } = user;
+
+    dispatch(createSession(lang, mode, username, id));
   }
 
   return(
@@ -48,32 +55,48 @@ const PracticePage = () => {
       onSubmit={onSubmit} >
       <h1>Practice Vocabulary</h1>
 
-      <div className="languageSection">
+      <div className={styles.sessionInputGroup}>
         <h2>Languages</h2>
-        {renderLanguageInputs()}
+        <div className={styles.inputGroupContainer}>
+          {renderLanguageInputs()}
+        </div>
       </div>
 
-      <div className="modeSection">
+      <div className={styles.sessionInputGroup}>
         <h2>Mode</h2>
-        <div className="input-group">
-            <input 
-              type="radio" 
-              id="untimed" 
-              name="mode" 
-              value="untimed" 
-              checked={mode === 'untimed'}
-              onChange={() => setMode('untimed')} />
-            <label htmlFor="untimed">Untimed</label>
-        </div>
-        <div className="input-group">
-            <input 
-              type="radio" 
-              id="timed" 
-              name="mode" 
-              value="timed"
-              checked={mode === 'timed'}
-              onChange={() => setMode('timed')} />
-            <label htmlFor="timed">Timed</label>
+
+        <div className={styles.inputGroupContainer}>
+          <div className={styles.inputGroup}>
+              <label 
+                htmlFor="untimed"
+                className={mode === 'untimed' ? styles.active : styles.inactive}>
+                Untimed
+                
+                <input 
+                  type="radio" 
+                  id="untimed" 
+                  name="mode" 
+                  value="untimed" 
+                  checked={mode === 'untimed'}
+                  onChange={() => setMode('untimed')} />
+              </label>
+          </div>
+
+          <div className={styles.inputGroup}>
+              <label 
+                htmlFor="timed"
+                className={mode === 'timed' ? styles.active : styles.inactive}>
+                Timed
+
+                <input 
+                  type="radio" 
+                  id="timed" 
+                  name="mode" 
+                  value="timed"
+                  checked={mode === 'timed'}
+                  onChange={() => setMode('timed')} />  
+              </label>
+          </div>
         </div>
       </div>
 

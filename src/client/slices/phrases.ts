@@ -1,22 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchAllArticles } from './articles';
-
-interface phraseInterface {
-  phrase_id: string;
-  created_at: string;
-  phrase: string;
-  translation: string;
-  language: string;
-  article: string;
-  context_phrase: string;
-  strength: number;
-}
-
-interface phrasesStateInterface {
-  loading: boolean;
-  hasErrors: boolean;
-  phrases: phraseInterface[] | [];
-}
+import { phrasesStateInterface } from '../interfaces';
 
 export const initialState: phrasesStateInterface = {
   loading: false,

@@ -7,6 +7,7 @@ import messageReducer from '../slices/messages';
 import newArticlesReducer from '../slices/newArticles';
 import articlesReducer from '../slices/articles';
 import phrasesReducer from '../slices/phrases';
+import practiceReducer from '../slices/practice';
 
 export const rootReducer = combineReducers({
   users: usersReducer,
@@ -16,6 +17,7 @@ export const rootReducer = combineReducers({
   newArticles: newArticlesReducer,
   articles: articlesReducer,
   phrases: phrasesReducer,
+  practice: practiceReducer,
 });
 
 const store = configureStore({

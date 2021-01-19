@@ -1,8 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-interface messageStateInterface {
-  message: string | null;
-}
+import { messageStateInterface } from '../interfaces';
 
 export const initialState: messageStateInterface = {
   message: null,

@@ -1,18 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { sendMessage, removeMessage } from './messages';
+import { sendMessage } from './messages';
 import history from '../app/history';
-
-interface settingsStateInterface {
-  loading: boolean;
-  hasErrors: boolean;
-  themePreference: string;
-  readingSpeed: string;
-  practiceMode: boolean;
-  notificationMethod: string;
-  languagePreference: string;
-  languagesLearning: string[] | null;
-  sources: string[];
-}
+import { settingsStateInterface } from '../interfaces';
 
 export const initialState: settingsStateInterface = {
   loading: false,
@@ -64,7 +53,11 @@ export const settingsSelector = (state: any) => state.settings;
 
 const { actions, reducer } = settingsSlice;
 
-export const { setSettings, setSettingsSuccess, setSettingsFailure } = actions;
+export const { 
+  setSettings, 
+  setSettingsSuccess, 
+  setSettingsFailure 
+} = actions;
 
 export function loadSettings(settings: settingsStateInterface) {
   return async (dispatch: Function) => {
@@ -82,7 +75,6 @@ export function loadSettings(settings: settingsStateInterface) {
 export function updateSettings(user: string, settings: settingsStateInterface) {
   return async (dispatch: Function) => {
     dispatch(setSettings());
-    dispatch(removeMessage());
 
     try {
       const response = await fetch(`/api/users/${user}`, {

@@ -4,10 +4,71 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 0 .625rem;
 
     h1 {
         margin: .625rem 0;
-        font-size: 1.25rem;
+        font-size: 2rem;
         align-self: flex-start;
+        margin-bottom: 2rem;
     }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+
+    button {
+        margin-top: 3rem;
+        padding: .625rem 1.25rem;
+        font-size: 1.5rem;
+        color: $dark-purple;
+        background-color: $white;
+        border: 1px solid $dark-purple;
+        box-shadow: $box-shadow;
+    }
+}
+
+.inputGroupContainer {
+    width: 100%;
+    max-width: 35rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.sessionInputGroup {
+    margin-bottom: 1rem;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 2rem;
+    box-shadow: $box-shadow;
+    background-color: $light-gray;
+
+    h2 {
+        margin-bottom: 1.25rem;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+.inputGroup {
+    input {
+        display: none;
+    }
+}
+
+.active {
+    padding: .3125rem .625rem;
+    background-color: $dark-purple;
+    color: $white;
+    border: 1px solid transparent;    
+}
+
+.inactive {
+    @extend .active;
+    background-color: $white;
+    color: $dark-purple;
+    border: 1px solid $dark-purple;
 }

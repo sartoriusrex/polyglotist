@@ -1,0 +1,123 @@
+@import '../../styles/variables';
+
+.questionContainerVisible {
+    box-shadow: $box-shadow;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    width: 100%;
+
+    button {
+        font-size: 1rem;
+        padding: .5rem 1rem;
+    }
+
+    input {
+        width: 100%;
+        border: 1px solid $dark-purple;
+        color: $dark-purple;
+        padding: .5rem;
+        margin-bottom: 1rem;
+        text-align: center;
+
+        &[disabled] {
+            background-color: $light-blue-gray;
+            border: 2px solid $light-blue-gray;
+            color: $white;
+        }
+    }
+}
+
+.questionContainerHidden {
+    @extend .questionContainerVisible;
+    display: none;
+}
+
+.phrase {
+    font-size: 1.25rem;
+    margin: 1rem;
+}
+
+.hintBtn {
+    border: 1px solid $dark-purple;
+    color: $dark-purple;
+    margin-bottom: 1rem;
+}
+
+.hintBtnHide {
+    @extend .hintBtn;
+    border: none;
+    background-color: $dark-purple;
+    color: $white;
+}
+
+.hintShown {
+    display: flex;
+    line-height: 1.4;
+    padding: .5rem;
+    margin-bottom: 1rem;
+}
+
+.hintHidden {
+    display: none;
+}
+
+.resultContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+
+    h2 {
+        font-size: 1.25rem;
+        color: $dark-purple;
+        margin-bottom: 1.5rem;;
+    }
+}
+
+.resultItem {
+    width: 100%;
+    display: flex;
+
+    p {
+        margin-bottom: 1rem;
+        width: calc(75% - .5rem);
+        text-align: left;
+        display: flex;
+
+        &:last-of-type {
+            margin-bottom: 1.5rem;
+        }
+    }
+
+    em {
+        color: $dark-purple;
+        margin-right: .5rem;
+        width: 25%;
+    }
+}
+
+.resultsLink,
+.nextBtn {
+    color: $dark-purple;
+    font-size: 1.25rem;
+    border: 1px solid $dark-purple;
+    padding: .5rem 1rem;
+    box-shadow: $box-shadow;
+
+    &:focus,
+    &:active,
+    &:hover {
+        border: 2px solid $dark-purple;
+        transform: translateY(-.5rem);
+    }
+}
+
+.answerBtn {
+    color: $darkest-green;
+    border: 1px solid $darkest-green;
+}
