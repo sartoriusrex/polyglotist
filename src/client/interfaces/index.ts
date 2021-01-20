@@ -52,6 +52,7 @@ export interface IPhraseUnit {
   phrase_id: string;
   phrase: string;
   created_at: string;
+  last_practiced: string;
   translation: string;
   language: string;
   article: string;

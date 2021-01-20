@@ -17,11 +17,34 @@ const PhrasesPage = () => {
   }, [dispatch, fetchAllPhrases])
 
   const PhraseUnit = ({ phraseObject }: { phraseObject: IPhraseUnit }) => {
-    const { phrase_id, phrase, translation, strength, created_at: created } = phraseObject;
-    const dateObject = new Date(created);
-    const day = dateObject.getDay();
+    const { phrase_id, phrase, translation, strength, last_practiced } = phraseObject;
+    const dateObject = new Date(last_practiced);
+    const day = dateObject.getDate();
     const month = dateObject.getMonth() + 1;
     const year = dateObject.getFullYear();
+    const today = new Date();
+    const differenceInDays = Math.floor((today.getTime() - dateObject.getTime()) / (1000 * 3600 * 24));
+    
+    let lastPracticeDisplay;
+
+    if( differenceInDays < 4 ) {
+      let days;
+
+      if( differenceInDays === 1 ) {
+        days = 'day';
+      } else {
+        days = 'days';
+      }
+
+      if( differenceInDays === 0 ) {
+        lastPracticeDisplay = 'Today';
+      } else {
+        lastPracticeDisplay = `${differenceInDays} ${days} ago`;
+      }
+    } else {
+      lastPracticeDisplay = `${day}/${month}/${year}`
+    }
+    
 
     return (
       <tr>
@@ -39,7 +62,7 @@ const PhrasesPage = () => {
         </td>
         <td>{translation}</td>
         <td className={styles.strength}>{strength}</td>
-        <td>{day}/{month}/{year}</td>
+        <td>{lastPracticeDisplay}</td>
       </tr>
     )
   }
@@ -59,7 +82,7 @@ const PhrasesPage = () => {
             <th>Phrase</th>
             <th>Definition</th>
             <th>Strength</th>
-            <th>Created</th>
+            <th>Last Practiced</th>
           </tr>
         </thead>
         <tbody>

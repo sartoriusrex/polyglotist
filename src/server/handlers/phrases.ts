@@ -71,6 +71,7 @@ export default {
       const phrases = phrasesResult.map( (phrase: any) => ({
         phrase_id: phrase.phrase_id,
         created_at: phrase.created_at,
+        last_practiced: phrase.last_practiced,
         phrase: phrase.phrase,
         translation: phrase.translation,
         language: phrase.language,
@@ -141,6 +142,7 @@ export default {
       const newPhrase = {
         phrase_id,
         created_at,
+        last_practiced: updatedPractice,
         phrase,
         translation,
         language,
@@ -339,7 +341,8 @@ export default {
               phrase_id,
               article_id,
               strength,
-              context_phrase
+              context_phrase,
+              last_practiced
             } = phraseRow;
 
             const phraseResult = await db.query(
@@ -358,11 +361,12 @@ export default {
               language
             } = phraseResult.rows[0];
 
-            const { title } = articleResult.rows[0]
+            const { title } = articleResult.rows[0];
 
             return {
               phrase_id,
               created_at: created,
+              last_practiced,
               phrase,
               translation,
               language,

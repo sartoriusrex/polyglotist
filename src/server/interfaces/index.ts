@@ -16,6 +16,7 @@ export interface IuPhraseRow {
     strength: Number;
     article_id: Number;
     context_phrase: String;
+    last_practiced: string;
 }
 
 export interface IUsersArticles {
