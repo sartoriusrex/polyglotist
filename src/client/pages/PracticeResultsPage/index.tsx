@@ -29,7 +29,7 @@ const PracticeResultsPage = () => {
         if (total <= 0 ) {
             return (
                 <div className={styles.resultsContainer}>
-                    <h2>No Results</h2>
+                    <h2>None</h2>
                 </div>
             )
         }
