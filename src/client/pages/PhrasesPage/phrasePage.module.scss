@@ -10,6 +10,47 @@
         font-size: 1.25rem;
         align-self: flex-start;
     }
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+}
+
+.sort {
+    margin-bottom: 1rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    line-height: 1.4;
+    align-items: baseline;
+
+    label {
+        width: 25%;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+    }
+
+    select {
+        appearance: none;
+        background-color: transparent;
+        border: none;
+        margin: 0;
+        width: 75%;
+        font-family: inherit;
+        cursor: inherit;
+        line-height: inherit;
+        padding: .5rem;
+        color: $darkest-green;
+        font-size: 1rem;
+        text-align: left;
+
+        ::marker {
+            display: none;
+        }
+    }
 }
 
 .vocabTable {

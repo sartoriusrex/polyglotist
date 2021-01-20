@@ -18,18 +18,31 @@ const PhrasesPage = () => {
   let phrasesToDisplay: IPhraseUnit[] = sortPhrases('AtoZ');
 
   function sortPhrases(order:string) {
-    if( order === "Practiced") {
-      return phrases
-        .map( (phrase: IPhraseUnit) => phrase )
-        .sort( (a: IPhraseUnit, b: IPhraseUnit ) => new Date(a.last_practiced).getTime() - new Date(b.last_practiced).getTime() );
-    } else if ( order === "Strength" ) {
-      return phrases
-        .map( (phrase: IPhraseUnit) => phrase )
-        .sort( (a: IPhraseUnit, b: IPhraseUnit ) => a.strength - b.strength );
-    } else {
-      return phrases
-        .map( (phrase: IPhraseUnit) => phrase )
-        .sort( (a: IPhraseUnit, b: IPhraseUnit ) => a.phrase.localeCompare(b.phrase) );
+    switch (order) {
+      case "ZtoA":
+        return phrases
+          .map( (phrase: IPhraseUnit) => phrase )
+          .sort( (a: IPhraseUnit, b: IPhraseUnit ) => b.phrase.localeCompare(a.phrase) );
+      case "Strongest":
+        return phrases
+          .map( (phrase: IPhraseUnit) => phrase )
+          .sort( (a: IPhraseUnit, b: IPhraseUnit ) => b.strength - a.strength );
+      case "Weakest":
+        return phrases
+          .map( (phrase: IPhraseUnit) => phrase )
+          .sort( (a: IPhraseUnit, b: IPhraseUnit ) => a.strength - b.strength );
+      case "Oldest":
+        return phrases
+          .map( (phrase: IPhraseUnit) => phrase )
+          .sort( (a: IPhraseUnit, b: IPhraseUnit ) => new Date(a.last_practiced).getTime() - new Date(b.last_practiced).getTime() );
+      case "Latest":
+        return phrases
+          .map( (phrase: IPhraseUnit) => phrase )
+          .sort( (a: IPhraseUnit, b: IPhraseUnit ) => new Date(b.last_practiced).getTime() - new Date(a.last_practiced).getTime() );
+      default:
+        return phrases
+          .map( (phrase: IPhraseUnit) => phrase )
+          .sort( (a: IPhraseUnit, b: IPhraseUnit ) => a.phrase.localeCompare(b.phrase) );
     }
   }
 
@@ -104,19 +117,27 @@ const PhrasesPage = () => {
     <section className={styles.vocabPage}>
       <h1>Vocabulary</h1>
 
-      <label htmlFor="sort">
-        Sort By: 
-        <select 
-          name="sort" 
-          id="sort" 
-          onChange={ (e) => handleSort(e)}
+      <div className={styles.sort}>
+        <label 
+          htmlFor="sort"
+          className={styles.sort}
         >
-          <option value="-">-</option>
+          Sort By: 
+        </label>
+        <select 
+            name="sort" 
+            id="sort" 
+            onChange={ (e) => handleSort(e)}
+        >
+          <option value="-"> - </option>
           <option value="AtoZ">A - Z</option>
-          <option value="Strength">Strength Asc</option>
-          <option value="Practiced">Last Practiced Oldest</option>
+          <option value="ZtoA">Z - A</option>
+          <option value="Strongest">Strongest First</option>
+          <option value="Weakest">Weakest First</option>
+          <option value="Oldest">Last Practiced Oldest</option>
+          <option value="Latest">Last Practiced Latest</option>
         </select>
-      </label>
+      </div>
 
       <table className={styles.vocabTable}>
         <thead>
