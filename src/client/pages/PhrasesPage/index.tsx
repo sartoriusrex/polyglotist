@@ -11,11 +11,17 @@ import {
 } from '../../slices/phrases';
 import { authSelector } from '../../slices/auth';
 
+import Strength from '../../components/Strength';
+
 const PhrasesPage = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(authSelector);
   const { phrases } = useSelector(phrasesSelector);
   let phrasesToDisplay: IPhraseUnit[] = sortPhrases('AtoZ');
+
+  useEffect(() => {
+    dispatch(fetchAllPhrases(user.id))
+  }, [dispatch, fetchAllPhrases])
 
   function sortPhrases(order:string) {
     switch (order) {
@@ -45,10 +51,6 @@ const PhrasesPage = () => {
           .sort( (a: IPhraseUnit, b: IPhraseUnit ) => a.phrase.localeCompare(b.phrase) );
     }
   }
-
-  useEffect(() => {
-    dispatch(fetchAllPhrases(user.id))
-  }, [dispatch, fetchAllPhrases])
 
   const PhraseUnit = ({ phraseObject }: { phraseObject: IPhraseUnit }) => {
     const { phrase_id, phrase, translation, strength, last_practiced } = phraseObject;
@@ -94,7 +96,7 @@ const PhrasesPage = () => {
           </Link>
         </td>
         <td>{translation}</td>
-        <td className={styles.strength}>{strength}</td>
+        <td className={styles.strength}><Strength strength={strength} /></td>
         <td>{lastPracticeDisplay}</td>
       </tr>
     )

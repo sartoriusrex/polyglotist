@@ -79,17 +79,13 @@
     color: $darkest-blue;
     box-shadow: 0 0 .5rem $blue-gray;
 
-    tr *:not(a) {
-        padding: .25rem;
-        border-bottom: 1px solid $light-blue-gray;
-        line-height: 1.25;
-    }
-
     th {
         color: $darkest-blue;
         background-color: $lighter-blue-gray;
         font-weight: bold;
         border-right: 1px solid $light-blue-gray;
+        padding: .25rem;
+        border-bottom: 1px solid $darkest-blue;
 
         &:first-child {
             border-top-left-radius: .25rem;
@@ -102,23 +98,21 @@
         }
     }
 
-    tr td {
+    td {
         border-right: 1px solid $light-blue-gray;
-    }
+        vertical-align: bottom;
+        padding: .25rem;
 
-    .strength {
-        text-align: center;
-    }
+        &:first-child {
+            a {
+                color: $dark-purple;
+                text-decoration: none;
+            }
+        }
 
-    tr td:last-child {
-        text-align: center;
-        border-right: none;
-    }
-
-    tr td:first-child {
-        a {
-            color: $dark-purple;
-            text-decoration: none;
+        &:last-child {
+            text-align: center;
+            border-right: none;
         }
     }
 

@@ -8,6 +8,8 @@ import { authSelector } from '../../slices/auth';
 import styles from './practiceResultsPage.module.scss';
 import { phraseResult } from 'client/interfaces';
 
+import Strength from '../../components/Strength';
+
 const PracticeResultsPage = () => {
     const { 
         loadingResults, 
@@ -66,16 +68,22 @@ const PracticeResultsPage = () => {
                                 resultItem.change === -1 ?
                                 "-" :
                                 "None";
+                            const { 
+                                phrase, 
+                                phrase_id, 
+                                translation, 
+                                strength 
+                            } = resultItem.phrase;
                             
 
                             return (
                                 <tr 
-                                    key={resultItem.phrase.phrase_id}
+                                    key={phrase_id}
                                     className={ correct ? styles.correct : styles.incorrect }
                                 >
-                                    <td>{resultItem.phrase.phrase}</td>
-                                    <td>{resultItem.phrase.translation}</td>
-                                    <td>{resultItem.phrase.strength}</td>
+                                    <td>{phrase}</td>
+                                    <td>{translation}</td>
+                                    <td><Strength strength={strength} /></td>
                                     <td>{ changeDisplay }</td>
                                 </tr>
                             );
