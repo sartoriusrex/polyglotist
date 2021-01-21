@@ -120,7 +120,6 @@ const PhrasesPage = () => {
       <div className={styles.sort}>
         <label 
           htmlFor="sort"
-          className={styles.sort}
         >
           Sort By: 
         </label>

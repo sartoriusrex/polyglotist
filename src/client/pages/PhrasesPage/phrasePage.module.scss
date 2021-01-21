@@ -25,6 +25,28 @@
     justify-content: space-between;
     line-height: 1.4;
     align-items: baseline;
+    border-bottom: 1px solid $dark-purple;
+    border-top: 1px solid $dark-purple;
+    cursor: pointer;
+    background-color: $white;
+    position: relative;
+
+    &:focus,
+    &:active,
+    &:focus-within {
+        outline: 1px solid $dark-purple;
+    }
+
+    ::after {
+        content: "";
+        position: absolute;
+        right: 1rem;
+        top: 40%;
+        width: .8em;
+        height: .5em;
+        background-color: $dark-purple;
+        clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+    }
 
     label {
         width: 25%;
@@ -46,10 +68,7 @@
         color: $darkest-green;
         font-size: 1rem;
         text-align: left;
-
-        ::marker {
-            display: none;
-        }
+        outline: none;
     }
 }
 
