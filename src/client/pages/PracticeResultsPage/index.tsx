@@ -9,6 +9,7 @@ import styles from './practiceResultsPage.module.scss';
 import { phraseResult } from 'client/interfaces';
 
 import Strength from '../../components/Strength';
+import ChevronUp from '../../images/ChevronUp';
 
 const PracticeResultsPage = () => {
     const { 
@@ -17,6 +18,18 @@ const PracticeResultsPage = () => {
         results
     } = useSelector(practiceSelector);
     const { username } = useSelector(authSelector).user;
+
+    function displayChange(change: number) {
+        if (change === 0 ) {
+            return '--';
+        }
+
+        return (
+            <div className={change === -1 ? styles.negativeChange : ''}>
+               <ChevronUp change={change} />
+            </div>
+        )
+    }
 
     function displayResults() {
         const total = results.length;
@@ -63,11 +76,6 @@ const PracticeResultsPage = () => {
                     <tbody>
                         { results.map( (resultItem: phraseResult) => {
                             const correct = resultItem.result === 1;
-                            const changeDisplay = resultItem.change === 1 ?
-                                "+" :
-                                resultItem.change === -1 ?
-                                "-" :
-                                "None";
                             const { 
                                 phrase, 
                                 phrase_id, 
@@ -84,7 +92,7 @@ const PracticeResultsPage = () => {
                                     <td>{phrase}</td>
                                     <td>{translation}</td>
                                     <td><Strength strength={strength} /></td>
-                                    <td>{ changeDisplay }</td>
+                                    <td>{ displayChange(resultItem.change) }</td>
                                 </tr>
                             );
                         })}
