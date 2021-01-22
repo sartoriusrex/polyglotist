@@ -3,22 +3,41 @@ import { useSelector } from 'react-redux';
 
 import { newArticlesSelector } from '../../slices/newArticles';
 import { authSelector } from '../../slices/auth';
-import { ArticleObject } from '../../interfaces';
+import { phrasesSelector } from '../../slices/phrases';
+import { articlesSelector } from '../../slices/articles';
+
+import { ArticleObject, phraseInterface } from '../../interfaces';
+
 import ChevronDown from '../../images/ChevronDown';
 import ArticleCard from '../../components/ArticleCard';
 
 import styles from './dashboard.module.scss';
 
 const Dashboard = () => {
-  const { articles } = useSelector(newArticlesSelector);
+  const { newArticles } = useSelector(newArticlesSelector);
+  const { articles } = useSelector(articlesSelector);
+  const { phrases } = useSelector(phrasesSelector);
+  
   const { user } = useSelector(authSelector);
   const startingShow: number = 3;
   const [showNumber, setShowNumber] = useState(startingShow);
-  const numArticles: number = articles
-    ? articles
+  const numArticles: number = newArticles
+    ? newArticles
       .map((articleObject: ArticleObject) => articleObject.articles)
       .flat().length
     : 0;
+  const sortedPhrases = phrases
+    .map( (phrase: phraseInterface) => phrase )
+    .sort( (a: phraseInterface, b: phraseInterface) => {
+      return a.strength - b.strength;    
+    })
+    .slice(0,5);
+
+  
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   function onMoreClick() {
     if (numArticles > showNumber) {
@@ -41,7 +60,7 @@ const Dashboard = () => {
     if (!articles)
       return (
         <div>
-          <p>Loading...</p>
+          <p>No Articles</p>
         </div>
       );
 
@@ -71,15 +90,48 @@ const Dashboard = () => {
     );
   }
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  function renderVocab(phrases: phraseInterface[]) {
+    return (
+      <table>
+        <tbody>
+        { phrases.map( (phraseItem: phraseInterface) => {
+          const { 
+            phrase_id, 
+            phrase, 
+            strength, 
+            last_practiced 
+          } = phraseItem;
+          const datePracticed = new Date(last_practiced);
+          console.log(datePracticed.getDate())
+          const formattedDate = `${datePracticed.getDate()}/${datePracticed.getMonth() + 1}/${datePracticed.getFullYear()}`
+
+          return (
+            <tr key={phrase_id}>
+              <td>{phrase}</td>
+              <td>{strength}</td>
+              <td>{formattedDate}</td>
+            </tr>
+          )
+        }) }
+        </tbody>
+      </table>
+    )
+  }
 
   return (
     <section id={styles.articlesSection}>
+
       <h1>New Articles</h1>
-      {renderArticleCards(articles)}
+      {renderArticleCards(newArticles)}
       {numArticles !== showNumber && <MoreButton />}
+
+      <h2>Practice Vocab</h2>
+      {renderVocab(sortedPhrases)}
+
+      <h2>Recent Articles</h2>
+
+      <h2>Practice Statistics</h2>
+
     </section>
   );
 };

@@ -46,7 +46,11 @@ export type TranslationAction =
     translation: string;
   };
 
-export type SaveState = 'idle' | 'saving' | 'success' | 'error';
+export type SaveState = 
+  'idle' | 
+  'saving' | 
+  'success' | 
+  'error';
 
 export interface IPhraseUnit {
   phrase_id: string;
@@ -60,7 +64,11 @@ export interface IPhraseUnit {
   strength: number;
 }
 
-export type LocationState = null | undefined | { phrase: IPhraseUnit; article?: Article } | { phrase?: IPhraseUnit; article: Article }
+export type LocationState = 
+  null |
+  undefined | 
+  { phrase: IPhraseUnit; article?: Article } | 
+  { phrase?: IPhraseUnit; article: Article }
 
 export type AuthNavProps = {
   user: { username: string };
@@ -90,6 +98,7 @@ export interface settingsStateInterface {
 export interface phraseInterface {
   phrase_id: string;
   created_at: string;
+  last_practiced: string;
   phrase: string;
   translation: string;
   language: string;
@@ -169,5 +178,6 @@ export interface ArticlesStateInterface {
   loading: boolean;
   hasErrors: boolean;
   articles: Article[] | [];
-  // Need to add date and date read in state, as well as update backend to get this data
+  // Need to add date and date read in state,
+  //as well as update backend to get this data
 }
