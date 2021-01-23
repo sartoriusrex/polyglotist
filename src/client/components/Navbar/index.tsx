@@ -26,13 +26,17 @@ const Nav = (props: any) => {
           setIsTop(scrollCheck);
       }
 
+      function throttleScroll(){ 
+        throttle(() => listenScroll(), 250); 
+      }
+
       document.addEventListener(
         'scroll',
-        throttle(() => listenScroll(), 250)
+        throttleScroll
       );
 
       return () => {
-        document.removeEventListener('scroll', listenScroll);
+        document.removeEventListener('scroll', throttleScroll);
       };
     }
   }, [isTop, location]);

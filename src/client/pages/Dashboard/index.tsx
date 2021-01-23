@@ -18,20 +18,15 @@ const Dashboard = () => {
   const { newArticles } = useSelector(newArticlesSelector);
   const { articles } = useSelector(articlesSelector);
   const { phrases } = useSelector(phrasesSelector);
-  
   const { user } = useSelector(authSelector);
-  
-  // const numArticles: number = newArticles
-  //   ? newArticles
-  //     .map((articleObject: ArticleObject) => articleObject.articles)
-  //     .flat().length
-  //   : 0;
+
   const sortedPhrases = phrases
     .map( (phrase: phraseInterface) => phrase )
     .sort( (a: phraseInterface, b: phraseInterface) => {
       return a.strength - b.strength;    
     })
     .slice(0,5);
+
   const recentArticles = articles
     .map( (article: Article) => article )
     .sort( (a: Article, b: Article) => {
@@ -99,10 +94,10 @@ const Dashboard = () => {
     return (
       <>
         <ul>
-          {articles.map((articleObject: ArticleObject, idx: number) => {
+          {articles.map((articleObject: ArticleObject) => {
             const { source, articles } = articleObject;
 
-            return articles.map((article, index) => {
+            return articles.map((article) => {
               count++;
 
               return (
@@ -204,7 +199,7 @@ const Dashboard = () => {
 
       <h2>Recent Articles</h2>
 
-      <h2>Practice Statistics</h2>
+      <h2>Statistics</h2>
 
     </section>
   );
