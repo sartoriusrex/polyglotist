@@ -6,10 +6,11 @@ import { authSelector } from '../../slices/auth';
 import { phrasesSelector } from '../../slices/phrases';
 import { articlesSelector } from '../../slices/articles';
 
-import { ArticleObject, phraseInterface } from '../../interfaces';
+import { Article, ArticleObject, phraseInterface } from '../../interfaces';
 
 import ChevronDown from '../../images/ChevronDown';
 import ArticleCard from '../../components/ArticleCard';
+import Strength from '../../components/Strength';
 
 import styles from './dashboard.module.scss';
 
@@ -19,80 +20,133 @@ const Dashboard = () => {
   const { phrases } = useSelector(phrasesSelector);
   
   const { user } = useSelector(authSelector);
-  const startingShow: number = 3;
-  const [showNumber, setShowNumber] = useState(startingShow);
-  const numArticles: number = newArticles
-    ? newArticles
-      .map((articleObject: ArticleObject) => articleObject.articles)
-      .flat().length
-    : 0;
+  
+  // const numArticles: number = newArticles
+  //   ? newArticles
+  //     .map((articleObject: ArticleObject) => articleObject.articles)
+  //     .flat().length
+  //   : 0;
   const sortedPhrases = phrases
     .map( (phrase: phraseInterface) => phrase )
     .sort( (a: phraseInterface, b: phraseInterface) => {
       return a.strength - b.strength;    
     })
     .slice(0,5);
-
-  
+  const recentArticles = articles
+    .map( (article: Article) => article )
+    .sort( (a: Article, b: Article) => {
+      const aDate = new Date(a.date);
+      const bDate = new Date(b.date);
+      return aDate.getTime() - bDate.getTime();
+    });
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  function onMoreClick() {
-    if (numArticles > showNumber) {
-      setShowNumber(
-        showNumber + Math.min(startingShow, numArticles - showNumber)
-      );
-    }
-  }
+  const MoreButton = ({
+      numArticles,
+      showNumber,
+      setShowNumber,
+      startingShow,
+    }: {
+      numArticles: number;
+      showNumber: number;
+      setShowNumber: Function;
+      startingShow: number;
+    }) => {
 
-  const MoreButton = () => {
+    function onMoreClick() {
+      if (numArticles > showNumber) {
+        setShowNumber(
+          showNumber + Math.min(startingShow, numArticles - showNumber)
+        );
+      }
+    }
+
+    if (numArticles === showNumber ) {
+      return <></>
+    }
+
     return (
-      <button className={styles.MoreButton} onClick={onMoreClick}>
+      <button 
+        className={styles.MoreButton} 
+        onClick={() => onMoreClick()}
+      >
         More
         <ChevronDown />
       </button>
     );
   };
 
-  function renderArticleCards(articles: ArticleObject[]) {
-    if (!articles)
+  const ArticlesList = ({articles}: {articles: ArticleObject[]}) => {
+    const startingShow: number = 3;
+    const [showNumber, setShowNumber] = useState(startingShow);
+    const numArticles: number = articles
+    ? newArticles
+      .map((articleObject: ArticleObject) => articleObject.articles)
+      .flat().length
+    : 0;
+    let count = 0;
+
+    if (!articles || articles.length <= 0)
       return (
         <div>
           <p>No Articles</p>
         </div>
       );
 
-    let count: number = 0;
-
     return (
-      <ul>
-        {articles.map((articleObject: ArticleObject, idx: number) => {
-          const { source, articles } = articleObject;
+      <>
+        <ul>
+          {articles.map((articleObject: ArticleObject, idx: number) => {
+            const { source, articles } = articleObject;
 
-          return articles.map((article, index) => {
-            count++;
+            return articles.map((article, index) => {
+              count++;
 
-            return (
-              <ArticleCard
-                key={article.url}
-                article={article}
-                sourceId={source.name}
-                count={count}
-                showNumber={showNumber}
-                username={user.username}
-              />
-            );
-          });
-        })}
-      </ul>
+              return (
+                <ArticleCard
+                  key={article.url}
+                  article={article}
+                  sourceId={source.name}
+                  count={count}
+                  showNumber={showNumber}
+                  username={user.username}
+                />
+              );
+            });
+          })}
+        </ul>
+
+        <MoreButton 
+          startingShow={startingShow}
+          showNumber={showNumber}
+          setShowNumber={setShowNumber}
+          numArticles={numArticles}
+        />
+      </>
     );
   }
 
-  function renderVocab(phrases: phraseInterface[]) {
+  const VocabList = ({phrases}: {phrases: phraseInterface[]}) => {
+    if( !phrases || phrases.length <= 0 ) {
+      return (
+        <div>
+          <p>No Phrases</p>
+        </div>
+      )
+    }
     return (
       <table>
+        <thead>
+          <tr>
+            <td>Phrase</td>
+            <td>Strength</td>
+            <td>Last Practiced</td>
+          </tr>
+        </thead>
+
         <tbody>
         { phrases.map( (phraseItem: phraseInterface) => {
           const { 
@@ -102,14 +156,35 @@ const Dashboard = () => {
             last_practiced 
           } = phraseItem;
           const datePracticed = new Date(last_practiced);
-          console.log(datePracticed.getDate())
-          const formattedDate = `${datePracticed.getDate()}/${datePracticed.getMonth() + 1}/${datePracticed.getFullYear()}`
+          const formattedDate = `${datePracticed.getDate()}/${datePracticed.getMonth() + 1}/${datePracticed.getFullYear()}`;
+          const today = new Date();
+          const differenceInDays = Math.floor((today.getTime() - datePracticed.getTime()) / (1000 * 3600 * 24));
+          let lastPracticeDisplay;
+
+          if( differenceInDays < 4 ) {
+            let days;
+
+            if( differenceInDays === 1 ) {
+              days = 'day';
+            } else {
+              days = 'days';
+            }
+
+            if( differenceInDays === 0 ) {
+              lastPracticeDisplay = 'Today';
+            } else {
+              lastPracticeDisplay = `${differenceInDays} ${days} ago`;
+            }
+          } else {
+            lastPracticeDisplay = formattedDate;
+          }
+
 
           return (
             <tr key={phrase_id}>
               <td>{phrase}</td>
-              <td>{strength}</td>
-              <td>{formattedDate}</td>
+              <td><Strength strength={strength} /></td>
+              <td>{lastPracticeDisplay}</td>
             </tr>
           )
         }) }
@@ -122,11 +197,10 @@ const Dashboard = () => {
     <section id={styles.articlesSection}>
 
       <h1>New Articles</h1>
-      {renderArticleCards(newArticles)}
-      {numArticles !== showNumber && <MoreButton />}
+      <ArticlesList articles={newArticles} />
 
       <h2>Practice Vocab</h2>
-      {renderVocab(sortedPhrases)}
+      <VocabList phrases={sortedPhrases} />
 
       <h2>Recent Articles</h2>
 
