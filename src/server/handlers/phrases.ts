@@ -15,6 +15,7 @@ import {
   select_all_from_users_phrases_from_userid,
   select_title_from_articles_from_id,
   select_practice_from_users_phrases_from_userid,
+  select_all_practice_from_users_phrases_from_userid,
   update_phrase_strength,
   select_all_from_users_phrases_from_userid_and_phrase_id,
 } from '../queries';
@@ -63,9 +64,16 @@ export default {
     const quantity = mode === "untimed" ? 15 : 50;
 
     try {
+      let query = language === 'all' ?
+        select_all_practice_from_users_phrases_from_userid:
+        select_practice_from_users_phrases_from_userid;
+      let params = language === 'all' ?
+        [userId, quantity] :
+        [userId, language, quantity];
+      
       const phrasesResult = await db.query(
-        select_practice_from_users_phrases_from_userid,
-        [userId, language, quantity]
+        query,
+        params
       ).then( result => result.rows);
 
       const phrases = phrasesResult.map( (phrase: any) => ({

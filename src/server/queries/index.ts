@@ -166,6 +166,28 @@ export const select_practice_from_users_phrases_from_userid = `
     LIMIT $3;
 `
 
+export const select_all_practice_from_users_phrases_from_userid = `
+    SELECT
+        phrases.created as created_at,
+        phrase_id,
+        last_practiced,
+        strength,
+        article_id,
+        context_phrase,
+        phrase,
+        translation,
+        language,
+        articles.title as article
+    FROM users_phrases
+    LEFT JOIN phrases 
+        ON phrases.ID = users_phrases.phrase_id
+    LEFT JOIN articles
+        ON articles.ID = users_phrases.article_id
+    WHERE users_phrases.user_id = $1
+    ORDER BY strength ASC, last_practiced ASC
+    LIMIT $2;
+`
+
 export const select_all_from_users_phrases_from_userid_and_phrase_id = `
     SELECT
         phrases.created as created_at,
