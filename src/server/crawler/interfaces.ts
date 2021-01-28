@@ -33,8 +33,22 @@ export interface CrawlResult {
 
 export interface SourceText {
   source: DatabaseSource;
-  articles?: CrawlResult[] | { error: string };
+  articles?: CrawlResult[] | Error;
   error?: string;
+}
+
+export interface Article {
+  title: string;
+  date: string;
+  url: string;
+  language: string;
+  body: string[][];
+  source: string;
+}
+
+export interface Articles {
+  error?: string;
+  articles?: Article[];
 }
 
 export interface Months {

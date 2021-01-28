@@ -6,7 +6,10 @@ import { authSelector } from '../../slices/auth';
 import { phrasesSelector } from '../../slices/phrases';
 import { articlesSelector } from '../../slices/articles';
 
-import { Article, ArticleObject, phraseInterface } from '../../interfaces';
+import { 
+  Article, 
+  phraseInterface 
+} from '../../interfaces';
 
 import ChevronDown from '../../images/ChevronDown';
 import ArticleCard from '../../components/ArticleCard';
@@ -15,7 +18,7 @@ import Strength from '../../components/Strength';
 import styles from './dashboard.module.scss';
 
 const Dashboard = () => {
-  const { newArticles } = useSelector(newArticlesSelector);
+  const { articles: newArticles } = useSelector(newArticlesSelector);
   const { articles } = useSelector(articlesSelector);
   const { phrases } = useSelector(phrasesSelector);
   const { user } = useSelector(authSelector);
@@ -34,6 +37,12 @@ const Dashboard = () => {
       const bDate = new Date(b.date);
       return aDate.getTime() - bDate.getTime();
     });
+
+  const newArticlesDisplayed = newArticles && newArticles.map( (articleObject: { articles: Article[]}) => {
+    return articleObject.articles.map( (article: Article) => {
+      return article;
+    })
+  }).flat(2);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -74,13 +83,11 @@ const Dashboard = () => {
     );
   };
 
-  const ArticlesList = ({articles}: {articles: ArticleObject[]}) => {
+  const ArticlesList = ({articles}: {articles: Article[]}) => {
     const startingShow: number = 3;
     const [showNumber, setShowNumber] = useState(startingShow);
     const numArticles: number = articles
-    ? newArticles
-      .map((articleObject: ArticleObject) => articleObject.articles)
-      .flat().length
+    ? newArticles.flat().length
     : 0;
     let count = 0;
 
@@ -94,23 +101,19 @@ const Dashboard = () => {
     return (
       <>
         <ul>
-          {articles.map((articleObject: ArticleObject) => {
-            const { source, articles } = articleObject;
+          {articles.map((article: Article) => {
+            count++;
 
-            return articles.map((article) => {
-              count++;
-
-              return (
-                <ArticleCard
-                  key={article.url}
-                  article={article}
-                  sourceId={source.name}
-                  count={count}
-                  showNumber={showNumber}
-                  username={user.username}
-                />
-              );
-            });
+            return (
+              <ArticleCard
+                key={article.url}
+                article={article}
+                sourceId={article.source}
+                count={count}
+                showNumber={showNumber}
+                username={user.username}
+              />
+            );
           })}
         </ul>
 
@@ -192,12 +195,13 @@ const Dashboard = () => {
     <section id={styles.articlesSection}>
 
       <h1>New Articles</h1>
-      <ArticlesList articles={newArticles} />
+      <ArticlesList articles={newArticlesDisplayed} />
 
       <h2>Practice Vocab</h2>
       <VocabList phrases={sortedPhrases} />
 
       <h2>Recent Articles</h2>
+      <ArticlesList articles={recentArticles} />
 
       <h2>Statistics</h2>
 

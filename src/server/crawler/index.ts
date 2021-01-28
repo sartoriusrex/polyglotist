@@ -33,7 +33,12 @@ const crawlSource = async function (src: {
     });
     const page = await browser.newPage();
     page.setJavaScriptEnabled(true);
-    const { grabURLs, grabTitle, grabDate, grabBody } = crawlers[name];
+    const { 
+      grabURLs, 
+      grabTitle, 
+      grabDate, 
+      grabBody 
+    } = crawlers[name];
 
     await page.goto(url, { waitUntil: 'networkidle0', timeout: 0 });
     await page.waitFor(2000);
@@ -58,16 +63,20 @@ const crawlSource = async function (src: {
       let count: number = 0;
 
       // Loop through each Article in the array
-      articleArray.forEach((article: CrawlResult) => {
+      articleArray = articleArray.filter((article: CrawlResult) => {
         if (article.title == 'No Title Found') {
+          count++;
           console.log(`No title found from ${article.url}`);
+          return false;
         }
 
         if (
           article.date === 'No Date Found' ||
           article.date === 'Invalid Date'
         ) {
+          count++;
           console.log(`Bad Date at ${article.url}`);
+          return false;
         }
 
         // Check that the body is also an array
@@ -77,10 +86,15 @@ const crawlSource = async function (src: {
             console.log(
               `\nProblem getting article body from ${article.url} \n`
             );
+            return false;
           }
         } else {
+          count++;
           console.log('\nArticle is not an array : ' + article.body + '\n');
+          return false;
         }
+
+        return true;
       });
       console.log(`
         ---------------------------------
@@ -94,6 +108,7 @@ const crawlSource = async function (src: {
       articleArray = Array.from(new Set(articleArray));
     } else {
       console.log(`\nArticle array is not an array: ${articleArray}\n`);
+      return { error: `Failed to scrape ${name}`};
     }
 
     return articleArray;

@@ -5,6 +5,8 @@ import {
   DatabaseSource,
   CrawlResult,
   SourceText,
+  Articles,
+  Article
 } from '../crawler/interfaces';
 
 import {
@@ -32,7 +34,10 @@ export default {
     const databaseSources: DatabaseSource[] = await Promise.all(
       sources.map(async (src: string) => {
         try {
-          const dbSource = await db.query( select_all_from_source_from_name, [src] );
+          const dbSource = await db.query( 
+            select_all_from_source_from_name, 
+            [src] 
+          );
 
           return {
             name: dbSource.rows[0].name,
@@ -55,17 +60,19 @@ export default {
     );
 
     // get the articles that are fresh from their source ids, and get those articles' bodies from the articles_bodies table
-    const articles: SourceText[] = await Promise.all(
+    const articles: Articles[] = await Promise.all(
       databaseSources.map(async (src: DatabaseSource) => {
         if (src.hasOwnProperty('error')) {
-          return { source: src };
+          return { 
+            error: `error with ${src.name}`, 
+          };
         }
 
         try {
           let srcArticles = await db.query(select_new_articles, [src.id]);
 
           try {
-            const articlesAndBodies: CrawlResult[] = await Promise.all(
+            const articlesAndBodies: Article[] = await Promise.all(
               srcArticles.rows.map(
                 async (article: {
                   id: string;
@@ -88,28 +95,20 @@ export default {
                     language: src.language,
                     url: article.url,
                     body: articleBody,
+                    source: src.name,
                   };
                 }
               )
             );
 
-            return {
-              source: src,
-              articles: articlesAndBodies,
-            };
+            return { articles: articlesAndBodies };
           } catch (err) {
             console.log(
               err,
               `\n failed to fetch article bodies from ${srcArticles.rows}`
             );
 
-            return {
-              // title: article.title,
-              // date: article.article_date,
-              // url: article.url,
-              // source: src.name,
-              // body: ['P', 'Failed to grab article text.'],
-              source: src,
+            return { 
               error: 'Failed to grab article text.',
             };
           }
@@ -119,9 +118,8 @@ export default {
             `\n handlers/articles.ts fetching articles after grabbing sources.`
           );
 
-          return {
+          return { 
             error: 'Failed to fetch fresh articles from the database.',
-            source: src,
           };
         }
       })

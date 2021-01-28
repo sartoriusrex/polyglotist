@@ -170,7 +170,7 @@ interface SourceText {
 export interface newArticlesStateInterface {
   loading: boolean;
   hasErrors: boolean;
-  articles: SourceText[] | null;
+  articles: Article[] | null;
 }
 
 

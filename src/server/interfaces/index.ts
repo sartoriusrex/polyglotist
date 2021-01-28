@@ -24,3 +24,12 @@ export interface IUsersArticles {
     user_id: Number;
     article_id: Number;
 }
+
+export interface Article {
+    title: string;
+    date: string;
+    url: string;
+    language: string;
+    body: string[][];
+    source: string;
+}
