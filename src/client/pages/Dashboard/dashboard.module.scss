@@ -10,6 +10,29 @@
     margin: .625rem 0;
     font-size: 1.25rem;
   }
+
+  table {
+    thead {
+      tr {
+        border-bottom: 1px solid $dark-purple;
+      }
+
+      td {
+        padding: .5rem;
+        color: $dark-purple;
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid $darkest-green;
+      }
+
+      td {
+        padding: .5rem;
+      }
+    }
+  }
 }
 
 .MoreButton {
@@ -29,3 +52,4 @@
     margin-left: .3125rem;
   }
 }
+

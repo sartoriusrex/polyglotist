@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { newArticlesSelector } from '../../slices/newArticles';
 import { authSelector } from '../../slices/auth';
@@ -38,7 +39,7 @@ const Dashboard = () => {
       return aDate.getTime() - bDate.getTime();
     });
 
-  const newArticlesDisplayed = newArticles && newArticles.map( (articleObject: { articles: Article[]}) => {
+  const newArticlesDisplayed = newArticles?.map( (articleObject: { articles: Article[]}) => {
     return articleObject.articles.map( (article: Article) => {
       return article;
     })
@@ -68,7 +69,7 @@ const Dashboard = () => {
       }
     }
 
-    if (numArticles === showNumber ) {
+    if (numArticles <= showNumber ) {
       return <></>
     }
 
@@ -86,9 +87,7 @@ const Dashboard = () => {
   const ArticlesList = ({articles}: {articles: Article[]}) => {
     const startingShow: number = 3;
     const [showNumber, setShowNumber] = useState(startingShow);
-    const numArticles: number = articles
-    ? newArticles.flat().length
-    : 0;
+    const numArticles = articles?.flat().length;
     let count = 0;
 
     if (!articles || articles.length <= 0)
@@ -199,6 +198,11 @@ const Dashboard = () => {
 
       <h2>Practice Vocab</h2>
       <VocabList phrases={sortedPhrases} />
+      <div>
+        <Link
+          to={`/${user.username}/practice`}
+        >Review Vocab</Link>
+      </div>
 
       <h2>Recent Articles</h2>
       <ArticlesList articles={recentArticles} />
