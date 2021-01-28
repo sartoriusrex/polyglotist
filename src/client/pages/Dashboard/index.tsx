@@ -98,7 +98,7 @@ const Dashboard = () => {
       );
 
     return (
-      <>
+      <div className={styles.articleSection}>
         <ul>
           {articles.map((article: Article) => {
             count++;
@@ -122,7 +122,8 @@ const Dashboard = () => {
           setShowNumber={setShowNumber}
           numArticles={numArticles}
         />
-      </>
+      
+      </div>
     );
   }
 
@@ -191,14 +192,14 @@ const Dashboard = () => {
   }
 
   return (
-    <section id={styles.articlesSection}>
+    <section id={styles.dashboardSection}>
 
       <h1>New Articles</h1>
       <ArticlesList articles={newArticlesDisplayed} />
 
       <h2>Practice Vocab</h2>
       <VocabList phrases={sortedPhrases} />
-      <div>
+      <div className={styles.vocabLink}>
         <Link
           to={`/${user.username}/practice`}
         >Review Vocab</Link>

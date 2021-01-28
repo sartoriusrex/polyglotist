@@ -1,24 +1,42 @@
 @import '../../styles/variables';
 
-#articlesSection {
+#dashboardSection {
   display: flex;
   flex-direction: column;
   width: 100%;
   padding: 0 .625rem;
+  align-items: center;
 
   h1, h2 {
     margin: .625rem 0;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
+  }
+
+  .vocabLink {
+    margin-bottom: 4rem;
+
+    a {
+      padding: 1rem;
+      color: $dark-purple;
+      border: 2px solid $dark-purple;
+    }
   }
 
   table {
+    margin-bottom: 2rem;
+
+    td {
+      vertical-align: middle;
+      text-align: center;
+      padding: .5rem;
+    }
+
     thead {
       tr {
         border-bottom: 1px solid $dark-purple;
       }
 
       td {
-        padding: .5rem;
         color: $dark-purple;
       }
     }
@@ -29,10 +47,19 @@
       }
 
       td {
-        padding: .5rem;
+        &:first-of-type {
+          text-align: left;
+        }
       }
     }
   }
+}
+
+.articleSection {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;;
 }
 
 .MoreButton {
