@@ -9,7 +9,8 @@ import { articlesSelector } from '../../slices/articles';
 
 import { 
   Article, 
-  phraseInterface 
+  phraseInterface, 
+  phrasesStateInterface
 } from '../../interfaces';
 
 import ChevronDown from '../../images/ChevronDown';
@@ -23,6 +24,7 @@ const Dashboard = () => {
   const { articles } = useSelector(articlesSelector);
   const { phrases } = useSelector(phrasesSelector);
   const { user } = useSelector(authSelector);
+  const today = new Date().getTime();
 
   const sortedPhrases = phrases
     .map( (phrase: phraseInterface) => phrase )
@@ -31,6 +33,66 @@ const Dashboard = () => {
     })
     .slice(0,5);
 
+  function numPhrasesPracInNDays(days: number, phrases: phraseInterface[]) {
+    const millInOneDay = 1000 * 60 * 60 * 24;
+
+    return phrases.filter( (phrase: phraseInterface) => {
+      let lastPracticed = new Date(phrase.last_practiced).getTime();
+      let diff = today - lastPracticed;
+      
+      return diff <= millInOneDay * days;
+    }).length;
+  }
+
+  // Build up practice stats per language and all languages combined
+  // Number of words
+  // average stength
+  // num practiced last 7 days, last 30 days
+  // Num articles read last 7 days and last 30 days
+  // avg articles read per week last 8 weeks
+  // average correct last 7 days and last 30 days
+
+  const practiceStats = phrases.reduce((
+    accumulator: any, 
+    currentPhrase: 
+    phraseInterface, 
+    idx: number, 
+    phrases: phraseInterface[]
+    ) => {
+
+    let property = accumulator[currentPhrase.language];
+
+    if (!property) {
+      let langPhrases = phrases.filter( (phrase: phraseInterface) => phrase.language === currentPhrase.language);
+
+      accumulator[currentPhrase.language] = {
+        numPhrases: 1,
+        totalStrength: currentPhrase.strength,
+        avgStrength: currentPhrase.strength,
+        numPracticedLast7: numPhrasesPracInNDays(7, langPhrases),
+        numPractiedLast30: numPhrasesPracInNDays(30, langPhrases)
+      }
+    } else {
+      accumulator[currentPhrase.language].numPhrases++;
+      accumulator[currentPhrase.language].totalStrength += currentPhrase.strength;
+      accumulator[currentPhrase.language].avgStrength = Math.floor(property.totalStrength / property.numPhrases);
+    }
+
+    accumulator['all'].numPhrases++;
+    accumulator['all'].totalStrength += currentPhrase.strength;
+    accumulator['all'].avgStrength = Math.floor(accumulator['all'].totalStrength / accumulator['all'].numPhrases);
+
+    return accumulator;
+  }, {all: {
+    numPhrases: 0,
+    totalstrength: 0,
+    avgStrength: 0,
+    numPracticedLast7: numPhrasesPracInNDays(7, phrases),
+    numPractiedLast30: numPhrasesPracInNDays(30, phrases)
+  }});
+
+  console.log(practiceStats)
+
   const recentArticles = articles
     .map( (article: Article) => article )
     .sort( (a: Article, b: Article) => {
@@ -38,6 +100,8 @@ const Dashboard = () => {
       const bDate = new Date(b.date);
       return aDate.getTime() - bDate.getTime();
     });
+
+  console.log(recentArticles[0])
 
   const newArticlesDisplayed = newArticles?.map( (articleObject: { articles: Article[]}) => {
     return articleObject.articles.map( (article: Article) => {
@@ -130,13 +194,13 @@ const Dashboard = () => {
   const VocabList = ({phrases}: {phrases: phraseInterface[]}) => {
     if( !phrases || phrases.length <= 0 ) {
       return (
-        <div>
+        <div className={styles.vocabList}>
           <p>No Phrases</p>
         </div>
       )
     }
     return (
-      <table>
+      <table className={styles.vocabList}>
         <thead>
           <tr>
             <td>Phrase</td>

@@ -14,6 +14,7 @@ export interface Source {
 export interface Article {
   title: string;
   date: string;
+  read?: string;
   url: string;
   language: string;
   body: string[][];

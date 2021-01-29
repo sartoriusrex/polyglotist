@@ -407,6 +407,7 @@ export const create_table_users_phrases = `
 export const create_table_users_articles = `
     CREATE TABLE users_articles (
     ID SERIAL PRIMARY KEY,
+    created TIMESTAMP DEFAULT NOW(),
     user_id INT NOT NULL,
     article_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,

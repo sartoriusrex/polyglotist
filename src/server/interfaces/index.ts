@@ -1,28 +1,29 @@
 export interface Iphrase {
-    phrase_id: Number;
-    created_at: String;
-    phrase: String;
-    translation: String;
-    language: String;
-    article: String;
-    context_phrase: String;
-    strength: Number;
+    phrase_id: number;
+    created_at: string;
+    phrase: string;
+    translation: string;
+    language: string;
+    article: string;
+    context_phrase: string;
+    strength: number;
 }
 
 export interface IuPhraseRow {
-    id: Number;
-    user_id: Number;
-    phrase_id: Number;
-    strength: Number;
-    article_id: Number;
-    context_phrase: String;
+    id: number;
+    user_id: number;
+    phrase_id: number;
+    strength: number;
+    article_id: number;
+    context_phrase: string;
     last_practiced: string;
 }
 
 export interface IUsersArticles {
-    id: Number;
-    user_id: Number;
-    article_id: Number;
+    id: number;
+    user_id: number;
+    article_id: number;
+    created: string;
 }
 
 export interface Article {

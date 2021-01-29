@@ -160,6 +160,7 @@ export default {
         article = {
           title: article.title,
           date: article.article_date,
+          read: userArticle.created,
           language: source.language,
           url: article.url,
           body: articleBodies,

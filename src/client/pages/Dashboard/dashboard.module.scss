@@ -21,35 +21,49 @@
       border: 2px solid $dark-purple;
     }
   }
+}
 
-  table {
-    margin-bottom: 2rem;
+
+.vocabList {
+  margin-bottom: 2rem;
+  width: 100%;
+
+  td {
+    vertical-align: bottom;
+    text-align: center;
+    padding: .5rem;
+
+    &:last-of-type {
+      width: 30%;
+    }
+
+    &:nth-of-type() {
+      width: 20%;
+    }
+
+    &:first-of-type {
+      width: 50%;
+    }
+  }
+
+  thead {
+    tr {
+      border-bottom: 1px solid $dark-purple;
+    }
 
     td {
-      vertical-align: middle;
-      text-align: center;
-      padding: .5rem;
+      color: $dark-purple;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid $darkest-green;
     }
 
-    thead {
-      tr {
-        border-bottom: 1px solid $dark-purple;
-      }
-
-      td {
-        color: $dark-purple;
-      }
-    }
-
-    tbody {
-      tr {
-        border-bottom: 1px solid $darkest-green;
-      }
-
-      td {
-        &:first-of-type {
-          text-align: left;
-        }
+    td {
+      &:first-of-type {
+        text-align: left;
       }
     }
   }
