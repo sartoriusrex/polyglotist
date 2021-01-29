@@ -65,6 +65,14 @@ const practiceSessionPage = () => {
         )
     }
 
+    if( phrases.length < 1 ) {
+        return (
+            <section>
+                <h1>No Phrases to practice!</h1>
+            </section>
+        )
+    }
+
     return (
         <section className={styles.practiceSession}>
             {

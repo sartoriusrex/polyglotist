@@ -165,14 +165,6 @@ export default {
 
       return res.status(500).send({ error: 'Failed to update phrase'});
     }
-
-    // Update phrase strikes, strength, and last_practiced in user_phrase
-    // import the strikes to strength algorithm here to use from utils or constants?
-    // update strength based on strikes
-    // Update last-practiced
-    // Send back the updated user_phrase with the phrase itself
-    // Also send back the object stating the changes made --
-    // essential the change to strength (0, +1, or -1)
   },
   savePhrase: async (req: Request, res: Response) => {
     const username: string = req.body.username;
