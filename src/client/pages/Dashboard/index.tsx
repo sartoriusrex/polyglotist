@@ -122,17 +122,21 @@ const Dashboard = () => {
     avgArtReadLast8Weeks: numAvg8WeekReadPerWeek(articles),
   }});
 
-  const Stats = () => {
-    let statsData = Object.entries(practiceStats).sort( (a: any, b: any) => a[0] - b[0]);
+  const Stats = ({stats} : {stats: any}) => {
+    let statsData = Object.entries(stats).sort( (a: any, b: any) => a[0] - b[0]);
 
-    return statsData.map( (stat: any) => {
-      return(
-        <div key={stat[0]}>
-          <h3>{stat[0]}</h3>
-          <p>{stat[1].avgStrength}</p>
-        </div>
-      )
-    })
+    return (
+      <>
+        { statsData.map( (stat: any) => {
+          return(
+            <div key={stat[0]}>
+              <h3>{stat[0]}</h3>
+              <p>{stat[1].avgStrength}</p>
+            </div>
+          )
+        }) }
+      </>
+    )
   }
 
 
@@ -310,7 +314,7 @@ const Dashboard = () => {
       <ArticlesList articles={recentArticles} />
 
       <h2>Statistics</h2>
-      <Stats />
+      <Stats stats={practiceStats}/>
 
     </section>
   );
