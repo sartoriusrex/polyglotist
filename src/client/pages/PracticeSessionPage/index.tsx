@@ -29,7 +29,7 @@ const practiceSessionPage = () => {
     const location: { pathname: string; state: { mode: string }} = useLocation();
     const mode = location?.state?.mode;
     const [progress, setProgress] = useState(() => 0);
-    const [time, setTime]  = useState(30);
+    const [time, setTime]  = useState(60);
     const timeUp = time === 0;
     
     function updatePhrase(phraseId: string, result: 1 | -1) {

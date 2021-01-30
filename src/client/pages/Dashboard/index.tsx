@@ -10,7 +10,6 @@ import { articlesSelector } from '../../slices/articles';
 import { 
   Article, 
   phraseInterface, 
-  phrasesStateInterface
 } from '../../interfaces';
 
 import ChevronDown from '../../images/ChevronDown';
@@ -25,6 +24,11 @@ const Dashboard = () => {
   const { phrases } = useSelector(phrasesSelector);
   const { user } = useSelector(authSelector);
   const today = new Date().getTime();
+  const millInOneDay = 1000 * 60 * 60 * 24;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const sortedPhrases = phrases
     .map( (phrase: phraseInterface) => phrase )
@@ -34,14 +38,33 @@ const Dashboard = () => {
     .slice(0,5);
 
   function numPhrasesPracInNDays(days: number, phrases: phraseInterface[]) {
-    const millInOneDay = 1000 * 60 * 60 * 24;
-
     return phrases.filter( (phrase: phraseInterface) => {
       let lastPracticed = new Date(phrase.last_practiced).getTime();
       let diff = today - lastPracticed;
       
       return diff <= millInOneDay * days;
     }).length;
+  }
+
+  function numArticlesReadInNDays(days: number, articles: Article[]) {
+    return articles.filter( (article: Article) => {
+      let read = article.read? article.read : null;
+
+      if (!read) {
+        return false;
+      } else {
+        let lastRead = new Date(read).getTime();
+        let diff = today - lastRead
+        
+        return diff <= millInOneDay * days;
+      }
+    }).length;
+  }
+
+  function numAvg8WeekReadPerWeek(articles: Article[]) {
+    let num = numArticlesReadInNDays(56, articles);
+
+    return Math.floor(num / 8 );
   }
 
   // Build up practice stats per language and all languages combined
@@ -64,13 +87,17 @@ const Dashboard = () => {
 
     if (!property) {
       let langPhrases = phrases.filter( (phrase: phraseInterface) => phrase.language === currentPhrase.language);
+      let langArticles = articles.filter( (article: Article) => article.language === currentPhrase.language);
 
       accumulator[currentPhrase.language] = {
         numPhrases: 1,
         totalStrength: currentPhrase.strength,
         avgStrength: currentPhrase.strength,
         numPracticedLast7: numPhrasesPracInNDays(7, langPhrases),
-        numPractiedLast30: numPhrasesPracInNDays(30, langPhrases)
+        numPractiedLast30: numPhrasesPracInNDays(30, langPhrases),
+        numArtReadLast7: numArticlesReadInNDays(7, langArticles),
+        numArtReadLast30: numArticlesReadInNDays(30, langArticles),
+        avgArtReadLast8Weeks: numAvg8WeekReadPerWeek(langArticles),
       }
     } else {
       accumulator[currentPhrase.language].numPhrases++;
@@ -82,16 +109,32 @@ const Dashboard = () => {
     accumulator['all'].totalStrength += currentPhrase.strength;
     accumulator['all'].avgStrength = Math.floor(accumulator['all'].totalStrength / accumulator['all'].numPhrases);
 
+
     return accumulator;
   }, {all: {
     numPhrases: 0,
-    totalstrength: 0,
+    totalStrength: 0,
     avgStrength: 0,
     numPracticedLast7: numPhrasesPracInNDays(7, phrases),
-    numPractiedLast30: numPhrasesPracInNDays(30, phrases)
+    numPractiedLast30: numPhrasesPracInNDays(30, phrases),
+    numArtReadLast7: numArticlesReadInNDays(7, articles),
+    numArtReadLast30: numArticlesReadInNDays(30, articles),
+    avgArtReadLast8Weeks: numAvg8WeekReadPerWeek(articles),
   }});
 
-  console.log(practiceStats)
+  const Stats = () => {
+    let statsData = Object.entries(practiceStats).sort( (a: any, b: any) => a[0] - b[0]);
+
+    return statsData.map( (stat: any) => {
+      return(
+        <div key={stat[0]}>
+          <h3>{stat[0]}</h3>
+          <p>{stat[1].avgStrength}</p>
+        </div>
+      )
+    })
+  }
+
 
   const recentArticles = articles
     .map( (article: Article) => article )
@@ -101,17 +144,11 @@ const Dashboard = () => {
       return aDate.getTime() - bDate.getTime();
     });
 
-  console.log(recentArticles[0])
-
   const newArticlesDisplayed = newArticles?.map( (articleObject: { articles: Article[]}) => {
     return articleObject.articles.map( (article: Article) => {
       return article;
     })
   }).flat(2);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   const MoreButton = ({
       numArticles,
@@ -273,6 +310,7 @@ const Dashboard = () => {
       <ArticlesList articles={recentArticles} />
 
       <h2>Statistics</h2>
+      <Stats />
 
     </section>
   );
