@@ -55,6 +55,8 @@
 .inputGroup {
     input {
         display: none;
+
+
     }
 }
 
@@ -62,7 +64,7 @@
     padding: .3125rem .625rem;
     background-color: $dark-purple;
     color: $white;
-    border: 1px solid transparent;    
+    border: 1px solid transparent;
 }
 
 .inactive {
@@ -70,4 +72,10 @@
     background-color: $white;
     color: $dark-purple;
     border: 1px solid $dark-purple;
+}
+
+[data-disabled='true'] {
+    background-color: $gray;
+    color: $white;
+    border: 1px solid $gray;
 }

@@ -4,6 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { settingsSelector } from '../../slices/settings';
 import { createSession } from '../../slices/practice';
 import { authSelector } from '../../slices/auth';
+import { phrasesSelector } from '../../slices/phrases';
+
+import { phraseInterface } from '../../interfaces';
 
 import styles from './practicePage.module.scss';
 
@@ -11,11 +14,31 @@ const PracticePage = () => {
   const dispatch = useDispatch();
   const { languagesLearning: languages } = useSelector(settingsSelector);
   const { user } = useSelector(authSelector);
+  const { phrases } = useSelector(phrasesSelector)
   const [lang, setLang] = useState(languages[0]);
   const [mode, setMode] = useState('untimed');
 
+  const numPhrasesSaved = phrases.reduce( (
+    accumulator: {[lang: string]: number}, 
+    currentPhrase: phraseInterface, 
+    idx: number, 
+    phrases: phraseInterface[]) => {
+
+      if( !accumulator[currentPhrase.language] ) {
+        accumulator[currentPhrase.language] = phrases.filter( (phrase: phraseInterface) => {
+          return currentPhrase.language === phrase.language;
+        }).length;
+      }
+
+      return accumulator;
+  }, { all: phrases.length});
+
+  const zeroPhrases = numPhrasesSaved['all'] === 0;
+
   function renderLanguageInputs() {
     return ['all', ...languages].map( (language: string, idx: number) => {
+      let zeroPhrases = numPhrasesSaved[language] === 0;
+
       return (
         <div 
           key={language} 
@@ -23,7 +46,8 @@ const PracticePage = () => {
           
           <label 
             htmlFor={language} 
-            className={lang === language ? styles.active : styles.inactive}>
+            className={lang === language ? styles.active : styles.inactive}
+            data-disabled={zeroPhrases}>
             {language[0].toUpperCase() + language.substring(1)}
 
             <input 
@@ -32,7 +56,9 @@ const PracticePage = () => {
               name='language' 
               value={language}
               onChange={() => setLang(language)}
-              defaultChecked={language === lang } />
+              defaultChecked={language === lang } 
+              disabled={zeroPhrases}
+              />
           </label>
         </div>
       )
@@ -69,7 +95,8 @@ const PracticePage = () => {
           <div className={styles.inputGroup}>
               <label 
                 htmlFor="untimed"
-                className={mode === 'untimed' ? styles.active : styles.inactive}>
+                className={mode === 'untimed' ? styles.active : styles.inactive}
+                data-disabled={zeroPhrases}>
                 Untimed
                 
                 <input 
@@ -85,7 +112,8 @@ const PracticePage = () => {
           <div className={styles.inputGroup}>
               <label 
                 htmlFor="timed"
-                className={mode === 'timed' ? styles.active : styles.inactive}>
+                className={mode === 'timed' ? styles.active : styles.inactive}
+                data-disabled={zeroPhrases}>
                 Timed
 
                 <input 
@@ -100,7 +128,16 @@ const PracticePage = () => {
         </div>
       </div>
 
-      <button type="submit">Start</button>
+      <button 
+        type="submit" 
+        disabled={zeroPhrases}
+      >
+        { 
+          zeroPhrases ?
+          'Saved some phrases to practice first' :
+          'Start'
+        }
+      </button>
     </form>
   )
 }

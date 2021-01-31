@@ -73,7 +73,6 @@ const Dashboard = () => {
   // num practiced last 7 days, last 30 days
   // Num articles read last 7 days and last 30 days
   // avg articles read per week last 8 weeks
-  // average correct last 7 days and last 30 days
 
   const practiceStats = phrases.reduce((
     accumulator: any, 
@@ -102,12 +101,12 @@ const Dashboard = () => {
     } else {
       accumulator[currentPhrase.language].numPhrases++;
       accumulator[currentPhrase.language].totalStrength += currentPhrase.strength;
-      accumulator[currentPhrase.language].avgStrength = Math.floor(property.totalStrength / property.numPhrases);
+      accumulator[currentPhrase.language].avgStrength = Math.round(property.totalStrength / property.numPhrases);
     }
 
     accumulator['all'].numPhrases++;
     accumulator['all'].totalStrength += currentPhrase.strength;
-    accumulator['all'].avgStrength = Math.floor(accumulator['all'].totalStrength / accumulator['all'].numPhrases);
+    accumulator['all'].avgStrength = Math.round(accumulator['all'].totalStrength / accumulator['all'].numPhrases);
 
 
     return accumulator;
@@ -125,17 +124,53 @@ const Dashboard = () => {
   const Stats = ({stats} : {stats: any}) => {
     let statsData = Object.entries(stats).sort( (a: any, b: any) => a[0] - b[0]);
 
+    if ( statsData.length <= 1 ) {
+      return (
+        <div>
+          <p>No Stats</p>
+        </div>
+      )
+    }
+
     return (
-      <>
+      <div>
         { statsData.map( (stat: any) => {
+          if( stat[1].numPhrases === 0 ) {
+            return (
+              <div>
+                <h3>{stat[0]}</h3>
+                <p>No data</p>
+              </div>
+            )
+          }
           return(
-            <div key={stat[0]}>
-              <h3>{stat[0]}</h3>
-              <p>{stat[1].avgStrength}</p>
-            </div>
+            <table key={stat[0]}>
+              <caption>Language: {stat[0]}</caption>
+              <thead>
+                <tr>
+                  <td>Avg Strength</td>
+                  <td># Phrases Practiced Last 7 Days</td>
+                  <td># Phrases Practiced Last 30 Days</td>
+                  <td># Articles Read Last 7 Days</td>
+                  <td># Articles Read Last 30 Days</td>
+                  <td>Avg # Articles Read per Week</td>
+                </tr>
+              </thead>
+              
+              <tbody>
+                <tr>
+                  <td>{stat[1].avgStrength}</td>
+                  <td>{stat[1].numPracticedLast7}</td>
+                  <td>{stat[1].numPractiedLast30}</td>
+                  <td>{stat[1].numArtReadLast7}</td>
+                  <td>{stat[1].numArtReadLast30}</td>
+                  <td>{stat[1].avgArtReadLast8Weeks}</td>
+                </tr>
+              </tbody>
+            </table>
           )
         }) }
-      </>
+      </div>
     )
   }
 
