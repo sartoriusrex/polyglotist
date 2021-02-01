@@ -2,8 +2,10 @@ import React, { ChangeEvent, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { IPhraseUnit } from '../../interfaces';
+import { PhraseUnit } from '../../interfaces';
+
 import styles from './phrasePage.module.scss';
+
 import { 
   fetchAllPhrases, 
   phrasesSelector,
@@ -17,7 +19,7 @@ const PhrasesPage = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(authSelector);
   const { phrases } = useSelector(phrasesSelector);
-  let phrasesToDisplay: IPhraseUnit[] = sortPhrases('AtoZ');
+  let phrasesToDisplay: PhraseUnit[] = sortPhrases('AtoZ');
 
   useEffect(() => {
     dispatch(fetchAllPhrases(user.id))
@@ -27,32 +29,32 @@ const PhrasesPage = () => {
     switch (order) {
       case "ZtoA":
         return phrases
-          .map( (phrase: IPhraseUnit) => phrase )
-          .sort( (a: IPhraseUnit, b: IPhraseUnit ) => b.phrase.localeCompare(a.phrase) );
+          .map( (phrase: PhraseUnit) => phrase )
+          .sort( (a: PhraseUnit, b: PhraseUnit ) => b.phrase.localeCompare(a.phrase) );
       case "Strongest":
         return phrases
-          .map( (phrase: IPhraseUnit) => phrase )
-          .sort( (a: IPhraseUnit, b: IPhraseUnit ) => b.strength - a.strength );
+          .map( (phrase: PhraseUnit) => phrase )
+          .sort( (a: PhraseUnit, b: PhraseUnit ) => b.strength - a.strength );
       case "Weakest":
         return phrases
-          .map( (phrase: IPhraseUnit) => phrase )
-          .sort( (a: IPhraseUnit, b: IPhraseUnit ) => a.strength - b.strength );
+          .map( (phrase: PhraseUnit) => phrase )
+          .sort( (a: PhraseUnit, b: PhraseUnit ) => a.strength - b.strength );
       case "Oldest":
         return phrases
-          .map( (phrase: IPhraseUnit) => phrase )
-          .sort( (a: IPhraseUnit, b: IPhraseUnit ) => new Date(a.last_practiced).getTime() - new Date(b.last_practiced).getTime() );
+          .map( (phrase: PhraseUnit) => phrase )
+          .sort( (a: PhraseUnit, b: PhraseUnit ) => new Date(a.last_practiced).getTime() - new Date(b.last_practiced).getTime() );
       case "Latest":
         return phrases
-          .map( (phrase: IPhraseUnit) => phrase )
-          .sort( (a: IPhraseUnit, b: IPhraseUnit ) => new Date(b.last_practiced).getTime() - new Date(a.last_practiced).getTime() );
+          .map( (phrase: PhraseUnit) => phrase )
+          .sort( (a: PhraseUnit, b: PhraseUnit ) => new Date(b.last_practiced).getTime() - new Date(a.last_practiced).getTime() );
       default:
         return phrases
-          .map( (phrase: IPhraseUnit) => phrase )
-          .sort( (a: IPhraseUnit, b: IPhraseUnit ) => a.phrase.localeCompare(b.phrase) );
+          .map( (phrase: PhraseUnit) => phrase )
+          .sort( (a: PhraseUnit, b: PhraseUnit ) => a.phrase.localeCompare(b.phrase) );
     }
   }
 
-  const PhraseUnit = ({ phraseObject }: { phraseObject: IPhraseUnit }) => {
+  const PhraseUnit = ({ phraseObject }: { phraseObject: PhraseUnit }) => {
     const { phrase_id, phrase, translation, strength, last_practiced } = phraseObject;
     const dateObject = new Date(last_practiced);
     const day = dateObject.getDate();
@@ -102,8 +104,8 @@ const PhrasesPage = () => {
     )
   }
 
-  function renderVocabulary(phrases: IPhraseUnit[]) {
-    return phrases.map((phrase: IPhraseUnit) => {
+  function renderVocabulary(phrases: PhraseUnit[]) {
+    return phrases.map((phrase: PhraseUnit) => {
       return <PhraseUnit key={phrase.phrase} phraseObject={phrase} />
     })
   }

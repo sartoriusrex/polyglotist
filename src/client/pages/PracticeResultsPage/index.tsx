@@ -6,7 +6,7 @@ import { practiceSelector } from '../../slices/practice';
 import { authSelector } from '../../slices/auth';
 
 import styles from './practiceResultsPage.module.scss';
-import { phraseResult } from 'client/interfaces';
+import { PhraseResult } from 'client/interfaces';
 
 import Strength from '../../components/Strength';
 import ChevronUp from '../../images/ChevronUp';
@@ -34,7 +34,7 @@ const PracticeResultsPage = () => {
     function displayResults() {
         const total = results.length;
         const totalCorrect = results
-            .map( (resultItem: phraseResult ) => resultItem.result )
+            .map( (resultItem: PhraseResult ) => resultItem.result )
             .filter( (result: number ) => result === 1 )
             .length;
 
@@ -74,7 +74,7 @@ const PracticeResultsPage = () => {
                     </thead>
 
                     <tbody>
-                        { results.map( (resultItem: phraseResult) => {
+                        { results.map( (resultItem: PhraseResult) => {
                             const correct = resultItem.result === 1;
                             const { 
                                 phrase, 

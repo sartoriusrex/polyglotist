@@ -15,7 +15,7 @@
     "client": "webpack-dev-server --config webpack.config.cjs --mode development --env.NODE_ENV=development --devtool inline-source-map --hot",
     "server": "nodemon src/server/index.ts",
     "dev": "npm run exportgoogle && concurrently \"npm run server\" \"npm run client\"",
-    "test": "jest",
+    "test": "jest --config='config/jest.config.cjs'",
     "test:watch": "jest --watch",
     "docker-build": "sudo docker-compose -f docker-compose.dev.yml up --build",
     "docker-start": "sudo docker-compose -f docker-compose.dev.yml up",
