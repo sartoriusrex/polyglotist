@@ -14,7 +14,7 @@ import Timer from '../../components/Timer';
 
 import styles from './practiceSessionPage.module.scss';
 
-import { phraseInterface } from '../../interfaces';
+import { Phrase } from '../../interfaces';
 
 import PracticeQuestion from '../../components/PracticeQuestion';
 
@@ -80,7 +80,7 @@ const practiceSessionPage = () => {
                 <Timer time={time} />
             }
             {
-                phrases.map( (phrase: phraseInterface, idx: number ) => {
+                phrases.map( (phrase: Phrase, idx: number ) => {
                     let current = progress === idx;
                     let last = progress === phrases.length - 1;
     

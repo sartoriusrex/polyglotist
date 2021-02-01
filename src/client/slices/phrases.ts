@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchAllArticles } from './articles';
-import { phrasesStateInterface } from '../interfaces';
 
-export const initialState: phrasesStateInterface = {
+import { PhrasesState } from '../interfaces';
+
+export const initialState: PhrasesState = {
   loading: false,
   hasErrors: false,
   phrases: [],
@@ -12,19 +13,19 @@ const phrasesSlice = createSlice({
   name: 'phrasesSlice',
   initialState,
   reducers: {
-    fetchPhrases: (state: phrasesStateInterface) => {
+    fetchPhrases: (state: PhrasesState) => {
       const newState = { ...state };
 
       newState.loading = true;
       return newState;
     },
-    fetchPhrasesFailure: (state: phrasesStateInterface) => {
+    fetchPhrasesFailure: (state: PhrasesState) => {
       const newState = { ...state };
 
       newState.hasErrors = true;
       return newState;
     },
-    fetchPhrasesSuccess: (state: phrasesStateInterface, { payload }) => {
+    fetchPhrasesSuccess: (state: PhrasesState, { payload }) => {
       const newState = { ...state };
 
       newState.loading = false;

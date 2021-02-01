@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { newArticlesStateInterface } from '../interfaces';
+import { NewArticlesState } from '../interfaces';
 
-export const initialState: newArticlesStateInterface = {
+export const initialState: NewArticlesState = {
   loading: false,
   hasErrors: false,
   articles: null,
@@ -11,13 +11,13 @@ const newArticlesSlice = createSlice({
   name: 'newArticles',
   initialState,
   reducers: {
-    fetchArticles: (state: newArticlesStateInterface) => {
+    fetchArticles: (state: NewArticlesState) => {
       const newState = { ...state };
 
       newState.loading = true;
       return newState;
     },
-    fetchArticlesSuccess: (state: newArticlesStateInterface, { payload }) => {
+    fetchArticlesSuccess: (state: NewArticlesState, { payload }) => {
       const newState = { ...state };
 
       newState.articles = payload;
@@ -25,7 +25,7 @@ const newArticlesSlice = createSlice({
       newState.hasErrors = false;
       return newState;
     },
-    fetchArticlesFailure: (state: newArticlesStateInterface) => {
+    fetchArticlesFailure: (state: NewArticlesState) => {
       const newState = { ...state };
 
       newState.loading = false;

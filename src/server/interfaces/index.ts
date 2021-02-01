@@ -1,4 +1,4 @@
-export interface Iphrase {
+export interface Phrase {
     phrase_id: number;
     created_at: string;
     phrase: string;
@@ -9,7 +9,7 @@ export interface Iphrase {
     strength: number;
 }
 
-export interface IuPhraseRow {
+export interface PhraseRow {
     id: number;
     user_id: number;
     phrase_id: number;
@@ -19,7 +19,7 @@ export interface IuPhraseRow {
     last_practiced: string;
 }
 
-export interface IUsersArticles {
+export interface UsersArticles {
     id: number;
     user_id: number;
     article_id: number;

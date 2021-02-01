@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { sendMessage } from './messages';
 import history from '../app/history';
-import { settingsStateInterface } from '../interfaces';
+import { SettingsState } from '../interfaces';
 
-export const initialState: settingsStateInterface = {
+export const initialState: SettingsState = {
   loading: false,
   hasErrors: false,
   themePreference: 'light',
@@ -19,13 +19,13 @@ const settingsSlice = createSlice({
   name: 'settings',
   initialState,
   reducers: {
-    setSettings: (state: settingsStateInterface) => {
+    setSettings: (state: SettingsState) => {
       const newState = { ...state };
 
       newState.loading = true;
       return newState;
     },
-    setSettingsSuccess: (state: settingsStateInterface, { payload }) => {
+    setSettingsSuccess: (state: SettingsState, { payload }) => {
       const newState = { ...state };
 
       newState.themePreference = payload.themePreference;
@@ -39,7 +39,7 @@ const settingsSlice = createSlice({
       newState.hasErrors = payload.hasErrors;
       return newState;
     },
-    setSettingsFailure: (state: settingsStateInterface) => {
+    setSettingsFailure: (state: SettingsState) => {
       const newState = { ...state };
 
       newState.loading = false;
@@ -59,7 +59,7 @@ export const {
   setSettingsFailure 
 } = actions;
 
-export function loadSettings(settings: settingsStateInterface) {
+export function loadSettings(settings: SettingsState) {
   return async (dispatch: Function) => {
     dispatch(setSettings());
 
@@ -72,7 +72,7 @@ export function loadSettings(settings: settingsStateInterface) {
   };
 }
 
-export function updateSettings(user: string, settings: settingsStateInterface) {
+export function updateSettings(user: string, settings: SettingsState) {
   return async (dispatch: Function) => {
     dispatch(setSettings());
 

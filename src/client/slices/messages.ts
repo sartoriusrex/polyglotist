@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { messageStateInterface } from '../interfaces';
+import { MessageState } from '../interfaces';
 
-export const initialState: messageStateInterface = {
+export const initialState: MessageState = {
   message: null,
 };
 
@@ -9,13 +9,13 @@ const messageSlice = createSlice({
   name: 'message',
   initialState,
   reducers: {
-    addMessage: (state: messageStateInterface, { payload }) => {
+    addMessage: (state: MessageState, { payload }) => {
       const newState = { ...state };
 
       newState.message = payload;
       return newState;
     },
-    clearMessage: (state: messageStateInterface, { payload }) => {
+    clearMessage: (state: MessageState, { payload }) => {
       const newState = { ...state };
 
       newState.message = payload;

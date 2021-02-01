@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { sourceArrayInterface } from '../../interfaces';
+import { SourceArray } from '../../interfaces';
 import styles from './sourceList.module.scss';
 
 export const sources: {
-  [key: string]: sourceArrayInterface[];
+  [key: string]: SourceArray[];
 } = {
   french: [
     {

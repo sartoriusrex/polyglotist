@@ -5,9 +5,10 @@ import { loadSettings } from './settings';
 import { fetchAllPhrases } from './phrases';
 import { fetchAllArticles } from './articles';
 import history from '../app/history';
-import { authStateInterface } from '../interfaces';
 
-export const initialState: authStateInterface = {
+import { AuthState } from '../interfaces';
+
+export const initialState: AuthState = {
   loading: false,
   hasErrors: false,
   user: null,
@@ -17,13 +18,13 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    loginUser: (state: authStateInterface) => {
+    loginUser: (state: AuthState) => {
       const newState = { ...state };
 
       newState.loading = true;
       return newState;
     },
-    loginUserSuccess: (state: authStateInterface, { payload }) => {
+    loginUserSuccess: (state: AuthState, { payload }) => {
       const newState = { ...state };
 
       newState.user = payload;
@@ -31,20 +32,20 @@ const authSlice = createSlice({
       newState.hasErrors = false;
       return newState;
     },
-    loginUserFailure: (state: authStateInterface) => {
+    loginUserFailure: (state: AuthState) => {
       const newState = { ...state };
 
       newState.loading = false;
       newState.hasErrors = true;
       return newState;
     },
-    createUser: (state: authStateInterface) => {
+    createUser: (state: AuthState) => {
       const newState = { ...state };
 
       newState.loading = true;
       return newState;
     },
-    createUserSuccess: (state: authStateInterface, { payload }) => {
+    createUserSuccess: (state: AuthState, { payload }) => {
       const newState = { ...state };
 
       newState.user = payload;
@@ -52,20 +53,20 @@ const authSlice = createSlice({
       newState.hasErrors = false;
       return newState;
     },
-    createUserFailure: (state: authStateInterface) => {
+    createUserFailure: (state: AuthState) => {
       const newState = { ...state };
 
       newState.loading = false;
       newState.hasErrors = true;
       return newState;
     },
-    logoutUser: (state: authStateInterface) => {
+    logoutUser: (state: AuthState) => {
       const newState = { ...state };
 
       newState.loading = true;
       return newState;
     },
-    logoutUserSuccess: (state: authStateInterface) => {
+    logoutUserSuccess: (state: AuthState) => {
       const newState = { ...state };
 
       newState.loading = false;
@@ -73,7 +74,7 @@ const authSlice = createSlice({
       newState.user = null;
       return newState;
     },
-    logoutUserFailure: (state: authStateInterface) => {
+    logoutUserFailure: (state: AuthState) => {
       const newState = { ...state };
 
       newState.loading = false;

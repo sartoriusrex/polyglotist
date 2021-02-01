@@ -9,7 +9,7 @@ import { articlesSelector } from '../../slices/articles';
 
 import { 
   Article, 
-  phraseInterface, 
+  Phrase, 
 } from '../../interfaces';
 
 import ChevronDown from '../../images/ChevronDown';
@@ -31,14 +31,14 @@ const Dashboard = () => {
   }, []);
 
   const sortedPhrases = phrases
-    .map( (phrase: phraseInterface) => phrase )
-    .sort( (a: phraseInterface, b: phraseInterface) => {
+    .map( (phrase: Phrase) => phrase )
+    .sort( (a: Phrase, b: Phrase) => {
       return a.strength - b.strength;    
     })
     .slice(0,5);
 
-  function numPhrasesPracInNDays(days: number, phrases: phraseInterface[]) {
-    return phrases.filter( (phrase: phraseInterface) => {
+  function numPhrasesPracInNDays(days: number, phrases: Phrase[]) {
+    return phrases.filter( (phrase: Phrase) => {
       let lastPracticed = new Date(phrase.last_practiced).getTime();
       let diff = today - lastPracticed;
       
@@ -76,16 +76,15 @@ const Dashboard = () => {
 
   const practiceStats = phrases.reduce((
     accumulator: any, 
-    currentPhrase: 
-    phraseInterface, 
+    currentPhrase: Phrase, 
     idx: number, 
-    phrases: phraseInterface[]
+    phrases: Phrase[]
     ) => {
 
     let property = accumulator[currentPhrase.language];
 
     if (!property) {
-      let langPhrases = phrases.filter( (phrase: phraseInterface) => phrase.language === currentPhrase.language);
+      let langPhrases = phrases.filter( (phrase: Phrase) => phrase.language === currentPhrase.language);
       let langArticles = articles.filter( (article: Article) => article.language === currentPhrase.language);
 
       accumulator[currentPhrase.language] = {
@@ -267,7 +266,7 @@ const Dashboard = () => {
     );
   }
 
-  const VocabList = ({phrases}: {phrases: phraseInterface[]}) => {
+  const VocabList = ({phrases}: {phrases: Phrase[]}) => {
     if( !phrases || phrases.length <= 0 ) {
       return (
         <div className={styles.vocabList}>
@@ -286,7 +285,7 @@ const Dashboard = () => {
         </thead>
 
         <tbody>
-        { phrases.map( (phraseItem: phraseInterface) => {
+        { phrases.map( (phraseItem: Phrase) => {
           const { 
             phrase_id, 
             phrase, 

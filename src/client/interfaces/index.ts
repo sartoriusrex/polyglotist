@@ -1,4 +1,4 @@
-export interface sourceArrayInterface {
+export interface SourceArray {
   name: string;
   id: string;
   desc: string;
@@ -21,7 +21,7 @@ export interface Article {
   source: string;
 }
 
-export interface ArticleObject {
+export interface AO {
   source: Source;
   articles: Article[];
 }
@@ -53,11 +53,12 @@ export type SaveState =
   'success' | 
   'error';
 
-export interface IPhraseUnit {
+
+export interface Phrase {
   phrase_id: string;
-  phrase: string;
   created_at: string;
   last_practiced: string;
+  phrase: string;
   translation: string;
   language: string;
   article: string;
@@ -65,11 +66,15 @@ export interface IPhraseUnit {
   strength: number;
 }
 
+export interface PhraseUnit extends Phrase {
+  phrase_id: string;
+}
+
 export type LocationState = 
   null |
   undefined | 
-  { phrase: IPhraseUnit; article?: Article } | 
-  { phrase?: IPhraseUnit; article: Article }
+  { phrase: PhraseUnit; article?: Article } | 
+  { phrase?: PhraseUnit; article: Article }
 
 export type AuthNavProps = {
   user: { username: string };
@@ -83,7 +88,7 @@ export type NavbarProps = {
   setAccountMenuOpen?: (value: boolean) => void;
 };
 
-export interface settingsStateInterface {
+export interface SettingsState {
   loading: boolean;
   hasErrors: boolean;
   themePreference: string;
@@ -95,87 +100,52 @@ export interface settingsStateInterface {
   sources: string[];
 }
 
-
-export interface phraseInterface {
-  phrase_id: string;
-  created_at: string;
-  last_practiced: string;
-  phrase: string;
-  translation: string;
-  language: string;
-  article: string;
-  context_phrase: string;
-  strength: number;
-}
-
-export interface phrasesStateInterface {
+export interface PhrasesState {
   loading: boolean;
   hasErrors: boolean;
-  phrases: phraseInterface[] | [];
+  phrases: Phrase[] | [];
 }
 
-export interface phraseResult {
-  phrase: phraseInterface;
+export interface PhraseResult {
+  phrase: Phrase;
   change: 1 | -1 | 0;
   result: 1 | -1;
 }
 
-export interface practiceStateInterface {
+export interface PracticeState {
   loadingQuestions: boolean;
   loadingResults: boolean;
   questionsHasErrors: boolean;
   resultsHasErrors: boolean;
-  phrases: phraseInterface[];
-  results: phraseResult[];
+  phrases: Phrase[];
+  results: PhraseResult[];
 }
 
-export interface userStateInterface {
+export interface UserState {
   loading: boolean;
   hasErrors: boolean;
   users: any[];
 }
 
 
-export interface authStateInterface {
+export interface AuthState {
   loading: boolean;
   hasErrors: boolean;
   user: any;
 }
 
-export interface messageStateInterface {
+export interface MessageState {
   message: string | null;
 }
 
-interface DatabaseSource {
-  name: string;
-  url: string;
-  language: string;
-  error?: string;
-}
-
-interface CrawlResult {
-  title: string;
-  date: string;
-  url: string;
-  language: string;
-  body: string[][];
-  error?: string;
-}
-
-interface SourceText {
-  source: DatabaseSource;
-  articles?: CrawlResult[] | { error: string };
-  error?: string;
-}
-
-export interface newArticlesStateInterface {
+export interface NewArticlesState {
   loading: boolean;
   hasErrors: boolean;
   articles: Article[] | null;
 }
 
 
-export interface ArticlesStateInterface {
+export interface ArticlesState {
   loading: boolean;
   hasErrors: boolean;
   articles: Article[] | [];

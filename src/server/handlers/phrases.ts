@@ -23,8 +23,8 @@ import {
 import { updatePhraseStrength } from '../utils/phraseStrength';
 
 import {
-  Iphrase,
-  IuPhraseRow
+  Phrase,
+  PhraseRow
 } from '../interfaces';
 
 const { Translate } = require('@google-cloud/translate').v2;
@@ -334,9 +334,9 @@ export default {
       );
       const uPhraseRows = userPhraseResult.rows;
 
-      const phrasesArray: Iphrase[] = await Promise.all(
+      const phrasesArray: Phrase[] = await Promise.all(
         uPhraseRows.map(
-          async (phraseRow: IuPhraseRow) => {
+          async (phraseRow: PhraseRow) => {
             const {
               phrase_id,
               article_id,

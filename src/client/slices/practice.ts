@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import history from '../app/history';
 import { sendMessage } from './messages';
-import { practiceStateInterface } from '../interfaces';
 
-export const initialState: practiceStateInterface = {
+import { PracticeState } from '../interfaces';
+
+export const initialState: PracticeState = {
     loadingQuestions: false,
     loadingResults: false,
     questionsHasErrors: false,
@@ -16,13 +17,13 @@ const practiceSlice = createSlice({
     name: 'practice',
     initialState,
     reducers: {
-        setPractice: (state: practiceStateInterface) => {
+        setPractice: (state: PracticeState) => {
             const newState = { ...state };
 
             newState.loadingQuestions = true;
             return newState;
         },
-        setPracticeSuccess: (state: practiceStateInterface, { payload }) => {
+        setPracticeSuccess: (state: PracticeState, { payload }) => {
             const newState = { ...state };
 
             newState.loadingQuestions = false;
@@ -30,20 +31,20 @@ const practiceSlice = createSlice({
             newState.phrases = payload.phrases;
             return newState;
         },
-        setPracticeFailure: (state: practiceStateInterface ) => {
+        setPracticeFailure: (state: PracticeState ) => {
             const newState = { ...state };
 
             newState.loadingQuestions = false;
             newState.questionsHasErrors = true;
             return newState;
         },
-        updateResults: (state: practiceStateInterface) => {
+        updateResults: (state: PracticeState) => {
             const newState = { ...state };
 
             newState.loadingResults = true;
             return newState;
         },
-        updateResultsSuccess: (state: practiceStateInterface, { payload } ) => {
+        updateResultsSuccess: (state: PracticeState, { payload } ) => {
             const newState = { ...state };
 
             newState.loadingResults = false;
@@ -53,14 +54,14 @@ const practiceSlice = createSlice({
 
             return newState;
         },
-        updateResultsFailure: (state: practiceStateInterface) => {
+        updateResultsFailure: (state: PracticeState) => {
             const newState = { ...state };
 
             newState.loadingResults = false;
             newState.resultsHasErrors = true;
             return newState;
         },
-        clearAllResults: (state: practiceStateInterface) => {
+        clearAllResults: (state: PracticeState) => {
             const newState = { ...state };
             const clearedResults = {
                 loadingResults: false,

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { userStateInterface } from '../interfaces'
+import { UserState } from '../interfaces'
 
-export const initialState: userStateInterface = {
+export const initialState: UserState = {
   loading: false,
   hasErrors: false,
   users: [],
@@ -11,13 +11,13 @@ const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    getUsers: (state: userStateInterface) => {
+    getUsers: (state: UserState) => {
       const newState = { ...state };
 
       newState.loading = true;
       return newState;
     },
-    getUsersSuccess: (state: userStateInterface, { payload }) => {
+    getUsersSuccess: (state: UserState, { payload }) => {
       const newState = { ...state };
 
       newState.users = payload;
@@ -25,7 +25,7 @@ const usersSlice = createSlice({
       newState.hasErrors = false;
       return newState;
     },
-    getUsersFailure: (state: userStateInterface) => {
+    getUsersFailure: (state: UserState) => {
       const newState = { ...state };
 
       newState.loading = false;

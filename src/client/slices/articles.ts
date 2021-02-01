@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { sendMessage } from './messages';
 
-import { Article, ArticlesStateInterface } from '../interfaces';
+import { Article, ArticlesState } from '../interfaces';
 
 
-export const initialState: ArticlesStateInterface = {
+export const initialState: ArticlesState = {
   loading: false,
   hasErrors: false,
   articles: [],
@@ -14,13 +14,13 @@ const articlesSlice = createSlice({
   name: 'articles',
   initialState,
   reducers: {
-    fetchArticles: (state: ArticlesStateInterface) => {
+    fetchArticles: (state: ArticlesState) => {
       const newState = { ...state };
 
       newState.loading = true;
       return newState;
     },
-    fetchArticlesSuccess: (state: ArticlesStateInterface, { payload }) => {
+    fetchArticlesSuccess: (state: ArticlesState, { payload }) => {
       const newState = { ...state };
 
       newState.articles = payload;
@@ -28,20 +28,20 @@ const articlesSlice = createSlice({
       newState.hasErrors = false;
       return newState;
     },
-    fetchArticlesFailure: (state: ArticlesStateInterface) => {
+    fetchArticlesFailure: (state: ArticlesState) => {
       const newState = { ...state };
 
       newState.loading = false;
       newState.hasErrors = true;
       return newState;
     },
-    addArticle: (state: ArticlesStateInterface) => {
+    addArticle: (state: ArticlesState) => {
       const newState = { ...state };
 
       newState.loading = true;
       return newState;
     },
-    addArticleSuccess: (state: ArticlesStateInterface, { payload }: { payload: Article }) => {
+    addArticleSuccess: (state: ArticlesState, { payload }: { payload: Article }) => {
       const newState = { ...state };
 
       newState.articles = Array.from(new Set([...newState.articles, payload]));
@@ -50,7 +50,7 @@ const articlesSlice = createSlice({
 
       return newState;
     },
-    addArticleFailure: (state: ArticlesStateInterface) => {
+    addArticleFailure: (state: ArticlesState) => {
       const newState = { ...state };
 
       newState.loading = false;

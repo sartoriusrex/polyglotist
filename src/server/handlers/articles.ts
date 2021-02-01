@@ -10,7 +10,7 @@ import {
 } from '../crawler/interfaces';
 
 import {
-  IUsersArticles
+  UsersArticles
 } from '../interfaces';
 
 import {
@@ -135,9 +135,9 @@ export default {
         select_all_from_users_articles_from_user_id, 
         [id]
       );
-      const usersArticles: IUsersArticles[] = usersArticlesResult.rows;
+      const usersArticles: UsersArticles[] = usersArticlesResult.rows;
 
-      const articles = await Promise.all(usersArticles.map(async (userArticle: IUsersArticles) => {
+      const articles = await Promise.all(usersArticles.map(async (userArticle: UsersArticles) => {
         const { article_id } = userArticle;
 
         const articleResult = await db.query(
