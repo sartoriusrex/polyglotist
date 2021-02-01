@@ -13,7 +13,7 @@
     "build": "webpack --mode production --env.NODE_ENV=production --config webpack.config.cjs",
     "start": "npm run build && npm run exportgoogle && node -r ts-node/register/transpile-only src/server/index.ts",
     "client": "webpack-dev-server --config webpack.config.cjs --mode development --env.NODE_ENV=development --devtool inline-source-map --hot",
-    "server": "nodemon src/server/index.ts",
+    "server": "nodemon --config config/nodemon.json src/server/index.ts",
     "dev": "npm run exportgoogle && concurrently \"npm run server\" \"npm run client\"",
     "test": "jest --config='config/jest.config.cjs'",
     "test:watch": "jest --watch",
