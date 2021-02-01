@@ -6,7 +6,7 @@ import { createSession } from '../../slices/practice';
 import { authSelector } from '../../slices/auth';
 import { phrasesSelector } from '../../slices/phrases';
 
-import { phraseInterface } from '../../interfaces';
+import { Phrase } from '../../interfaces';
 
 import styles from './practicePage.module.scss';
 
@@ -20,12 +20,12 @@ const PracticePage = () => {
 
   const numPhrasesSaved = phrases.reduce( (
     accumulator: {[lang: string]: number}, 
-    currentPhrase: phraseInterface, 
+    currentPhrase: Phrase, 
     idx: number, 
-    phrases: phraseInterface[]) => {
+    phrases: Phrase[]) => {
 
       if( !accumulator[currentPhrase.language] ) {
-        accumulator[currentPhrase.language] = phrases.filter( (phrase: phraseInterface) => {
+        accumulator[currentPhrase.language] = phrases.filter( (phrase: Phrase) => {
           return currentPhrase.language === phrase.language;
         }).length;
       }
