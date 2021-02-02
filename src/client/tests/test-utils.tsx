@@ -2,7 +2,7 @@ import React from 'react';
 import { render as rtlRender } from '@testing-library/react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { rootReducer as reducer } from '../reducers';
+import { rootReducer as reducer } from '../app/store';
 
 function customRender(
   ui: any,
