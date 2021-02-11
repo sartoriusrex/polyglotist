@@ -34,8 +34,18 @@ describe('PracticePage', () => {
         const { container } = render(<PracticePage />, { initialState });
 
         const allBtn = screen.getByLabelText('All');
+        const frenchBtn = screen.getByLabelText('French');
+        const spanishBtn = screen.getByLabelText('Spanish');
 
         expect(allBtn).toBeInTheDocument();
+        expect(frenchBtn).toBeInTheDocument();
+        expect(spanishBtn).toBeInTheDocument();
+
+        const timedBtn = screen.getByLabelText('Timed');
+        const untimedBtn = screen.getByLabelText('Untimed');
+
+        expect(timedBtn).toBeInTheDocument();
+        expect(untimedBtn).toBeInTheDocument();
     });
 
     test('allows users to create practice session', () => {
@@ -45,5 +55,24 @@ describe('PracticePage', () => {
         expect( startSessionBtn ).toBeInTheDocument();
         fireEvent.click(startSessionBtn);
         expect(createSession).toHaveBeenCalled();
+    })
+
+    test('buttons are disabled when no language phrases saved', () => {
+        const state = {...initialState, ...{ phrases: { phrases: [] }}};
+        const { container } = render(<PracticePage />, { initialState: state } );
+
+        const allBtn = screen.getByLabelText('All');
+        const frenchBtn = screen.getByLabelText('French');
+        const spanishBtn = screen.getByLabelText('Spanish');
+        const startBtn = screen.getByRole('button', { name: 'Saved some phrases to practice first' })
+
+        expect(frenchBtn).toBeInTheDocument();
+        expect(spanishBtn).toBeInTheDocument();
+        expect(startBtn).toBeInTheDocument();
+
+        expect(startBtn).toBeDisabled();
+        expect(allBtn).toBeDisabled();
+        expect(frenchBtn).toBeDisabled();
+        expect(spanishBtn).toBeDisabled();
     })
 })

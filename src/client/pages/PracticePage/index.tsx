@@ -37,7 +37,7 @@ const PracticePage = () => {
 
   function renderLanguageInputs() {
     return ['all', ...languages].map( (language: string, idx: number) => {
-      let zeroPhrases = numPhrasesSaved[language] === 0;
+      let zeroPhrases = numPhrasesSaved[language] === 0 || numPhrasesSaved[language] === undefined;
 
       return (
         <div 
