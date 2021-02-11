@@ -34,6 +34,9 @@
       ],
       "test-router": [
         "./client/tests/test-router"
+      ],
+      "states": [
+        "./client/tests/states"
       ]
     }
   },

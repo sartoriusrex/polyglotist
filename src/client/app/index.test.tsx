@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen, cleanup } from 'test-utils';
+import { auth } from 'states';
 import App from './index';
 
 jest.mock('../slices/auth', () => {
@@ -15,15 +16,7 @@ jest.mock('../slices/auth', () => {
 import { login, authSelector } from '../slices/auth';
 
 const initialState = {
-  auth: {
-    loading: false,
-    hasErrors: false,
-    user: {
-      id: 4,
-      username: 'username5',
-      email: 'test5@test.com',
-    },
-  },
+  auth
 };
 
 afterEach(() => cleanup());

@@ -1,27 +1,18 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'test-utils';
 import TestRouter from 'test-router';
+import { auth, settings } from 'states';
 import history from '../history';
 
 import AuthenticatedApp from './index';
 
 const initialState = {
-  auth: {
-    loading: false,
-    hasErrors: false,
-    user: {
-      id: 4,
-      username: 'username5',
-      email: 'test5@test.com',
-    },
-  },
+  auth
 };
 
 const initialStateWithSettings = {
   ...initialState,
-  settings: {
-    languagesLearning: ['french', 'spanish'],
-  },
+  settings
 };
 
 describe('Authenticated App', () => {
