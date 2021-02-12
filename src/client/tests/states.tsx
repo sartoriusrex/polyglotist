@@ -1,3 +1,5 @@
+export const exampleDate = '2016-06-22 19:10:25';
+
 export const auth = {
     loading: false,
     hasErrors: false,
@@ -9,7 +11,18 @@ export const auth = {
 }
 
 export const settings =  {
+    loading: false,
+    hasErrors: false,
+    themePreference: 'light',
+    readingSpeed: 'slow',
+    practiceMode: 'timed',
+    notificationMethod: 'none',
+    languagePreference: 'english',
     languagesLearning: ['french', 'spanish'],
+    sources: [
+        'monde',
+        '20minutos',
+    ]
 }
 
 export const phrases = {
@@ -18,8 +31,8 @@ export const phrases = {
     phrases: [
         {
             phrase_id: 1,
-            created_at: '2016-06-22 19:10:25',
-            last_practiced: '2016-06-22 19:10:25',
+            created_at: exampleDate,
+            last_practiced: exampleDate,
             phrase: 'example-1',
             translation: 'example-1',
             language: 'french',
@@ -29,8 +42,8 @@ export const phrases = {
         },
         {
             phrase_id: 2,
-            created_at: '2016-06-22 19:10:25',
-            last_practiced: '2016-06-22 19:10:25',
+            created_at: exampleDate,
+            last_practiced: exampleDate,
             phrase: 'example-1',
             translation: 'example-1',
             language: 'french',
@@ -40,8 +53,8 @@ export const phrases = {
         },
         {
             phrase_id: 3,
-            created_at: '2016-06-22 19:10:25',
-            last_practiced: '2016-06-22 19:10:25',
+            created_at: exampleDate,
+            last_practiced: exampleDate,
             phrase: 'example-3',
             translation: 'example-3',
             language: 'french',
@@ -51,8 +64,8 @@ export const phrases = {
         },
         {
             phrase_id: 4,
-            created_at: '2016-06-22 19:10:25',
-            last_practiced: '2016-06-22 19:10:25',
+            created_at: exampleDate,
+            last_practiced: exampleDate,
             phrase: 'example-4',
             translation: 'example-4',
             language: 'spanish',
@@ -62,8 +75,8 @@ export const phrases = {
         },
         {
             phrase_id: 5,
-            created_at: '2016-06-22 19:10:25',
-            last_practiced: '2016-06-22 19:10:25',
+            created_at: exampleDate,
+            last_practiced: exampleDate,
             phrase: 'example-5',
             translation: 'example-5',
             language: 'spanish',
@@ -82,8 +95,8 @@ export const practice = {
     phrases: [
         {
             phrase_id: 1,
-            created_at: '2016-06-22 19:10:25',
-            last_practiced: '2016-06-22 19:10:25',
+            created_at: exampleDate,
+            last_practiced: exampleDate,
             phrase: 'example-1',
             translation: 'example-1',
             language: 'french',
@@ -93,8 +106,8 @@ export const practice = {
         },
         {
             phrase_id: 2,
-            created_at: '2016-06-22 19:10:25',
-            last_practiced: '2016-06-22 19:10:25',
+            created_at: exampleDate,
+            last_practiced: exampleDate,
             phrase: 'example-1',
             translation: 'example-1',
             language: 'french',
@@ -104,8 +117,8 @@ export const practice = {
         },
         {
             phrase_id: 3,
-            created_at: '2016-06-22 19:10:25',
-            last_practiced: '2016-06-22 19:10:25',
+            created_at: exampleDate,
+            last_practiced: exampleDate,
             phrase: 'example-3',
             translation: 'example-3',
             language: 'french',
@@ -115,8 +128,8 @@ export const practice = {
         },
         {
             phrase_id: 4,
-            created_at: '2016-06-22 19:10:25',
-            last_practiced: '2016-06-22 19:10:25',
+            created_at: exampleDate,
+            last_practiced: exampleDate,
             phrase: 'example-4',
             translation: 'example-4',
             language: 'spanish',
@@ -126,8 +139,8 @@ export const practice = {
         },
         {
             phrase_id: 5,
-            created_at: '2016-06-22 19:10:25',
-            last_practiced: '2016-06-22 19:10:25',
+            created_at: exampleDate,
+            last_practiced: exampleDate,
             phrase: 'example-5',
             translation: 'example-5',
             language: 'spanish',
@@ -153,4 +166,74 @@ export const practice = {
             result: 1 
         },
     ],
+}
+
+export const articles = {
+    loading: false,
+    haserrors: false,
+    articles: [
+        {
+            title: 'Article Title 1',
+            date: exampleDate,
+            read: exampleDate,
+            url: 'https://www.example.com',
+            language: 'french',
+            body: [
+                ['p','example paragraph'],
+                ['p','example paragraph'],
+                ['p','example paragraph']
+            ],
+            source: 'monde'
+        }, 
+        {
+            title: 'Article Title 2',
+            date: exampleDate,
+            read: exampleDate,
+            url: 'https://www.example.com',
+            language: 'spanish',
+            body: [
+                ['p','example paragraph'],
+                ['p','example paragraph'],
+                ['p','example paragraph']
+            ],
+            source: '20minutos'
+        }
+    ]
+}
+
+export const message = {
+    message: "A test message"
+}
+
+export const newArticles = {
+    loading: false,
+    hasErrors: false,
+    articles: [
+        {
+            title: 'Article Title 1',
+            date: exampleDate,
+            read: exampleDate,
+            url: 'https://www.example.com',
+            language: 'french',
+            body: [
+                ['p','example paragraph'],
+                ['p','example paragraph'],
+                ['p','example paragraph']
+            ],
+            source: 'monde'
+        }, 
+        {
+            title: 'Article Title 2',
+            date: exampleDate,
+            read: exampleDate,
+            url: 'https://www.example.com',
+            language: 'spanish',
+            body: [
+                ['p','example paragraph'],
+                ['p','example paragraph'],
+                ['p','example paragraph']
+            ],
+            source: '20minutos'
+        }  
+    ]
 }
