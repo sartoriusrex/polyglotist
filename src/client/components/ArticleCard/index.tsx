@@ -24,7 +24,7 @@ const ArticleCard = (props: {
 
     const bodyLength = article.body
         .map((bodyArray) => bodyArray[1])
-        .join()
+        .join(' ')
         .split(' ').length;
 
     const sourceObjects = Object.values(sources).flat();

@@ -179,7 +179,7 @@ export const articles = {
             url: 'https://www.example.com',
             language: 'french',
             body: [
-                ['p','example paragraph'],
+                ['p','example paragraph with extra words'],
                 ['p','example paragraph'],
                 ['p','example paragraph']
             ],

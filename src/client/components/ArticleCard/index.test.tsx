@@ -31,8 +31,26 @@ describe('ArticleCard Component', () => {
             </TestRouter>
         )
 
-        const title = screen.getByText('Article Title 1');
+        const title1 = screen.getByText('Article Title 1');
+        const title2 = screen.getByText('Article Title 2');
 
-        expect(title).toBeInTheDocument();
+        expect(title1).toBeInTheDocument();
+        expect(title2).toBeInTheDocument();
+
+        // const date1 = screen.getByText('')
+
+        // expect(date1).toBeInTheDocument();
+
+        const wordCount1 = screen.getByText('9 Words');
+        const wordCount2 = screen.getByText('6 Words');
+
+        expect(wordCount1).toBeInTheDocument();
+        expect(wordCount2).toBeInTheDocument();
+
+        const sourceName1 = screen.getByText('Le Monde');
+        const sourceName2 = screen.getByText('20 Minutos');
+
+        expect(sourceName1).toBeInTheDocument();
+        expect(sourceName2).toBeInTheDocument();
     })
 })
