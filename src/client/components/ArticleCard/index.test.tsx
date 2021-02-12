@@ -37,9 +37,9 @@ describe('ArticleCard Component', () => {
         expect(title1).toBeInTheDocument();
         expect(title2).toBeInTheDocument();
 
-        // const date1 = screen.getByText('')
+        const dates = screen.getAllByText("22 Jun '16");
 
-        // expect(date1).toBeInTheDocument();
+        expect(dates).toHaveLength(2);
 
         const wordCount1 = screen.getByText('9 Words');
         const wordCount2 = screen.getByText('6 Words');
@@ -52,5 +52,11 @@ describe('ArticleCard Component', () => {
 
         expect(sourceName1).toBeInTheDocument();
         expect(sourceName2).toBeInTheDocument();
+
+        const lang1 = screen.getByText('French');
+        const lang2 = screen.getByText('Spanish');
+
+        expect(lang1).toBeInTheDocument();
+        expect(lang2).toBeInTheDocument();
     })
 })
