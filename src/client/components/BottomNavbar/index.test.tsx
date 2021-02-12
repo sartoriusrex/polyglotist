@@ -24,5 +24,9 @@ describe('Bottom navbar', () => {
         const links = screen.getAllByRole('link');
 
         expect(links).toHaveLength(4);
+        expect(links[0]).toHaveAttribute('href', '/username5/dashboard');
+        expect(links[1]).toHaveAttribute('href', '/username5/phrases');
+        expect(links[2]).toHaveAttribute('href', '/username5/articles');
+        expect(links[3]).toHaveAttribute('href', '/username5/practice');
     })
 });
