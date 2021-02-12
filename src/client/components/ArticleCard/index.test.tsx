@@ -1,16 +1,12 @@
-import { STATUS_CODES } from 'http';
 import React from 'react';
 import TestRouter from 'test-router';
-import { render, screen, fireEvent, cleanup } from 'test-utils';
-
-import ArticleCard from './index';
-import { sources } from '../SourceList';
-
+import { render, screen, cleanup } from 'test-utils';
 import { articles } from 'states';
 
+import ArticleCard from './index';
+
+
 afterEach(() => cleanup);
-
-
 
 describe('ArticleCard Component', () => {
     test('Renders 2 article cards with their props', () => {
@@ -58,5 +54,13 @@ describe('ArticleCard Component', () => {
 
         expect(lang1).toBeInTheDocument();
         expect(lang2).toBeInTheDocument();
+
+        const linkText1 = "/example_user/articles/Article-Title-1";
+        const linkText2 = "/example_user/articles/Article-Title-2";
+        
+        const links = screen.getAllByRole('link');
+
+        expect(links[0]).toHaveAttribute('href', linkText1);
+        expect(links[1]).toHaveAttribute('href', linkText2);
     })
 })
