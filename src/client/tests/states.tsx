@@ -196,7 +196,7 @@ export const articles = {
                 ['p','example paragraph'],
                 ['p','example paragraph']
             ],
-            source: '20minutos'
+            source: 'veinte'
         }
     ]
 }

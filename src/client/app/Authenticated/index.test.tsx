@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from 'test-utils';
+import { render, screen, fireEvent, cleanup } from 'test-utils';
 import TestRouter from 'test-router';
 import { auth, settings } from 'states';
 import history from '../history';
@@ -14,6 +14,8 @@ const initialStateWithSettings = {
   ...initialState,
   settings
 };
+
+afterEach(() => cleanup());
 
 describe('Authenticated App', () => {
   test('renders the CreateAccount Page', async () => {
