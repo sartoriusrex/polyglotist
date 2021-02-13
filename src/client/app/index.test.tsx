@@ -13,7 +13,7 @@ jest.mock('../slices/auth', () => {
   };
 });
 
-import { login, authSelector } from '../slices/auth';
+import { login } from '../slices/auth';
 
 const initialState = {
   auth
