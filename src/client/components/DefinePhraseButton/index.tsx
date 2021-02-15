@@ -13,8 +13,8 @@ import {
   Article
 } from '../../interfaces';
 
-import GoogleAttribution from '../../images/GoogleAttr';
-import Check from '../../images/Check';
+import TranslationResults from '../TranslationResults';
+import SaveButtonGroup from '../SaveButtonGroup';
 
 import { addOneArticle, articlesSelector } from '../../slices/articles';
 import { authSelector } from '../../slices/auth';
@@ -141,34 +141,6 @@ const DefinePhraseButton = () => {
     // console.log(newText);
   }
 
-  const TranslationResults = () => {
-    const langCodes: { [language: string]: string } = {
-      french: 'fr',
-      spanish: 'es',
-      undefined: 'und',
-    };
-
-    let codeResult: string = langCodes[`${location?.state?.article?.language}`]
-
-    switch (defState.status) {
-      case 'idle':
-        return null;
-      case 'fetching':
-        return <p>...Translating Text</p>;
-      case 'error':
-        return <p>{defState.error}</p>;
-      case 'success':
-        return (
-          <>
-            <p lang={`en-x-mtfrom-${codeResult}`}>{defState.translation}</p>
-            <GoogleAttribution />
-          </>
-        );
-      default:
-        return null;
-    }
-  };
-
   const [saveState, setSaveState] = useState<SaveState>('idle');
 
   async function handlePhraseSave() {
@@ -241,38 +213,6 @@ const DefinePhraseButton = () => {
     }
   }
 
-  const SaveButtonGroup = () => {
-    switch (saveState) {
-      case 'saving':
-        return <div className={styles.savingState}>Saving</div>;
-      case 'success':
-        return (
-          <div className={styles.savingState}>
-            Saved <Check />
-          </div>
-        );
-      case 'error':
-        return <div className={styles.savingState}>Oops..</div>;
-      default:
-        return (
-          <>
-            <button
-              className={styles.savePhraseButton}
-              onClick={handlePhraseSave}
-            >
-              Save
-            </button>
-            <button
-              className={styles.cancelSaveButton}
-              onClick={handleCancelSave}
-            >
-              X
-            </button>
-          </>
-        );
-    }
-  };
-
   function handleCancelSave() {
     setDefBoxOpen(false);
     setHighlightedPhrase('');
@@ -285,6 +225,7 @@ const DefinePhraseButton = () => {
     if (e) e.stopPropagation();
   }
 
+  //move this to its own hook
   // add event listener for when user selects text
   useEffect(() => {
     function handleSelect() {
@@ -355,7 +296,11 @@ const DefinePhraseButton = () => {
           }
           aria-hidden={defBoxOpen ? false : true}
         >
-          <SaveButtonGroup />
+          <SaveButtonGroup 
+            saveState={saveState}
+            handlePhraseSave={handlePhraseSave}
+            handleCancelSave={handleCancelSave}
+          />
         </div>
       </div>
 
@@ -374,7 +319,10 @@ const DefinePhraseButton = () => {
             server. Try again in a few minutes.
           </p>
         )}
-        <TranslationResults />
+        <TranslationResults
+          lang={location?.state?.article?.language}
+          defState={defState}
+        />
       </section>
     </>
   );

@@ -31,4 +31,9 @@ describe('Define Phrase Button', () => {
         </TestRouter>,
         { initialState }
     );
+
+    // const translateBtn = screen.getByText('Translate with Google');
+
+    // expect(translateBtn).toHaveAttribute('aria-hidden', true);
+    // expect(translateBtn).not.toBeInTheDocument();
 })
