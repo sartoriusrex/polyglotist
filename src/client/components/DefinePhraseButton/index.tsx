@@ -320,7 +320,7 @@ const DefinePhraseButton = () => {
           </p>
         )}
         <TranslationResults
-          lang={location?.state?.article?.language}
+          lang={location?.state?.article?.language || ''}
           defState={defState}
         />
       </section>
