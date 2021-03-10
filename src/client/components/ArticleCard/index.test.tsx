@@ -4,6 +4,7 @@ import { render, screen, cleanup } from 'test-utils';
 import { articles } from 'states';
 
 import ArticleCard from './index';
+import { Article } from '../../interfaces';
 
 
 afterEach(() => cleanup);
@@ -12,7 +13,7 @@ describe('ArticleCard Component', () => {
     test('Renders 2 article cards with their props', () => {
         const { container } = render( 
             <TestRouter>
-                {articles.articles.map( article => {
+                {articles.articles.map( (article: Article) => {
                     return (
                         <ArticleCard
                             key={article.title}

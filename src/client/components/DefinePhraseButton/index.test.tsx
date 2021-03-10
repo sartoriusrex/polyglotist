@@ -25,15 +25,18 @@ const initialState = {
 afterEach(() => cleanup());
 
 describe('Define Phrase Button', () => {
-    const { container } = render(
-        <TestRouter>
-            <DefinePhraseButton />
-        </TestRouter>,
-        { initialState }
-    );
-
-    // const translateBtn = screen.getByText('Translate with Google');
-
-    // expect(translateBtn).toHaveAttribute('aria-hidden', true);
-    // expect(translateBtn).not.toBeInTheDocument();
+    test('renders nothing due to nothing being selected', () => {
+        const { container } = render(
+            <TestRouter>
+                <DefinePhraseButton />
+            </TestRouter>,
+            { initialState }
+        );
+    
+        // const translateBtn = screen.getByRole('button', {name: 'Translate with Google' });
+        const translateBtn = screen.queryByText('Translate with Google');
+    
+        // expect(translateBtn).toHaveAttribute('aria-hidden', true);
+        expect(translateBtn).not.toBeInTheDocument();
+    });
 })
